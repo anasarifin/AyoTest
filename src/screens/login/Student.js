@@ -91,7 +91,9 @@ export default class Login extends React.Component {
             <Text
               style={styles.loginButton}
               onPress={() =>
-                this.props.navigation.navigate('navigator-student')
+                this.props.navigation.dispatch(
+                  StackActions.replace('navigator-student'),
+                )
               }>
               Login
             </Text>

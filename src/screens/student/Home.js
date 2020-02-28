@@ -1,16 +1,22 @@
-import React from 'react';
-import {View, Text, Button} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Button, TextInput} from 'react-native';
 
 const studentHome = props => {
+  const [code, inputCode] = useState('');
+
   return (
     <View>
       <Text>THIS IS STUDENT HOME SCREEN</Text>
-      <Button
-        title="Move to detail"
-        onPress={() => props.navigation.navigate('student-detail')}
+      <TextInput
+        placeholder="Kode tes masukin sini"
+        onChange={e => inputCode(e.nativeEvent.text)}
       />
       <Button
-        title="Move to statistic"
+        title="Masuk ke soal sesuai kode tes"
+        onPress={() => props.navigation.navigate('student-test', {code: code})}
+      />
+      <Button
+        title="Buat ngeliat statistik user"
         onPress={() => props.navigation.navigate('student-statistic')}
       />
       <Button

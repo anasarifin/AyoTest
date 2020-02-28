@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import StudentHome from '../screens/student/Home';
-import StudentDetail from '../screens/student/Detail';
-import StudentAdd from '../screens/student/Add';
+import StudentTest from '../screens/student/Test';
+import StudentFinish from '../screens/student/Finish';
 import StudentStatistic from '../screens/student/Statistic';
 // import LoginTeacher from '../screens/login/Teacher';
 
@@ -12,8 +12,8 @@ const LoginNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="student-home" headerMode="none">
       <Stack.Screen name="student-home" component={StudentHome} />
-      <Stack.Screen name="student-detail" component={StudentDetail} />
-      <Stack.Screen name="student-add" component={StudentAdd} />
+      <Stack.Screen name="student-test" component={StudentTest} />
+      <Stack.Screen name="student-finish" component={StudentFinish} />
       <Stack.Screen name="student-statistic" component={StudentStatistic} />
       {/* <Stack.Screen name="login-teacher" component={LoginTeacher} /> */}
       {/* <Stack.Screen name="navigator-student" component={NavigatorStudent} />

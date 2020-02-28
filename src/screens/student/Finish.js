@@ -7,16 +7,16 @@ import {CommonActions, StackActions} from '@react-navigation/native';
 //   routes: [{name: 'login-student'}],
 // });
 
-const studentDetail = props => {
+const studentAdd = props => {
   return (
     <View>
-      <Text>THIS IS STUDENT DETAIL SCREEN</Text>
+      <Text>THIS IS STUDENT FINISH SCREEN</Text>
       <Button
-        title="Move to add"
-        onPress={() => props.navigation.navigate('student-add')}
+        title="Back to login"
+        onPress={() => props.navigation.navigate('login-student')}
       />
     </View>
   );
 };
 
-export default studentDetail;
+export default studentAdd;
