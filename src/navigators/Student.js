@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import StudentHome from '../screens/student/Home';
-import StudentTest from '../screens/student/Test';
+import StudentTest from './Test';
 import StudentFinish from '../screens/student/Finish';
 import StudentStatistic from '../screens/student/Statistic';
 // import LoginTeacher from '../screens/login/Teacher';
