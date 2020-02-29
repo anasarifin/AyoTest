@@ -30,15 +30,22 @@ class AppWithRedux extends React.Component {
     super();
     this.state = {
       login: true,
+      code: false,
       complete: false,
     };
   }
 
   checkLogin = async () => {
     const login = await AsyncStorage.getItem('token');
+    const code = await AsyncStorage.getItem('code');
     if (login) {
       this.setState({
         login: true,
+      });
+    }
+    if (code) {
+      this.setState({
+        code: true,
       });
     }
     this.setState({
@@ -69,6 +76,7 @@ class AppWithRedux extends React.Component {
             <Stack.Screen
               name="navigator-student"
               component={NavigatorStudent}
+              initialParams={{code: this.state.code}}
             />
             <Stack.Screen
               name="navigator-teacher"

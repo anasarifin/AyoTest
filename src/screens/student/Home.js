@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, Button, TextInput} from 'react-native';
+import {StackActions} from '@react-navigation/native';
+import {assessment} from '../../redux/actions/assessment';
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
-const studentHome = props => {
+const StudentHome = props => {
   const [code, inputCode] = useState('');
 
   return (
@@ -13,7 +17,13 @@ const studentHome = props => {
       />
       <Button
         title="Masuk ke soal sesuai kode tes"
-        onPress={() => props.navigation.navigate('student-test', {code: code})}
+        onPress={() => {
+          AsyncStorage.setItem('code', code);
+          props.dispatch(assessment());
+          props.navigation.dispatch(
+            StackActions.replace('student-test', {code: code}),
+          );
+        }}
       />
       <Button
         title="Buat ngeliat statistik user"
@@ -27,4 +37,9 @@ const studentHome = props => {
   );
 };
 
-export default studentHome;
+const mapStateToProps = state => {
+  return {
+    assessment: state.assessment,
+  };
+};
+export default connect(mapStateToProps)(StudentHome);

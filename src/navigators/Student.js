@@ -8,9 +8,13 @@ import StudentStatistic from '../screens/student/Statistic';
 
 const Stack = createStackNavigator();
 
-const LoginNavigator = () => {
+const LoginNavigator = props => {
+  const code = props.route.params.code;
+  console.log(code);
   return (
-    <Stack.Navigator initialRouteName="student-home" headerMode="none">
+    <Stack.Navigator
+      initialRouteName={code ? 'student-test' : 'student-home'}
+      headerMode="none">
       <Stack.Screen name="student-home" component={StudentHome} />
       <Stack.Screen name="student-test" component={StudentTest} />
       <Stack.Screen name="student-finish" component={StudentFinish} />

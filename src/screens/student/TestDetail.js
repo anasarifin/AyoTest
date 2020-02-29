@@ -5,6 +5,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
+import {connect} from 'react-redux';
 
 // eslint-disable-next-line prettier/prettier
 const radio_props = [
@@ -15,11 +16,12 @@ const radio_props = [
   {label: 'E', value: 4},
 ];
 
-const QuestionModal = props => {
+const TestDetail = props => {
   const [answer, setAnswer] = useState(null);
   const [redux] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const question = props.route.params.data;
   const no = props.route.params.no;
+  const data = props.assessment.assessmentRandom;
 
   return (
     <View>
@@ -38,7 +40,7 @@ const QuestionModal = props => {
         onPress={() => {
           if (no > 1) {
             props.navigation.navigate('question-' + (no - 1), {
-              data: redux[no - 2],
+              data: data[no - 2],
               no: no - 1,
             });
           }
@@ -47,9 +49,9 @@ const QuestionModal = props => {
       <Button
         title="Next"
         onPress={() => {
-          if (no < redux.length) {
+          if (no < data.length) {
             props.navigation.navigate('question-' + (no + 1), {
-              data: redux[no],
+              data: data[no],
               no: no + 1,
             });
           }
@@ -59,4 +61,9 @@ const QuestionModal = props => {
   );
 };
 
-export default QuestionModal;
+const mapStateToProps = state => {
+  return {
+    assessment: state.assessment,
+  };
+};
+export default connect(mapStateToProps)(TestDetail);

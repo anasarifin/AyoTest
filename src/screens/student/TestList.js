@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import {View, Text, Button, FlatList, TouchableOpacity} from 'react-native';
 import {CommonActions, StackActions} from '@react-navigation/native';
 import QuestionDetail from '../../components/QuestionDetail';
+import {connect} from 'react-redux';
 
 // const resetAction = CommonActions.reset({
 //   index: 0,
 //   routes: [{name: 'login-student'}],
 // });
 
-class studentDetail extends React.Component {
+class TestList extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -58,6 +59,8 @@ class studentDetail extends React.Component {
 
   render() {
     // const code = this.props.route.params.code;
+    console.log('normal = ' + this.props.assessment.assessment);
+    console.log('random = ' + this.props.assessment.assessmentRandom);
 
     return (
       <View>
@@ -65,7 +68,7 @@ class studentDetail extends React.Component {
           THIS IS STUDENT {this.state.data[0]} SCREEN {'code'}
         </Text>
         <FlatList
-          data={this.state.data}
+          data={this.props.assessment.assessmentRandom}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -79,9 +82,18 @@ class studentDetail extends React.Component {
           title="Finish"
           onPress={() => this.props.navigation.navigate('student-finish')}
         />
+        <Button
+          title="Check"
+          onPress={() => console.log(this.props.assessment.assessment)}
+        />
       </View>
     );
   }
 }
 
-export default studentDetail;
+const mapStateToProps = state => {
+  return {
+    assessment: state.assessment,
+  };
+};
+export default connect(mapStateToProps)(TestList);
