@@ -5,7 +5,8 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+// import {addCount} from './store/counter/actions';
 
 // eslint-disable-next-line prettier/prettier
 const radio_props = [
@@ -17,11 +18,19 @@ const radio_props = [
 ];
 
 const TestDetail = props => {
-  const [answer, setAnswer] = useState(null);
-  const [redux] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
-  const question = props.route.params.data;
   const no = props.route.params.no;
-  const data = props.assessment.assessmentRandom;
+  // const [redux] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+  const data = useSelector(state => state.assessment.assessmentRandom);
+  const saveAnswerAll = useSelector(state => state.assessment.answer);
+  const saveAnswer = useSelector(
+    state => state.assessment.answer[no.toString()],
+  );
+  const [answer, setAnswer] = useState(saveAnswer || -1);
+  const question = props.route.params.data;
+  // const data = props.assessment.assessmentRandom;
+  const dispatch = useDispatch();
+  console.log(saveAnswerAll);
+  console.log(saveAnswer);
 
   return (
     <View>
@@ -31,7 +40,7 @@ const TestDetail = props => {
       <Text>{question}</Text>
       <RadioForm
         radio_props={radio_props}
-        initial={-1}
+        initial={saveAnswer - 1 || -1}
         onPress={value => setAnswer(value)}
       />
       <Text>Answer: {answer}</Text>
@@ -61,9 +70,11 @@ const TestDetail = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    assessment: state.assessment,
-  };
-};
-export default connect(mapStateToProps)(TestDetail);
+// const mapStateToProps = state => {
+//   return {
+//     assessment: state.assessment,
+//   };
+// };
+// export default connect(mapStateToProps)(TestDetail);
+
+export default TestDetail;

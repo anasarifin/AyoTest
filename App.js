@@ -38,6 +38,8 @@ class AppWithRedux extends React.Component {
   checkLogin = async () => {
     const login = await AsyncStorage.getItem('token');
     const code = await AsyncStorage.getItem('code');
+    // console.log(login);
+    // console.log(code);
     if (login) {
       this.setState({
         login: true,

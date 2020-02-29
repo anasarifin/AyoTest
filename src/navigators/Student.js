@@ -13,7 +13,7 @@ const LoginNavigator = props => {
   console.log(code);
   return (
     <Stack.Navigator
-      initialRouteName={code ? 'student-test' : 'student-home'}
+      initialRouteName={code ? 'student-home' : 'student-home'}
       headerMode="none">
       <Stack.Screen name="student-home" component={StudentHome} />
       <Stack.Screen name="student-test" component={StudentTest} />

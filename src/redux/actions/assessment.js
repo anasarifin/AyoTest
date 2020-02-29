@@ -17,12 +17,12 @@ export const assessment = url => {
       'siapakah?',
       'siapapun',
     ],
-    // [
-    //   'siapa kamu?',
-    //   'siapa saya?',
-    //   'dimana kita?',
-    //   'kapan nikah?',
-    //   'apa itu?',
-    // ],
+  };
+};
+
+export const saveAnswer = data => {
+  return {
+    type: 'SAVE_ANSWER',
+    payload: data,
   };
 };
