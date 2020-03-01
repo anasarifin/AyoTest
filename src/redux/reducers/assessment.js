@@ -1,7 +1,8 @@
 const initialValue = {
   assessment: [],
   assessmentRandom: [],
-  answer: {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5},
+  choicesRandom: [],
+  answer: {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0},
   isPending: false,
   isRejected: false,
   complete: false,
@@ -18,30 +19,34 @@ function randomize(array) {
 function createAnswerStore(length) {
   const answer = {};
   for (let x = 1; x <= length; x++) {
-    answer[x] = -1;
+    answer[x] = 0;
   }
   return answer;
 }
 
 const getAssessment = (state = initialValue, action) => {
   switch (action.type) {
-    case 'GET_CATEGORY_PENDING':
-      return state;
-    case 'GET_CATEGORY_REJECTED':
-      return state;
-    case 'GET_CATEGORY_FULFILLED':
-      return {
-        ...state,
-        isFulfilled: true,
-        categoryList: action.payload.data,
-      };
+    // case 'GET_CATEGORY_PENDING':
+    //   return state;
+    // case 'GET_CATEGORY_REJECTED':
+    //   return state;
+    // case 'GET_CATEGORY_FULFILLED':
+    //   return {
+    //     ...state,
+    //     isFulfilled: true,
+    //     categoryList: action.payload.data,
+    //   };
     case 'GET_ASSESSMENT':
+      const random = randomize(action.payload);
+      const assessment = random.map(x => x.question);
+      const choices = random.map(x => randomize(x.answer));
       return {
         ...state,
         complete: true,
-        assessment: action.payload,
-        assessmentRandom: randomize(action.payload),
-        // answer: createAnswerStore(action.payload.length),
+        // assessment: action.payload,
+        assessmentRandom: assessment,
+        choicesRandom: choices,
+        answer: createAnswerStore(action.payload.length),
       };
     case 'SAVE_ANSWER':
       return {

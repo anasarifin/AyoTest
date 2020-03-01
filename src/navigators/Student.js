@@ -2,7 +2,8 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import StudentHome from '../screens/student/Home';
 import StudentTest from './Test';
-import StudentFinish from '../screens/student/Finish';
+// import StudentFinish from '../screens/student/Finish';
+import StudentDetail from '../screens/student/Detail';
 import StudentStatistic from '../screens/student/Statistic';
 // import LoginTeacher from '../screens/login/Teacher';
 
@@ -17,7 +18,8 @@ const LoginNavigator = props => {
       headerMode="none">
       <Stack.Screen name="student-home" component={StudentHome} />
       <Stack.Screen name="student-test" component={StudentTest} />
-      <Stack.Screen name="student-finish" component={StudentFinish} />
+      <Stack.Screen name="student-detail" component={StudentDetail} />
+      {/* <Stack.Screen name="student-finish" component={StudentFinish} /> */}
       <Stack.Screen name="student-statistic" component={StudentStatistic} />
       {/* <Stack.Screen name="login-teacher" component={LoginTeacher} /> */}
       {/* <Stack.Screen name="navigator-student" component={NavigatorStudent} />

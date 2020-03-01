@@ -1,68 +1,104 @@
 import React, {useState} from 'react';
-import {View, Text, Modal, Button} from 'react-native';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
+import {View, Text, CheckBox, Button} from 'react-native';
+// import RadioForm, {
+//   RadioButton,
+//   RadioButtonInput,
+//   RadioButtonLabel,
+// } from 'react-native-simple-radio-button';
+import RadioButtonRN from 'radio-buttons-react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {saveAnswer} from '../../redux/actions/assessment';
 // import {addCount} from './store/counter/actions';
 
 // eslint-disable-next-line prettier/prettier
 const radio_props = [
-  {label: 'A', value: 0},
-  {label: 'B', value: 1},
-  {label: 'C', value: 2},
-  {label: 'D', value: 3},
-  {label: 'E', value: 4},
+  {label: 'A', value: 1},
+  {label: 'B', value: 2},
+  {label: 'C', value: 3},
+  {label: 'D', value: 4},
+  {label: 'E', value: 5},
 ];
+
+function randomize(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// const radio_randomize = randomize(radio_props);
 
 const TestDetail = props => {
   const no = props.route.params.no;
   // const [redux] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
   const data = useSelector(state => state.assessment.assessmentRandom);
-  const saveAnswerAll = useSelector(state => state.assessment.answer);
-  const saveAnswer = useSelector(
-    state => state.assessment.answer[no.toString()],
-  );
-  const [answer, setAnswer] = useState(saveAnswer || -1);
+  // const saveAnswerAll = useSelector(state => state.assessment.answer);
+  const answer = useSelector(state => state.assessment.answer[no.toString()]);
+  const choices = useSelector(state => state.assessment.choicesRandom);
+  const [answerLocal, setAnswer] = useState(0);
   const question = props.route.params.data;
   // const data = props.assessment.assessmentRandom;
   const dispatch = useDispatch();
-  console.log(saveAnswerAll);
-  console.log(saveAnswer);
+  // console.log(data);
+  // console.log(choices);
+
+  // console.log(
+  //   [{value: 1}, {value: 2}, {value: 3}, {value: 4}, {value: 5}].findIndex(
+  //     x => {
+  //       return x.value === 4;
+  //     },
+  //   ),
+  // );
 
   return (
     <View>
-      <Text onPress={() => props.navigation.navigate('question-list')}>
+      <Text
+        onPress={() => {
+          props.navigation.navigate('question-list');
+          dispatch(saveAnswer({no: no, answer: answerLocal}));
+        }}>
         Close
       </Text>
       <Text>{question}</Text>
-      <RadioForm
-        radio_props={radio_props}
-        initial={saveAnswer - 1 || -1}
-        onPress={value => setAnswer(value)}
+      <RadioButtonRN
+        data={choices[no - 1]}
+        initial={answer || 0}
+        // selectedBtn={e => dispatch(saveAnswer({no: no, answer: e.value}))}
+        animationTypes={['shake']}
+        selectedBtn={e => setAnswer(e.value)}
+        // e => console.log('select = ' + e.value)
+        // saveAnswer - 1 || -1
       />
-      <Text>Answer: {answer}</Text>
+      <Text>No. {no}</Text>
+      <View style={{flexDirection: 'row'}}>
+        <CheckBox />
+        <Text>Doubt?</Text>
+      </View>
       <Button
         title="Back"
+        disabled={no > 1 ? false : true}
         onPress={() => {
           if (no > 1) {
             props.navigation.navigate('question-' + (no - 1), {
               data: data[no - 2],
               no: no - 1,
             });
+            dispatch(saveAnswer({no: no, answer: answerLocal}));
           }
         }}
       />
       <Button
         title="Next"
+        disabled={no < data.length ? false : true}
         onPress={() => {
           if (no < data.length) {
             props.navigation.navigate('question-' + (no + 1), {
               data: data[no],
               no: no + 1,
             });
+            dispatch(saveAnswer({no: no, answer: answerLocal}));
           }
         }}
       />

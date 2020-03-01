@@ -12,8 +12,8 @@ const studentAdd = props => {
     <View>
       <Text>THIS IS STUDENT FINISH SCREEN</Text>
       <Button
-        title="Back to login"
-        onPress={() => props.navigation.navigate('login-student')}
+        title="Back to home"
+        onPress={() => props.navigation.navigate('student-home')}
       />
     </View>
   );

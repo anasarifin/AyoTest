@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
+  Image,
 } from 'react-native';
 
 import font from '../Fonts';
@@ -14,7 +15,8 @@ import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 
 const studentHome = props => {
-  const [code, inputCode] = useState('');
+  const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
+
   return (
     <KeyboardAvoidingView style={styles.containerView}>
       {/* <ScrollView style={{height: '100%'}}>
@@ -95,7 +97,8 @@ const studentHome = props => {
                 font.Aquawax,
                 {fontSize: 40, padding: 20, paddingBottom: 10},
               ]}>
-              Daftar <Text style={styles.textGreen}>Nilai</Text>.
+              Profile{' '}
+              <Text style={styles.textGreen}>{dummy.name.split(' ')[0]}</Text>.
             </Text>
             <View
               style={{
@@ -107,74 +110,38 @@ const studentHome = props => {
           </View>
           <View style={[styles.boxWrapp, styles.shadow]}>
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                borderBottomWidth: 1,
-                borderColor: 'gray',
-                padding: 10,
-              }}>
-              <Text style={{width: '10%', fontWeight: '700'}}>#</Text>
-              <Text style={{width: '70%', fontWeight: '700'}}>Nama Matkul</Text>
-              <Text
-                style={{width: '20%', fontWeight: '700', textAlign: 'center'}}>
-                Nilai
-              </Text>
-            </View>
-
-            {/* this */}
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                borderBottomWidth: 1,
-                borderColor: 'gray',
-                padding: 10,
-              }}>
-              <Text style={{width: '10%'}}>1</Text>
-              <Text style={{width: '70%'}}>Matematika Dasar</Text>
-              <Text style={{width: '20%', textAlign: 'center'}}>78</Text>
-            </View>
-            {/* this */}
-
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                borderBottomWidth: 1,
-                borderColor: 'gray',
-                padding: 10,
-              }}>
-              <Text style={{width: '10%'}}>2</Text>
-              <Text style={{width: '70%'}}>Agama</Text>
-              <Text style={{width: '20%', textAlign: 'center'}}>80</Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                borderBottomWidth: 1,
-                borderColor: 'gray',
-                padding: 10,
-              }}>
-              <Text style={{width: '10%'}}>3</Text>
-              <Text style={{width: '70%'}}>Bahasa Indonesia</Text>
-              <Text style={{width: '20%', textAlign: 'center'}}>63</Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                padding: 10,
-              }}>
-              <Text style={{width: '80%', textAlign: 'right'}}>
-                Rata - rata :{' '}
-              </Text>
-              <Text style={{width: '20%', textAlign: 'center'}}>80</Text>
-            </View>
+            <Image
+              style={styles.profileImage}
+              source={require('../../../assets/img/profile.jpg')}
+            />
+            <Text style={{textAlign: 'center', marginTop: 20}}>
+              {dummy.name}
+            </Text>
+            <Text style={{textAlign: 'center'}}>{dummy.email}</Text>
+            <TouchableOpacity>
+              <View
+                style={[
+                  styles.submit,
+                  styles.bgGreen,
+                  {marginTop: 20, width: 'auto', alignSelf: 'center'},
+                ]}>
+                <Text style={{color: '#fff', textAlign: 'center'}}>
+                  Edit Profile
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('login-student')}>
+            <View
+              style={[
+                styles.submit,
+                styles.bgPurle,
+                {marginTop: 20, width: 'auto', alignSelf: 'center'},
+              ]}>
+              <Text style={{color: '#fff', textAlign: 'center'}}>Logout</Text>
+            </View>
+          </TouchableOpacity>
         </ScrollView>
 
         <View style={styles.bottomView}>
