@@ -17,7 +17,7 @@ function randomize(array) {
 function createAnswerStore(length) {
   const answer = {};
   for (let x = 1; x <= length; x++) {
-    answer[x] = 1;
+    answer[x] = 0;
   }
   return answer;
 }

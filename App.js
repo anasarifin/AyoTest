@@ -29,7 +29,7 @@ class AppWithRedux extends React.Component {
   constructor() {
     super();
     this.state = {
-      login: true,
+      login: false,
       code: false,
       complete: false,
     };
@@ -64,14 +64,13 @@ class AppWithRedux extends React.Component {
       <NavigationContainer>
         {this.state.complete ? (
           <Stack.Navigator
-            initialRouteName="login-student"
-            // initialRouteName={
-            //   !this.state.login
-            //     ? 'login'
-            //     : this.state.teacher
-            //     ? 'teacher'
-            //     : 'student'
-            // }
+            // initialRouteName="login-student"
+            initialRouteName={
+              !this.state.login ? 'login-student' : 'navigator-student'
+              // : this.state.teacher
+              // ? 'teacher'
+              // : 'student'
+            }
             headerMode="none">
             <Stack.Screen name="login-student" component={LoginStudent} />
             <Stack.Screen name="login-teacher" component={LoginTeacher} />
@@ -97,7 +96,7 @@ class AppWithRedux extends React.Component {
           </Stack.Navigator>
         ) : (
           <View style={styles.container}>
-            <Text>Splash Screen</Text>
+            <Text>ayoTest.</Text>
           </View>
         )}
       </NavigationContainer>

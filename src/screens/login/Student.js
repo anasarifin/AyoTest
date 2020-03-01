@@ -15,13 +15,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import font from '../Fonts';
 import styless from './Style';
 
-const url = 'http://3.85.4.188:3333/api/admin/login';
+const url = 'http://3.85.4.188:3333/api/users/login';
 
 export default class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: '',
+      email: '',
       password: '',
       warning: false,
       loading: false,
@@ -33,21 +33,29 @@ export default class Login extends React.Component {
 
   login() {
     this.setState({
+      warning: '',
       loading: true,
     });
     // console.log(this.state.username);
     // console.log(this.state.password);
     Axios.post(url, {
-      username: this.state.username,
+      email: this.state.email,
       password: this.state.password,
-    }).then(resolve => {
-      if (resolve.data.token) {
-        AsyncStorage.setItem('token', resolve.data.token);
-        this.props.navigation.dispatch(StackActions.replace('main'));
-      } else {
-        this.setState({loading: false, warning: resolve.data.warning});
-      }
-    });
+    })
+      .then(resolve => {
+        if (resolve.data.token) {
+          AsyncStorage.setItem('token', resolve.data.token);
+          this.props.navigation.dispatch(
+            StackActions.replace('navigator-student'),
+          );
+        }
+      })
+      .catch(() =>
+        this.setState({
+          loading: false,
+          warning: "Email and password don't match!",
+        }),
+      );
   }
 
   // setUsername(value) {
@@ -77,11 +85,12 @@ export default class Login extends React.Component {
                   Login for student.
                 </Text>
               </View>
+              <Text>{this.state.warning}</Text>
               <TextInput
                 style={styless.inputText}
                 placeholder="Username"
                 placeholderTextColor="rgba(0,0,0,.5)"
-                onChange={e => this.setState({username: e.nativeEvent.text})}
+                onChange={e => this.setState({email: e.nativeEvent.text})}
               />
               <TextInput
                 style={styless.inputText}
@@ -92,10 +101,12 @@ export default class Login extends React.Component {
               />
 
               <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.dispatch(
-                    StackActions.replace('navigator-student'),
-                  )
+                onPress={
+                  this.login
+                  // () =>
+                  // this.props.navigation.dispatch(
+                  //   StackActions.replace('navigator-student'),
+                  // )
                 }>
                 <View style={[styless.loginButton]}>
                   <Text

@@ -11,7 +11,7 @@ import {
   Modal,
 } from 'react-native';
 import {CommonActions, StackActions} from '@react-navigation/native';
-import QuestionDetail from '../../components/QuestionDetail';
+// import QuestionDetail from '../../components/QuestionDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import RadioButtonRN from 'radio-buttons-react-native';
 import {connect} from 'react-redux';
@@ -104,12 +104,15 @@ const TestList = props => {
   //     // </TouchableOpacity>
   //   );
   // };
-  console.log('index = ' + index);
-  console.log(choices[index]);
-  console.log('answer = ' + answer[index + 1]);
-  console.log(
-    'ini = ' + choices[index].findIndex(x => x.value === answer[index + 1]),
-  );
+  // console.log('index = ' + index);
+  // console.log(choices[index]);
+  // console.log('answer = ' + answer[index + 1]);
+  // console.log(
+  //   'ini = ' + choices[index].findIndex(x => x.value === answer[index + 1]),
+  // );
+
+  console.log(answer);
+  console.log(index);
   return (
     <KeyboardAvoidingView style={styles.containerView}>
       <View style={[styles.MainContainer]}>
@@ -154,17 +157,17 @@ const TestList = props => {
                 keyExtractor={(item, index) => index.toString()}
               /> */}
 
-              {assessment.map((item, index) => {
-                if (answer[index + 1] === 0) {
+              {assessment.map((x, i) => {
+                if (answer[i + 1] === 0) {
                   return (
                     <TouchableOpacity
                       style={[styles.boxWrappSm]}
                       onPress={() => {
                         modal(true);
-                        setIndex(index);
+                        setIndex(i);
                       }}>
                       <View style={styles.boxWrappSmQu}>
-                        <Text>{index + 1}</Text>
+                        <Text>{i + 1}</Text>
                       </View>
                     </TouchableOpacity>
                   );
@@ -174,10 +177,10 @@ const TestList = props => {
                       style={[styles.boxWrappSm]}
                       onPress={() => {
                         modal(true);
-                        setIndex(index);
+                        setIndex(i);
                       }}>
                       <View style={[styles.boxWrappSmQu, styles.bgGreen]}>
-                        <Text style={styles.textWhite}>{index + 1}</Text>
+                        <Text style={styles.textWhite}>{i + 1}</Text>
                       </View>
                     </TouchableOpacity>
                   );
@@ -309,7 +312,15 @@ const TestList = props => {
             <View style={{width: '100%', padding: 0}}>
               <TouchableOpacity
                 style={{marginTop: 0}}
-                onPress={() => props.navigation.navigate('question-result')}>
+                onPress={() => {
+                  if (!answerToArray) {
+                    props.navigation.dispatch(
+                      StackActions.replace('question-result'),
+                    );
+                  } else {
+                    Alert.alert('Blom diisi semua woy !!!');
+                  }
+                }}>
                 <View
                   style={[
                     styles.boxSm,
@@ -380,14 +391,17 @@ const TestList = props => {
               <RadioButtonRN
                 data={choices[index]}
                 initial={
-                  choices[index].findIndex(x => x.value === answer[index + 1]) +
-                  1
+                  index !== null
+                    ? choices[index].findIndex(
+                        x => x.value === answer[index + 1],
+                      ) + 1
+                    : 0
                 }
                 // selectedBtn={e =>
                 //   dispatch(saveAnswer({no: index + 1, answer: e.value}))
                 // }
                 animationTypes={['shake']}
-                selectedBtn={e => setAnswer(e.value)}
+                selectedBtn={e => (e ? setAnswer(e.value) : 0)}
                 // saveAnswer - 1 || -1
               />
             </View>
@@ -403,9 +417,11 @@ const TestList = props => {
                 justifyContent: 'space-between',
               }}>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   if (index > 0) {
-                    dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+                    await dispatch(
+                      saveAnswer({no: index + 1, answer: answerLocal}),
+                    );
                     setIndex(index - 1);
                   }
                 }}>
@@ -465,9 +481,11 @@ const TestList = props => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   if (index < assessment.length - 1) {
-                    dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+                    await dispatch(
+                      saveAnswer({no: index + 1, answer: answerLocal}),
+                    );
                     setIndex(index + 1);
                   }
                 }}>

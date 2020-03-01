@@ -24,7 +24,6 @@ const TestResult = props => {
         title="Back to home"
         onPress={() => props.navigation.navigate('student-home')}
       />
-      <Text>Bug: abis pindah ke home, masih bisa di back</Text>
     </View>
   );
 };

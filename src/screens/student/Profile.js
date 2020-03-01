@@ -13,9 +13,16 @@ import {
 import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
+import {StackActions} from '@react-navigation/native';
 
 const studentHome = props => {
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
+
+  const logout = async () => {
+    AsyncStorage.removeItem('token');
+    props.navigation.navigate('login-student');
+  };
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>
@@ -131,8 +138,7 @@ const studentHome = props => {
               </View>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('login-student')}>
+          <TouchableOpacity onPress={() => logout()}>
             <View
               style={[
                 styles.submit,
