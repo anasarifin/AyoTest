@@ -9,8 +9,6 @@ import {useDispatch, useSelector} from 'react-redux';
 // });
 
 const TestResult = props => {
-  const question = useSelector(state => state.assessment.assessmentRandom);
-  const choices = useSelector(state => state.assessment.choicesRandom);
   const answer = useSelector(state => state.assessment.answer);
   const answerToArray = Object.values(answer);
   const correct = answerToArray.filter(x => x === 1).length;
@@ -26,6 +24,7 @@ const TestResult = props => {
         title="Back to home"
         onPress={() => props.navigation.navigate('student-home')}
       />
+      <Text>Bug: abis pindah ke home, masih bisa di back</Text>
     </View>
   );
 };
