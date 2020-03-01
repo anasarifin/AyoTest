@@ -2,9 +2,7 @@ const initialValue = {
   assessment: [],
   assessmentRandom: [],
   choicesRandom: [],
-  answer: {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0},
-  isPending: false,
-  isRejected: false,
+  answer: {},
   complete: false,
 };
 
@@ -19,7 +17,7 @@ function randomize(array) {
 function createAnswerStore(length) {
   const answer = {};
   for (let x = 1; x <= length; x++) {
-    answer[x] = 0;
+    answer[x] = 1;
   }
   return answer;
 }

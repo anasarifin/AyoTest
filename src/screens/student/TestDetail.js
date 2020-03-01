@@ -20,19 +20,18 @@ const radio_props = [
   {label: 'E', value: 5},
 ];
 
-function randomize(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
+// function randomize(array) {
+//   for (let i = array.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [array[i], array[j]] = [array[j], array[i]];
+//   }
+//   return array;
+// }
 
 // const radio_randomize = randomize(radio_props);
 
 const TestDetail = props => {
-  const no = props.route.params.no;
-  // const [redux] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+  const [no, setNo] = useState(0);
   const data = useSelector(state => state.assessment.assessmentRandom);
   // const saveAnswerAll = useSelector(state => state.assessment.answer);
   const answer = useSelector(state => state.assessment.answer[no.toString()]);

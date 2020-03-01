@@ -170,7 +170,7 @@ const studentHome = props => {
               width: '35%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('student-detail')}>
+            onPress={() => props.navigation.navigate('student-profile')}>
             <View>
               <Text style={styles.textStyle}>icon</Text>
             </View>
