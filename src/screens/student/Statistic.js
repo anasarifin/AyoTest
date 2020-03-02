@@ -13,6 +13,7 @@ import {
 import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const studentHome = props => {
   const [topic, setTopic] = useState('');
@@ -223,32 +224,42 @@ const studentHome = props => {
         <View style={styles.bottomView}>
           <TouchableOpacity
             style={{
-              width: '35%',
+              width: '40%',
               height: '100%',
             }}
             onPress={() => props.navigation.navigate('student-statistic')}>
             <View>
-              <Text style={styles.textStyle}>icon</Text>
+              <Text style={styles.textStyle}>
+                <Icon name="award" size={25} style={styles.textGreen} />
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.btnCircle, styles.bgGreen, styles.shadow]}>
+            <View style={styles.circleIcon}>
+              <Text style={{color: '#fff'}}>
+                <Icon name="plus" size={30} style={styles.textWhite} />
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              width: '30%',
+              width: '20%',
               height: '100%',
             }}
             onPress={() => props.navigation.navigate('student-home')}>
-            <View>
-              <Text style={[styles.textStyle, {}]}>icon</Text>
-            </View>
+            {/* hanya sepasi */}
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              width: '35%',
+              width: '40%',
               height: '100%',
             }}
             onPress={() => props.navigation.navigate('student-profile')}>
             <View>
-              <Text style={styles.textStyle}>icon</Text>
+              <Text style={styles.textStyle}>
+                <Icon name="child" size={25} style={styles.textGreen} />
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

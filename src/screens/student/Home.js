@@ -82,13 +82,20 @@ const StudentHome = props => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btnCircle, styles.bgGreen, styles.shadow]}
-            onPress={() => props.navigation.navigate('student-home')}>
+            style={[styles.btnCircle, styles.bgGreen, styles.shadow]}>
             <View style={styles.circleIcon}>
               <Text style={{color: '#fff'}}>
                 <Icon name="plus" size={30} style={styles.textWhite} />
               </Text>
             </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '20%',
+              height: '100%',
+            }}
+            onPress={() => props.navigation.navigate('student-home')}>
+            {/* hanya sepasi */}
           </TouchableOpacity>
           <TouchableOpacity
             style={{

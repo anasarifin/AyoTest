@@ -14,7 +14,7 @@ import {CommonActions, StackActions} from '@react-navigation/native';
 // import QuestionDetail from '../../components/QuestionDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import RadioButtonRN from 'radio-buttons-react-native';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import font from '../Fonts';
 import styles from './Style';
@@ -320,7 +320,8 @@ const TestList = props => {
         transparent={false}
         visible={modalQuestion}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          modal(false);
+          dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
         }}>
         <View style={[styles.MainContainer]}>
           <ScrollView style={{width: '100%', marginBottom: 100}}>
