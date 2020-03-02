@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {assessment} from '../../redux/actions/assessment';

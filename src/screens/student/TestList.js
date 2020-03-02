@@ -20,6 +20,7 @@ import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 import {saveAnswer} from '../../redux/actions/assessment';
+import Axios from 'axios';
 
 // const resetAction = CommonActions.reset({
 //   index: 0,
@@ -59,7 +60,7 @@ const TestList = props => {
   // questionNavigation(no) {
   //   this.props.navigation.navigate('question-' + no);
   // }
-
+  const url = 'http://3.85.4.188:3333/api/answer/update';
   const assessment = useSelector(state => state.assessment.assessmentRandom);
   const answer = useSelector(state => state.assessment.answer);
   const answerToArray = Object.values(answer).some(x => x === 0);
@@ -70,7 +71,7 @@ const TestList = props => {
   const [answerLocal, setAnswer] = useState(0);
   const dispatch = useDispatch();
   // const [answer, setAnswer] = useState(null);
-
+  // console.log(answer);
   // const renderItem = ({item, index}) => {
   //   return (
   //     <TouchableOpacity
@@ -318,9 +319,15 @@ const TestList = props => {
         animationType="slide"
         transparent={false}
         visible={modalQuestion}
-        onRequestClose={() => {
+        onRequestClose={async () => {
           modal(false);
-          dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+          await dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+          Axios.put(url, {
+            id_assessment: 1,
+            id_user: 5,
+            answer: JSON.stringify(answer),
+            question_queue: 'wewewew',
+          });
         }}>
         <View style={[styles.MainContainer]}>
           <ScrollView style={{width: '100%', marginBottom: 100}}>
@@ -386,6 +393,12 @@ const TestList = props => {
                     await dispatch(
                       saveAnswer({no: index + 1, answer: answerLocal}),
                     );
+                    Axios.put(url, {
+                      id_assessment: 1,
+                      id_user: 5,
+                      answer: JSON.stringify(answer),
+                      question_queue: 'wewewew',
+                    });
                     setIndex(index - 1);
                   }
                 }}>
@@ -415,9 +428,17 @@ const TestList = props => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   modal(false);
-                  dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+                  await dispatch(
+                    saveAnswer({no: index + 1, answer: answerLocal}),
+                  );
+                  Axios.put(url, {
+                    id_assessment: 1,
+                    id_user: 5,
+                    answer: JSON.stringify(answer),
+                    question_queue: 'wewewew',
+                  });
                 }}>
                 <View
                   style={[
@@ -450,6 +471,12 @@ const TestList = props => {
                     await dispatch(
                       saveAnswer({no: index + 1, answer: answerLocal}),
                     );
+                    Axios.put(url, {
+                      id_assessment: 1,
+                      id_user: 5,
+                      answer: JSON.stringify(answer),
+                      question_queue: 'wewewew',
+                    });
                     setIndex(index + 1);
                   }
                 }}>

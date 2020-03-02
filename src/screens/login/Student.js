@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import Axios from 'axios';
 import {StackActions} from '@react-navigation/native';
@@ -48,6 +49,9 @@ export default class Login extends React.Component {
           this.props.navigation.dispatch(
             StackActions.replace('navigator-student'),
           );
+          this.setState({
+            loading: false,
+          });
         }
       })
       .catch(() => {
@@ -121,10 +125,14 @@ export default class Login extends React.Component {
                   // )
                 }>
                 <View style={[styless.loginButton]}>
-                  <Text
-                    style={{color: '#fff', textAlign: 'center', padding: 13}}>
-                    Login
-                  </Text>
+                  {!this.state.loading ? (
+                    <Text
+                      style={{color: '#fff', textAlign: 'center', padding: 13}}>
+                      Login
+                    </Text>
+                  ) : (
+                    <ActivityIndicator />
+                  )}
                 </View>
               </TouchableOpacity>
 
