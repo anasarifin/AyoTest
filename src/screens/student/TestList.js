@@ -69,7 +69,6 @@ const TestList = props => {
   // const answerInit = useSelector(state => state.assessment.answer);
   const [answerLocal, setAnswer] = useState(0);
   const dispatch = useDispatch();
-  console.log(answer);
   // const [answer, setAnswer] = useState(null);
 
   // const renderItem = ({item, index}) => {

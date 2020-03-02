@@ -11,15 +11,17 @@ import {
 } from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {assessment} from '../../redux/actions/assessment';
-import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import font from '../Fonts';
 import styles from './Style';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Axios from 'axios';
+import {useDispatch} from 'react-redux';
 
 const StudentHome = props => {
   const [modalDelete, modal] = useState(false);
   const [code, inputCode] = useState('');
+  const dispatch = useDispatch();
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>
@@ -148,11 +150,14 @@ const StudentHome = props => {
             </View>
           </ScrollView>
           <TouchableOpacity
-            onPress={() => {
+            onPress={async () => {
               modal(false);
               // props.navigation.navigate('student-test-nya');
               AsyncStorage.setItem('code', code);
-              props.dispatch(assessment());
+              Axios.get('http://3.85.4.188:3333/api/question').then(resolve =>
+                dispatch(assessment(resolve.data.data)),
+              );
+              // dispatch(assessment())
               props.navigation.dispatch(
                 StackActions.replace('student-test', {code: code}),
               );
@@ -226,9 +231,11 @@ const StudentHome = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    assessment: state.assessment,
-  };
-};
-export default connect(mapStateToProps)(StudentHome);
+// const mapStateToProps = state => {
+//   return {
+//     assessment: state.assessment,
+//   };
+// };
+// export default connect(mapStateToProps)(StudentHome);
+
+export default StudentHome;
