@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Alert,
 } from 'react-native';
 
 import font from '../Fonts';
@@ -18,6 +19,7 @@ import {StackActions} from '@react-navigation/native';
 
 const studentHome = props => {
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
+  const [modalDelete, modal] = useState(false);
 
   const logout = async () => {
     AsyncStorage.removeItem('token');
@@ -125,7 +127,10 @@ const studentHome = props => {
               {dummy.name}
             </Text>
             <Text style={{textAlign: 'center'}}>{dummy.email}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                modal(true);
+              }}>
               <View
                 style={[
                   styles.submit,
@@ -183,6 +188,92 @@ const studentHome = props => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalDelete}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={[styles.wrapp, styles.containerView]}>
+          <ScrollView style={{height: '85%'}}>
+            <TouchableOpacity style={{margin: 20}}>
+              <Image
+                style={styles.profileImage}
+                source={require('../../../assets/img/profile.jpg')}
+              />
+            </TouchableOpacity>
+            <Text style={{fontSize: 18}}>Nama Lengkap</Text>
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan nama lengkap"
+            />
+            <Text style={{fontSize: 18}}>Email</Text>
+            <TextInput style={[styles.inputText]} placeholder="Masukan email" />
+            <Text style={{fontSize: 18}}>Alamat</Text>
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan alamat"
+            />
+            <Text style={{fontSize: 18, paddingBottom: 20}}>Jenis Kelamin</Text>
+            {/* <RadioForm
+              radio_props={radio_props}
+              initial={0}
+              onPress={value => setAnswer(value)}
+              buttonColor={'#0FB63F'}
+              borderColor={'#0FB63F'}
+              innerColor={'#0FB63F'}
+            /> */}
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              modal(false);
+            }}>
+            <View
+              style={[
+                styles.boxSm,
+                styles.bgGreen,
+                styles.shadow,
+                {marginTop: 20},
+              ]}>
+              <Text
+                style={[
+                  font.Aquawax,
+                  {
+                    color: '#fff',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontSize: 14,
+                  },
+                ]}>
+                Simpan
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => modal(false)}>
+            <View
+              style={[
+                styles.boxSm,
+                styles.bgPurle,
+                styles.shadow,
+                {marginTop: 20},
+              ]}>
+              <Text
+                style={[
+                  font.Aquawax,
+                  {
+                    color: '#fff',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontSize: 14,
+                  },
+                ]}>
+                Kembali
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };

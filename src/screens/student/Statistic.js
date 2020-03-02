@@ -15,30 +15,29 @@ import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 
 const studentHome = props => {
-  const [detail, setDetail] = useState('');
+  const [topic, setTopic] = useState('');
+  const [score, setScore] = useState('');
+  const [teacher, setTeacher] = useState('');
+  const [date, setDate] = useState('');
   const [modal, showModal] = useState(false);
   const dummy = [
-    {topic: 'Mathematic', score: 90},
-    {topic: 'Science', score: 72},
-    {topic: 'English', score: 99},
-    {topic: 'History', score: 55},
-    {topic: 'Economy', score: 70},
+    {topic: 'Mathematic', score: 90, teacher: 'Udin', date: '12 Agustus 2008'},
+    {topic: 'Science', score: 72, teacher: 'Asep', date: '12 Agustus 2008'},
+    {topic: 'English', score: 99, teacher: 'Asep', date: '12 Agustus 2008'},
+    {topic: 'History', score: 55, teacher: 'Asep', date: '12 Agustus 2008'},
+    {topic: 'Economy', score: 70, teacher: 'Asep', date: '12 Agustus 2008'},
   ];
-  const dummyDetail = {
-    topic: 'mathematic',
-    detail: [
-      {date: '12 Dec 2019', score: 100},
-      {date: '02 Jan 2020', score: 60},
-      {date: '07 Jan 2020', score: 65},
-      {date: '20 Mar 2020', score: 80},
-      {date: '13 Jun 2020', score: 30},
-    ],
-  };
 
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        onPress={() => showModal(true)}
+        onPress={() => {
+          setTopic(item.topic);
+          setScore(item.score);
+          setTeacher(item.teacher);
+          setDate(item.date);
+          showModal(true);
+        }}
         style={{
           flexDirection: 'row',
           flexWrap: 'wrap',
@@ -256,8 +255,11 @@ const studentHome = props => {
       </View>
       <Modal visible={modal}>
         <Button title="back" onPress={() => showModal(false)} />
-        <Text>{dummyDetail.topic}</Text>
-        <FlatList
+        <Text>{topic}</Text>
+        <Text>{score}</Text>
+        <Text>{teacher}</Text>
+        <Text>{date}</Text>
+        {/* <FlatList
           data={dummyDetail.detail}
           renderItem={({item}) => (
             <View>
@@ -266,7 +268,7 @@ const studentHome = props => {
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
-        />
+        /> */}
       </Modal>
     </KeyboardAvoidingView>
   );

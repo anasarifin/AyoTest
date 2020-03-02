@@ -5,7 +5,7 @@ const {StyleSheet} = React;
 export default {
   containerView: {
     flex: 1,
-    backgroundColor: '#CBDBEC',
+    backgroundColor: '#74A2A8',
   },
 
   MainContainer: {
@@ -94,6 +94,9 @@ export default {
     backgroundColor: '#fff',
     borderRadius: 5,
   },
+  listMinMargin: {
+    marginVertical: 5,
+  },
   boxWrapp: {
     margin: 20,
     marginBottom: 20,
@@ -111,7 +114,7 @@ export default {
     padding: 15,
     backgroundColor: '#fff',
     borderRadius: 5,
-    width:'100%',
+    width: '100%',
     alignItems: 'center',
   },
   box: {
@@ -155,5 +158,7 @@ export default {
     marginVertical: 10,
     paddingHorizontal: 20,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'grey',
   },
 };
