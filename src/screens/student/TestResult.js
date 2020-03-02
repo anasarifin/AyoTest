@@ -13,6 +13,7 @@ const TestResult = props => {
   const answerToArray = Object.values(answer);
   const correct = answerToArray.filter(x => x === 1).length;
   const score = (100 / answerToArray.length) * correct;
+  console.log(answer);
 
   return (
     <View>

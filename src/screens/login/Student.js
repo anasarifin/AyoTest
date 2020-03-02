@@ -21,8 +21,8 @@ export default class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
+      email: false,
+      password: false,
       warning: false,
       loading: false,
     };
@@ -50,12 +50,24 @@ export default class Login extends React.Component {
           );
         }
       })
-      .catch(() =>
-        this.setState({
-          loading: false,
-          warning: "Email and password don't match!",
-        }),
-      );
+      .catch(() => {
+        if (!this.state.email) {
+          this.setState({
+            loading: false,
+            warning: 'Email blom dimasukin woy!',
+          });
+        } else if (!this.state.password) {
+          this.setState({
+            loading: false,
+            warning: 'Password blom dimasukin woy!',
+          });
+        } else {
+          this.setState({
+            loading: false,
+            warning: "Email and password don't match!",
+          });
+        }
+      });
   }
 
   // setUsername(value) {

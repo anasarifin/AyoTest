@@ -59,7 +59,7 @@ const TestList = props => {
   // questionNavigation(no) {
   //   this.props.navigation.navigate('question-' + no);
   // }
-  const [no, setNo] = useState(0);
+
   const assessment = useSelector(state => state.assessment.assessmentRandom);
   const answer = useSelector(state => state.assessment.answer);
   const answerToArray = Object.values(answer).some(x => x === 0);
@@ -111,8 +111,6 @@ const TestList = props => {
   //   'ini = ' + choices[index].findIndex(x => x.value === answer[index + 1]),
   // );
 
-  console.log(answer);
-  console.log(index);
   return (
     <KeyboardAvoidingView style={styles.containerView}>
       <View style={[styles.MainContainer]}>
@@ -161,6 +159,7 @@ const TestList = props => {
                 if (answer[i + 1] === 0) {
                   return (
                     <TouchableOpacity
+                      key={i}
                       style={[styles.boxWrappSm]}
                       onPress={() => {
                         modal(true);
@@ -174,6 +173,7 @@ const TestList = props => {
                 } else {
                   return (
                     <TouchableOpacity
+                      key={i}
                       style={[styles.boxWrappSm]}
                       onPress={() => {
                         modal(true);
@@ -212,42 +212,6 @@ const TestList = props => {
                 </View>
               </TouchableOpacity> */}
               {/* ragu */}
-
-              {/* <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>4</Text>
-                </View>
-              </View>
-              <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>5</Text>
-                </View>
-              </View> */}
-              {/* <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>6</Text>
-                </View>
-              </View>
-              <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>7</Text>
-                </View>
-              </View> */}
-              {/* <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>8</Text>
-                </View>
-              </View>
-              <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>9</Text>
-                </View>
-              </View> */}
-              {/* <View style={[styles.boxWrappSm]}>
-                <View style={styles.boxWrappSmQu}>
-                  <Text>10</Text>
-                </View>
-              </View> */}
             </View>
           </View>
 
@@ -402,7 +366,6 @@ const TestList = props => {
                 // }
                 animationTypes={['shake']}
                 selectedBtn={e => (e ? setAnswer(e.value) : 0)}
-                // saveAnswer - 1 || -1
               />
             </View>
           </ScrollView>

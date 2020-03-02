@@ -19,11 +19,7 @@ const LoginNavigator = props => {
       <Stack.Screen name="student-home" component={StudentHome} />
       <Stack.Screen name="student-test" component={StudentTest} />
       <Stack.Screen name="student-profile" component={StudentProfile} />
-      {/* <Stack.Screen name="student-finish" component={StudentFinish} /> */}
       <Stack.Screen name="student-statistic" component={StudentStatistic} />
-      {/* <Stack.Screen name="login-teacher" component={LoginTeacher} /> */}
-      {/* <Stack.Screen name="navigator-student" component={NavigatorStudent} />
-      <Stack.Screen name="navigator-teacher" component={NavigatorTeacher} /> */}
     </Stack.Navigator>
   );
 };
