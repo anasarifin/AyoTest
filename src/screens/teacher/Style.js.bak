@@ -67,7 +67,7 @@ export default {
     backgroundColor: '#985bff',
   },
   bgBlack: {
-    backgroundColor: '#333333',
+    backgroundColor: '#060709',
   },
   bgWhite: {
     backgroundColor: '#fff',
@@ -82,10 +82,7 @@ export default {
     color: '#985bff',
   },
   textBlack: {
-    color: '#333333',
-  },
-  textBlack2: {
-    color: '#0d0d0d',
+    color: '#060709',
   },
   submit: {
     paddingVertical: 10,
@@ -97,20 +94,13 @@ export default {
     backgroundColor: '#fff',
     borderRadius: 5,
   },
-  listMinMargin:{
-    marginVertical:5
+  listMinMargin: {
+    marginVertical: 5,
   },
   boxWrapp: {
     margin: 20,
     marginBottom: 20,
     padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-  },
-  boxWrappSearch: {
-    margin: 20,
-    marginBottom: 20,
-    paddingHorizontal: 20,
     backgroundColor: '#fff',
     borderRadius: 5,
   },
@@ -124,7 +114,7 @@ export default {
     padding: 15,
     backgroundColor: '#fff',
     borderRadius: 5,
-    width:'100%',
+    width: '100%',
     alignItems: 'center',
   },
   box: {
@@ -139,14 +129,15 @@ export default {
     borderRadius: 5,
   },
   inputText: {
+    borderWidth: 1,
     borderColor: 'transparent',
     borderBottomColor: 'gray',
     width: '100%',
     paddingHorizontal: 20,
   },
   shadow: {
-    elevation:4,
-    shadowColor: '#fff',
+    elevation: 5,
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 12,
@@ -162,11 +153,12 @@ export default {
   },
   inputText: {
     borderRadius: 5,
-    backgroundColor: 'rgba(255,255,255, .6)',
+    backgroundColor: 'rgba(255,255,255,1)',
     width: '100%',
     marginVertical: 10,
     paddingHorizontal: 20,
     fontSize: 16,
-    borderColor:'grey'
+    borderWidth: 1,
+    borderColor: 'grey',
   },
 };

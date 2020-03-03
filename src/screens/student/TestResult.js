@@ -200,7 +200,7 @@ const TestResult = props => {
                 <View
                   style={[
                     styles.boxSm,
-                    score ? styles.bgGreen : styles.bgPurle,
+                    score >= 70 ? styles.bgGreen : styles.bgPurle,
                     styles.shadow,
                     {
                       width: '100%',

@@ -321,13 +321,14 @@ const TestList = props => {
         visible={modalQuestion}
         onRequestClose={async () => {
           modal(false);
-          await dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+          const xAnswer = {...answer, [index + 1]: answerLocal};
           Axios.put(url, {
             id_assessment: 1,
             id_user: 5,
-            answer: JSON.stringify(answer),
+            answer: JSON.stringify(xAnswer),
             question_queue: 'wewewew',
           });
+          dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
         }}>
         <View style={[styles.MainContainer]}>
           <ScrollView style={{width: '100%', marginBottom: 100}}>
@@ -389,16 +390,17 @@ const TestList = props => {
               }}>
               <TouchableOpacity
                 onPress={async () => {
+                  const xAnswer = {...answer, [index + 1]: answerLocal};
                   if (index > 0) {
-                    await dispatch(
-                      saveAnswer({no: index + 1, answer: answerLocal}),
-                    );
                     Axios.put(url, {
                       id_assessment: 1,
                       id_user: 5,
-                      answer: JSON.stringify(answer),
+                      answer: JSON.stringify(xAnswer),
                       question_queue: 'wewewew',
                     });
+                    await dispatch(
+                      saveAnswer({no: index + 1, answer: answerLocal}),
+                    );
                     setIndex(index - 1);
                   }
                 }}>
@@ -430,15 +432,14 @@ const TestList = props => {
               <TouchableOpacity
                 onPress={async () => {
                   modal(false);
-                  await dispatch(
-                    saveAnswer({no: index + 1, answer: answerLocal}),
-                  );
+                  const xAnswer = {...answer, [index + 1]: answerLocal};
                   Axios.put(url, {
                     id_assessment: 1,
                     id_user: 5,
-                    answer: JSON.stringify(answer),
+                    answer: JSON.stringify(xAnswer),
                     question_queue: 'wewewew',
                   });
+                  dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
                 }}>
                 <View
                   style={[
@@ -467,16 +468,17 @@ const TestList = props => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={async () => {
-                  if (index < assessment.length - 1) {
-                    await dispatch(
-                      saveAnswer({no: index + 1, answer: answerLocal}),
-                    );
+                  const xAnswer = {...answer, [index + 1]: answerLocal};
+                  if (index < assessment.length) {
                     Axios.put(url, {
                       id_assessment: 1,
                       id_user: 5,
-                      answer: JSON.stringify(answer),
+                      answer: JSON.stringify(xAnswer),
                       question_queue: 'wewewew',
                     });
+                    await dispatch(
+                      saveAnswer({no: index + 1, answer: answerLocal}),
+                    );
                     setIndex(index + 1);
                   }
                 }}>

@@ -46,6 +46,7 @@ export default class Login extends React.Component {
       .then(resolve => {
         if (resolve.data.token) {
           AsyncStorage.setItem('token', resolve.data.token);
+          AsyncStorage.setItem('student', 'contoh');
           this.props.navigation.dispatch(
             StackActions.replace('navigator-student'),
           );

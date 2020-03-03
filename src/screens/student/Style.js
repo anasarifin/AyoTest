@@ -72,6 +72,9 @@ export default {
   bgWhite: {
     backgroundColor: '#fff',
   },
+  bgGrey: {
+    backgroundColor: '#CBDBEC',
+  },
   textGreen: {
     color: '#0FB63F',
   },

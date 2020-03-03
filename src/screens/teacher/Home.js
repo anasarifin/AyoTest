@@ -8,18 +8,25 @@ import {
   TouchableOpacity,
   Modal,
   StatusBar,
+  Alert,
 } from 'react-native';
 
 import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from 'accordion-collapse-react-native';
 
-const TeacherHome = props => {
+const teacherHome = props => {
   const [code, inputCode] = useState('');
   const [modalDetail, modalD] = useState(false);
   const [modalAdd, modalA] = useState(false);
   const [modalEdit, modalE] = useState(false);
+  const [modalEditSoal, modalES] = useState(false);
   return (
     <KeyboardAvoidingView style={styles.containerView}>
       <View style={[styles.MainContainer]}>
@@ -28,7 +35,12 @@ const TeacherHome = props => {
             <Text
               style={[
                 font.Aquawax,
-                {fontSize: 40, padding: 20, paddingBottom: 10},
+                {
+                  fontSize: 40,
+                  padding: 20,
+                  paddingBottom: 10,
+                  color: '#333333',
+                },
               ]}>
               Daftar <Text style={styles.textWhite}>Pelajaran</Text>.
             </Text>
@@ -36,10 +48,32 @@ const TeacherHome = props => {
               style={{
                 width: 50,
                 marginHorizontal: 20,
-                borderColor: '#000',
+                borderColor: '#333333',
                 borderWidth: 1,
               }}></View>
           </View>
+          {/* loop segini */}
+          <View
+            style={[
+              styles.boxWrappSearch,
+              styles.shadow,
+              styles.listMinMargin,
+              {
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+              },
+            ]}>
+            <TextInput
+              placeholder="Search ..."
+              style={{width: '90%'}}></TextInput>
+            <TouchableOpacity>
+              <Text style={{paddingVertical: 20}}>
+                <Icon name="search" size={23} style={styles.textBlack} />
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* loop segini */}
           {/* loop segini */}
           <TouchableOpacity onPress={() => modalD(true)}>
             <View
@@ -100,7 +134,7 @@ const TeacherHome = props => {
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-home')}>
+            onPress={() => props.navigation.navigate('teacher-live')}>
             <View>
               <Text style={styles.textStyle}>
                 <Icon name="street-view" size={23} style={styles.textBlack} />
@@ -132,7 +166,7 @@ const TeacherHome = props => {
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-profile')}>
+            onPress={() => props.navigation.navigate('teacher-detail')}>
             <View>
               <Text style={styles.textStyle}>
                 <Icon name="child" size={23} style={styles.textBlack} />
@@ -165,7 +199,7 @@ const TeacherHome = props => {
                 style={{
                   width: 50,
                   marginHorizontal: 0,
-                  borderColor: '#000',
+                  borderColor: '#333333',
                   borderWidth: 1,
                 }}></View>
             </View>
@@ -180,14 +214,17 @@ const TeacherHome = props => {
               <Text style={{width: '50%', fontWeight: '700'}}>
                 Bahasa indonesia dasar
               </Text>
+              <Text style={{width: '40%', paddingTop: 10}}>Status </Text>
+              <Text style={{width: '10%', paddingTop: 10}}>:</Text>
+              <Text style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
+                Tidak aktif
+              </Text>
               <Text style={{width: '40%', paddingTop: 10}}>Jumlah Soal </Text>
               <Text style={{width: '10%', paddingTop: 10}}>:</Text>
               <Text style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
                 50 soal
               </Text>
-              <Text style={{width: '40%', paddingTop: 10}}>
-                Siswa yang mengikuti test ini
-              </Text>
+              <Text style={{width: '40%', paddingTop: 10}}>Banyak siswa</Text>
               <Text style={{width: '10%', paddingTop: 10}}>:</Text>
               <Text style={{width: '50%', fontWeight: '700', paddingTop: 10}}>
                 20 siswa
@@ -221,10 +258,91 @@ const TeacherHome = props => {
                         fontSize: 14,
                       },
                     ]}>
-                    Edit Soal
+                    Rubah Soal
                   </Text>
                 </View>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  modalD(false);
+                }}
+                style={{width: '100%'}}>
+                <View
+                  style={[
+                    styles.boxSm,
+                    styles.bgBlack,
+                    styles.shadow,
+                    {marginTop: 20, width: '100%'},
+                  ]}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        color: '#fff',
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        fontSize: 14,
+                      },
+                    ]}>
+                    Hapus Pelajaran
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={[
+                styles.boxWrapp,
+                styles.shadow,
+                {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+              ]}>
+              <Text style={{width: '40%'}}>Status </Text>
+              <Text style={{width: '10%'}}>:</Text>
+              <Text style={{width: '50%', fontWeight: '700'}}>Tidak Aktif</Text>
+              <TouchableOpacity style={{width: '100%'}}>
+                <View
+                  style={[
+                    styles.boxSm,
+                    styles.bgBlack,
+                    styles.shadow,
+                    {marginTop: 20, width: '100%'},
+                  ]}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        color: '#fff',
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        fontSize: 14,
+                      },
+                    ]}>
+                    Aktifkan Soal
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              {/* <TouchableOpacity
+                style={{width: '100%'}}>
+                <View
+                  style={[
+                    styles.boxSm,
+                    styles.bgWhite,
+                    styles.shadow,
+                    {marginTop: 20, width: '100%'},
+                  ]}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        color: '#333333',
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        fontSize: 14,
+                      },
+                    ]}>
+                    Non-Aktifkan Soal
+                  </Text>
+                </View>
+              </TouchableOpacity> */}
             </View>
           </ScrollView>
           <View
@@ -248,7 +366,7 @@ const TeacherHome = props => {
                   style={[
                     font.Aquawax,
                     {
-                      color: '#000',
+                      color: '#333333',
                       textAlign: 'center',
                       textAlignVertical: 'center',
                       fontSize: 14,
@@ -299,7 +417,12 @@ const TeacherHome = props => {
               <Text
                 style={[
                   font.Aquawax,
-                  {fontSize: 35, paddingHorizontal: 0, paddingBottom: 10},
+                  {
+                    fontSize: 35,
+                    paddingHorizontal: 0,
+                    paddingBottom: 10,
+                    color: '#333333',
+                  },
                 ]}>
                 Tambah <Text style={styles.textWhite}>Pelajaran</Text>.
               </Text>
@@ -307,7 +430,7 @@ const TeacherHome = props => {
                 style={{
                   width: 50,
                   marginHorizontal: 0,
-                  borderColor: '#000',
+                  borderColor: '#333333',
                   borderWidth: 1,
                 }}></View>
             </View>
@@ -320,6 +443,11 @@ const TeacherHome = props => {
               <Text style={{width: '40%'}}>Nama Matkul </Text>
               <TextInput
                 placeholder="Masukan nama pelajaran"
+                style={styles.inputText}
+              />
+              <Text style={{width: '40%'}}>Jumlah Soal </Text>
+              <TextInput
+                placeholder="Masukan jumlah soal"
                 style={styles.inputText}
               />
 
@@ -391,7 +519,12 @@ const TeacherHome = props => {
               <Text
                 style={[
                   font.Aquawax,
-                  {fontSize: 35, paddingHorizontal: 0, paddingBottom: 10},
+                  {
+                    fontSize: 35,
+                    paddingHorizontal: 0,
+                    paddingBottom: 10,
+                    color: '#333333',
+                  },
                 ]}>
                 Edit <Text style={styles.textWhite}>Pelajaran</Text>.
               </Text>
@@ -399,7 +532,7 @@ const TeacherHome = props => {
                 style={{
                   width: 50,
                   marginHorizontal: 0,
-                  borderColor: '#000',
+                  borderColor: '#333333',
                   borderWidth: 1,
                 }}></View>
             </View>
@@ -414,18 +547,18 @@ const TeacherHome = props => {
                 placeholder="Masukan nama pelajaran"
                 style={styles.inputText}
               />
-              <Text style={{width: '40%'}}>Jumlah Soal </Text>
-              <TextInput
-                placeholder="Masukan jumlah soal"
-                style={styles.inputText}
-              />
             </View>
 
             <View style={{marginBottom: 20}}>
               <Text
                 style={[
                   font.Aquawax,
-                  {fontSize: 35, paddingHorizontal: 0, paddingBottom: 10},
+                  {
+                    fontSize: 35,
+                    paddingHorizontal: 0,
+                    paddingBottom: 10,
+                    color: '#333333',
+                  },
                 ]}>
                 Edit <Text style={styles.textWhite}>Soal</Text>.
               </Text>
@@ -433,12 +566,13 @@ const TeacherHome = props => {
                 style={{
                   width: 50,
                   marginHorizontal: 0,
-                  borderColor: '#000',
+                  borderColor: '#333333',
                   borderWidth: 1,
                 }}></View>
             </View>
 
-            <TouchableOpacity>
+            {/* satu soal */}
+            <TouchableOpacity onPress={() => modalES(true)}>
               <View
                 style={[
                   styles.boxWrapp,
@@ -446,10 +580,12 @@ const TeacherHome = props => {
                   {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
                 ]}>
                 <Text numberOfLines={1}>
-                  1. Apa yang dimaksud dengan warna warni pada ketika manusia{' '}
+                  1. Apa yang dimaksud dengan apa itu siapa dengan?
                 </Text>
               </View>
             </TouchableOpacity>
+            {/* satu soal */}
+
             <TouchableOpacity>
               <View
                 style={[
@@ -479,7 +615,6 @@ const TeacherHome = props => {
             <TouchableOpacity
               onPress={() => {
                 modalA(false);
-                modalD(false);
                 modalE(false);
               }}
               style={{width: '100%'}}>
@@ -507,7 +642,6 @@ const TeacherHome = props => {
             <TouchableOpacity
               onPress={() => {
                 modalA(false);
-                modalD(false);
                 modalE(false);
               }}>
               <View
@@ -535,8 +669,208 @@ const TeacherHome = props => {
         </View>
       </Modal>
       {/* modal Edit soal */}
+
+      {/* modal edit satu soal */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalEditSoal}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={[styles.wrapp, styles.containerView]}>
+          <ScrollView style={{height: '85%'}}>
+            <View>
+              <View
+                style={[
+                  styles.boxWrapp,
+                  styles.shadow,
+                  {
+                    margin: 0,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                  },
+                ]}>
+                <Text>Soal</Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={4}
+                  style={[styles.inputText, {paddingHorizontal: 10}]}>
+                  Apa yang dimaksud dengan apa itu siapa dengan?
+                </TextInput>
+              </View>
+            </View>
+            <View>
+              <View
+                style={[
+                  styles.boxWrapp,
+                  styles.shadow,
+                  {
+                    margin: 0,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                  },
+                ]}>
+                <Text style={{width: '100%'}}>Jawaban</Text>
+                {/* A */}
+                <Text
+                  style={{
+                    width: '10%',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                  }}>
+                  A.
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  style={[
+                    styles.inputText,
+                    {paddingHorizontal: 10, width: '90%'},
+                  ]}>
+                  Itu adalah ono
+                </TextInput>
+                {/* A */}
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#999999',
+                    width: '100%',
+                  }}
+                />
+                {/* B */}
+                <Text
+                  style={{
+                    width: '10%',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                  }}>
+                  B.
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  style={[
+                    styles.inputText,
+                    {paddingHorizontal: 10, width: '90%'},
+                  ]}>
+                  Itu adalah ono
+                </TextInput>
+                {/* B */}
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#999999',
+                    width: '100%',
+                  }}
+                />
+                {/* C */}
+                <Text
+                  style={{
+                    width: '10%',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                  }}>
+                  C.
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  style={[
+                    styles.inputText,
+                    {paddingHorizontal: 10, width: '90%'},
+                  ]}>
+                  Itu adalah ono
+                </TextInput>
+                {/* C */}
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#999999',
+                    width: '100%',
+                  }}
+                />
+                {/* D */}
+                <Text
+                  style={{
+                    width: '10%',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                  }}>
+                  D.
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  style={[
+                    styles.inputText,
+                    {paddingHorizontal: 10, width: '90%'},
+                  ]}>
+                  Itu adalah ono
+                </TextInput>
+                {/* D */}
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#999999',
+                    width: '100%',
+                  }}
+                />
+                {/* E */}
+                <Text
+                  style={{
+                    width: '10%',
+                    textAlignVertical: 'center',
+                    textAlign: 'center',
+                  }}>
+                  E.
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  style={[
+                    styles.inputText,
+                    {paddingHorizontal: 10, width: '90%'},
+                  ]}>
+                  Itu adalah ono
+                </TextInput>
+                {/* E */}
+              </View>
+              <TouchableOpacity
+                style={{width: '100%'}}
+                onPress={() => modalES(false)}>
+                <View
+                  style={[
+                    styles.boxSm,
+                    styles.bgBlack,
+                    styles.shadow,
+                    {marginTop: 0, width: '100%', marginBottom: 20},
+                  ]}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        color: '#fff',
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        fontSize: 14,
+                      },
+                    ]}>
+                    Simpan
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+      {/* modal edit satu soal */}
     </KeyboardAvoidingView>
   );
 };
 
-export default TeacherHome;
+export default teacherHome;
