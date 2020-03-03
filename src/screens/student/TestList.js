@@ -65,15 +65,19 @@ const TestList = props => {
   //   this.props.navigation.navigate('question-' + no);
   // }
   const url = 'http://3.85.4.188:3333/api/answer/update';
+  const urls = 'http://3.85.4.188:3333/api/answer/insert';
   const xAssessment = useSelector(state => state.assessment.assessmentRandom);
   const answer = useSelector(state => state.assessment.answer);
+  const questionSave = useSelector(state => state.assessment.questionSave);
   const answerToArray = Object.values(answer).some(x => x === 0);
   const choices = useSelector(state => state.assessment.choicesRandom);
+  const complete = useSelector(state => state.assessment.complete);
   const [modalQuestion, modal] = useState(false);
   const [index, setIndex] = useState(null);
   // const answerInit = useSelector(state => state.assessment.answer);
   const [answerLocal, setAnswer] = useState(0);
   const dispatch = useDispatch();
+  console.log(xAssessment);
   // const [answer, setAnswer] = useState(null);
   // console.log(answer);
   // const renderItem = ({item, index}) => {
@@ -314,7 +318,7 @@ const TestList = props => {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <Text onPress={() => dispatch(assessment())}>Get</Text>
+              {/* <Text onPress={() => dispatch(assessment())}>Get</Text>
               <Text
                 onPress={() => {
                   dispatch(restoreAssessment());
@@ -323,10 +327,17 @@ const TestList = props => {
               </Text>
               <Text
                 onPress={() => {
+                  console.log(questionSave);
+                }}>
+                Queue
+              </Text>
+              <Text
+                onPress={() => {
                   console.log(answer);
                 }}>
                 Log
               </Text>
+              <Text>{complete ? 'complete' : 'loading'}</Text> */}
             </View>
           </View>
         </View>
@@ -336,17 +347,19 @@ const TestList = props => {
         animationType="slide"
         transparent={false}
         visible={modalQuestion}
-        onRequestClose={async () => {
-          modal(false);
-          const xAnswer = {...answer, [index + 1]: answerLocal};
-          Axios.put(url, {
-            id_assessment: 1,
-            id_user: 5,
-            answer: JSON.stringify(xAnswer),
-            question_queue: 'wewewew',
-          });
-          dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
-        }}>
+        // onRequestClose={async () => {
+        //   modal(false);
+        //   const xAnswer = {...answer, [index + 1]: answerLocal};
+        //   Axios.post('http://3.85.4.188:3333/api/answer/insert', {
+        //     id_assessment: 1,
+        //     id_user: 5,
+        //     answer: JSON.stringify(xAnswer),
+        //     question_queue: 'contohberubah',
+        //   });
+
+        //   dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+        // }}
+      >
         <View style={[styles.MainContainer]}>
           <ScrollView style={{width: '100%', marginBottom: 100}}>
             <Text
@@ -486,7 +499,7 @@ const TestList = props => {
               <TouchableOpacity
                 onPress={async () => {
                   const xAnswer = {...answer, [index + 1]: answerLocal};
-                  if (index < assessment.length) {
+                  if (index < xAssessment.length - 1) {
                     Axios.put(url, {
                       id_assessment: 1,
                       id_user: 5,

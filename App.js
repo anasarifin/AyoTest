@@ -30,10 +30,10 @@ class AppWithRedux extends React.Component {
   constructor() {
     super();
     this.state = {
-      login: false,
+      login: true,
       code: false,
       complete: false,
-      inTest: true,
+      inTest: false,
     };
   }
 

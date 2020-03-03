@@ -1,9 +1,12 @@
+import Axios from 'axios';
+
 const initialValue = {
   assessment: [],
   assessmentRandom: [],
   choicesRandom: [],
   answer: {},
   complete: false,
+  questionSave: [],
 };
 
 function randomize(array) {
@@ -20,6 +23,26 @@ function createAnswerStore(length) {
     answer[x] = 0;
   }
   return answer;
+}
+
+async function createQuestionList(data) {
+  const url = 'http://3.85.4.188:3333/api/answer/insert';
+  const final = await data.map(x => x.no);
+  Axios.post(url, {
+    id_assessment: 1,
+    id_user: 5,
+    answer: JSON.stringify(createAnswerStore(data.length)),
+    question_queue: JSON.stringify(final),
+  });
+  return final;
+}
+
+function restoreQuestion(source, data) {
+  const final = [];
+  source.forEach(x => {
+    final.push(data[data.findIndex(y => y.no === x)]);
+  });
+  return final;
 }
 
 const getAssessment = (state = initialValue, action) => {
@@ -40,22 +63,26 @@ const getAssessment = (state = initialValue, action) => {
       const choices = random.map(x => randomize(x.answer));
       return {
         ...state,
-        complete: true,
         // assessment: action.payload,
         assessmentRandom: assessment,
         choicesRandom: choices,
+        questionSave: createQuestionList(action.payload),
         answer: createAnswerStore(action.payload.length),
+        complete: true,
       };
     case 'RESTORE_ASSESSMENT':
-      const random2 = randomize(action.payload.question);
-      const assessment2 = random2.map(x => x.question);
+      const random2 = randomize(action.payload);
+      // const assessment2 = random2.map(x => x.question);
       const choices2 = random2.map(x => randomize(x.answer));
       return {
         ...state,
         complete: true,
-        assessmentRandom: assessment2,
+        assessmentRandom: restoreQuestion(
+          action.saveQuestion,
+          action.payload,
+        ).map(x => x.question),
         choicesRandom: choices2,
-        answer: action.payload.answer,
+        answer: action.answer,
       };
     case 'SAVE_ANSWER':
       return {

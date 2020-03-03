@@ -17,12 +17,13 @@ import font from '../Fonts';
 import styles from './Style';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const StudentHome = props => {
   const [modalDelete, modal] = useState(false);
   const [code, inputCode] = useState('');
   const dispatch = useDispatch();
+  const complete = useSelector(state => state.assessment.complete);
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>
@@ -63,7 +64,7 @@ const StudentHome = props => {
                 style={[
                   styles.submit,
                   styles.bgGreen,
-                  {marginTop: 20, width: 100, alignSelf: 'center'},
+                  {marginTop: 20, width: 80, alignSelf: 'center'},
                 ]}>
                 <Text style={{color: '#fff'}}>Submit</Text>
               </View>
