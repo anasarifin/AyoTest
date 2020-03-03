@@ -19,7 +19,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
-import {saveAnswer} from '../../redux/actions/assessment';
+import {
+  saveAnswer,
+  restoreAssessment,
+  assessment,
+} from '../../redux/actions/assessment';
 import Axios from 'axios';
 
 // const resetAction = CommonActions.reset({
@@ -61,7 +65,7 @@ const TestList = props => {
   //   this.props.navigation.navigate('question-' + no);
   // }
   const url = 'http://3.85.4.188:3333/api/answer/update';
-  const assessment = useSelector(state => state.assessment.assessmentRandom);
+  const xAssessment = useSelector(state => state.assessment.assessmentRandom);
   const answer = useSelector(state => state.assessment.answer);
   const answerToArray = Object.values(answer).some(x => x === 0);
   const choices = useSelector(state => state.assessment.choicesRandom);
@@ -156,7 +160,7 @@ const TestList = props => {
                 keyExtractor={(item, index) => index.toString()}
               /> */}
 
-              {assessment.map((x, i) => {
+              {xAssessment.map((x, i) => {
                 if (answer[i + 1] === 0) {
                   return (
                     <TouchableOpacity
@@ -310,6 +314,19 @@ const TestList = props => {
                   </Text>
                 </View>
               </TouchableOpacity>
+              <Text onPress={() => dispatch(assessment())}>Get</Text>
+              <Text
+                onPress={() => {
+                  dispatch(restoreAssessment());
+                }}>
+                Refresh
+              </Text>
+              <Text
+                onPress={() => {
+                  console.log(answer);
+                }}>
+                Log
+              </Text>
             </View>
           </View>
         </View>
@@ -358,7 +375,7 @@ const TestList = props => {
                 alignSelf: 'center',
               }}></View>
             <View style={{padding: 20}}>
-              <Text style={{fontSize: 20}}>{assessment[index]}</Text>
+              <Text style={{fontSize: 20}}>{xAssessment[index]}</Text>
             </View>
             <View style={{paddingHorizontal: 20}}>
               <RadioButtonRN

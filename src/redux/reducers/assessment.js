@@ -46,6 +46,17 @@ const getAssessment = (state = initialValue, action) => {
         choicesRandom: choices,
         answer: createAnswerStore(action.payload.length),
       };
+    case 'RESTORE_ASSESSMENT':
+      const random2 = randomize(action.payload.question);
+      const assessment2 = random2.map(x => x.question);
+      const choices2 = random2.map(x => randomize(x.answer));
+      return {
+        ...state,
+        complete: true,
+        assessmentRandom: assessment2,
+        choicesRandom: choices2,
+        answer: action.payload.answer,
+      };
     case 'SAVE_ANSWER':
       return {
         ...state,

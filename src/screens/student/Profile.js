@@ -23,6 +23,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 const studentHome = props => {
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
   const [modalDelete, modal] = useState(false);
+  const user = useSelector(state => state.user.user);
   const email = useSelector(state => state.user.email);
   const name = useSelector(state => state.user.name);
   const phone = useSelector(state => state.user.phone);
@@ -119,8 +120,8 @@ const studentHome = props => {
                 font.Aquawax,
                 {fontSize: 40, padding: 20, paddingBottom: 10},
               ]}>
-              Profile <Text style={styles.textGreen}>{name.split(' ')[0]}</Text>
-              .
+              Profile{' '}
+              <Text style={styles.textGreen}>{user.name.split(' ')[0]}</Text>.
             </Text>
             <View
               style={{
@@ -136,8 +137,10 @@ const studentHome = props => {
               style={styles.profileImage}
               source={require('../../../assets/img/profile.jpg')}
             />
-            <Text style={{textAlign: 'center', marginTop: 20}}>{name}</Text>
-            <Text style={{textAlign: 'center'}}>{email}</Text>
+            <Text style={{textAlign: 'center', marginTop: 20}}>
+              {user.name}
+            </Text>
+            <Text style={{textAlign: 'center'}}>{user.email}</Text>
             <TouchableOpacity
               onPress={() => {
                 modal(true);
@@ -228,28 +231,28 @@ const studentHome = props => {
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan nama lengkap"
-              defaultValue={name}
+              defaultValue={user.name}
               onChange={e => setName(e.nativeText.text)}
             />
             <Text style={{fontSize: 18}}>Email</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan email"
-              defaultValue={email}
+              defaultValue={user.email}
               onchange={e => setEmail(e.nativeText.text)}
             />
             <Text style={{fontSize: 18}}>Alamat</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan alamat"
-              defaultValue={address}
+              defaultValue={user.address}
               onchange={e => setAddress(e.nativeText.text)}
             />
             <Text style={{fontSize: 18}}>No. Telepon</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan no. telp"
-              defaultValue={phone}
+              defaultValue={user.phone}
               onchange={e => setPhone(e.nativeText.text)}
             />
             <Text style={{fontSize: 18, paddingBottom: 0}}>Jenis Kelamin</Text>
@@ -259,7 +262,7 @@ const studentHome = props => {
                 {label: 'Wanita', value: 1},
               ]}
               box={false}
-              initial={gender + 1}
+              initial={user.gender + 1}
               textStyle={{fontSize: 16, marginLeft: -10}}
               circleSize={12}
               activeColor="green"

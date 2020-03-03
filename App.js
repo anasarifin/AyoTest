@@ -22,6 +22,7 @@ import LoginStudent from './src/screens/login/Student.js';
 import LoginTeacher from './src/screens/login/Teacher.js';
 import NavigatorStudent from './src/navigators/Student';
 import NavigatorTeacher from './src/navigators/Teacher';
+import RegisterStudent from './src/screens/register/Student.js';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ class AppWithRedux extends React.Component {
       login: false,
       code: false,
       complete: false,
+      inTest: true,
     };
   }
 
@@ -50,6 +52,9 @@ class AppWithRedux extends React.Component {
         code: true,
       });
     }
+    // if (this.state.inTest) {
+
+    // }
     this.setState({
       complete: true,
     });
@@ -74,10 +79,11 @@ class AppWithRedux extends React.Component {
             headerMode="none">
             <Stack.Screen name="login-student" component={LoginStudent} />
             <Stack.Screen name="login-teacher" component={LoginTeacher} />
+            <Stack.Screen name="register-student" component={RegisterStudent} />
             <Stack.Screen
               name="navigator-student"
               component={NavigatorStudent}
-              initialParams={{code: this.state.code}}
+              initialParams={{code: this.state.code, isTest: this.state.inTest}}
             />
             <Stack.Screen
               name="navigator-teacher"

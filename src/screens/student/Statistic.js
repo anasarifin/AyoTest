@@ -432,7 +432,7 @@ const studentHome = props => {
               <Text style={{width: '20%', textAlign: 'center'}}>80</Text>
             </View>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('teacher-home')}>
             <View
               style={[
@@ -443,7 +443,7 @@ const studentHome = props => {
               ]}>
               <Text style={{color: '#fff', textAlign: 'center'}}>Teacher</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
 
         <View style={styles.bottomView}>
@@ -452,7 +452,7 @@ const studentHome = props => {
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('student-home')}>
+            onPress={() => props.navigation.navigate('student-statistic')}>
             <View>
               <Text style={styles.textStyle}>
                 <Icon name="award" size={25} style={styles.textGreen} />
@@ -472,7 +472,7 @@ const studentHome = props => {
               width: '20%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('student-test')}>
+            onPress={() => props.navigation.navigate('student-home')}>
             {/* hanya sepasi */}
           </TouchableOpacity>
           <TouchableOpacity
@@ -480,7 +480,7 @@ const studentHome = props => {
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('student-detail')}>
+            onPress={() => props.navigation.navigate('student-profile')}>
             <View>
               <Text style={styles.textStyle}>
                 <Icon name="child" size={25} style={styles.textGreen} />

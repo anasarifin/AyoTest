@@ -151,6 +151,10 @@ export default class Login extends React.Component {
               </View>
             </View>
           </View>
+          <Text
+            onPress={() => this.props.navigation.navigate('register-student')}>
+            Register
+          </Text>
         </KeyboardAvoidingView>
       </ScrollView>
 

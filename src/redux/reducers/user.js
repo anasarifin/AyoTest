@@ -6,6 +6,20 @@ const initialValue = {
   gender: 0,
   image: '',
   complete: false,
+  user: {
+    id_users: 3,
+    name: 'id3',
+    email: 'gnti3',
+    password: '$2a$10$phVEGeNcKBWPq0dturL7BeTx7T2relJ8cq5/8a8xA7TasWPH2hmim',
+    picture: 'img-1583060473982-7.jpg',
+    gender: 1,
+    phone: '2345',
+    address: 'indonesia',
+    deleted: 0,
+  },
+  backup: {
+    answer: {'1': 3, '2': 0, '3': 4, '4': 2, '5': 1},
+  },
 };
 
 const getUser = (state = initialValue, action) => {
