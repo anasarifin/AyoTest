@@ -38,7 +38,10 @@ const getUser = (state = initialValue, action) => {
       //   const random = randomize(action.payload);
       //   const assessment = random.map(x => x.question);
       //   const choices = random.map(x => randomize(x.answer));
-      return state;
+      return {
+        ...state,
+        user: action.payload,
+      };
     // case 'SAVE_ANSWER':
     //   return {
     //     ...state,

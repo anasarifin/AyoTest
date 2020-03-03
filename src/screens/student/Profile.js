@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, {useState} from 'react';
 import {
   View,
@@ -19,25 +20,52 @@ import {StackActions} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RadioButtonRN from 'radio-buttons-react-native';
+import Axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import {getUser} from '../../redux/actions/user';
 
 const studentHome = props => {
+  const dispatch = useDispatch();
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
   const [modalDelete, modal] = useState(false);
   const user = useSelector(state => state.user.user);
-  const email = useSelector(state => state.user.email);
-  const name = useSelector(state => state.user.name);
-  const phone = useSelector(state => state.user.phone);
-  const address = useSelector(state => state.user.address);
-  const gender = useSelector(state => state.user.gender);
-  const [xEmail, setEmail] = useState('');
-  const [xName, setName] = useState('');
-  const [xPhone, setPhone] = useState('');
-  const [xAddress, setAddress] = useState('');
-  const [xGender, setGender] = useState('');
+  const [xEmail, setEmail] = useState(user.email);
+  const [xName, setName] = useState(user.name);
+  const [xPhone, setPhone] = useState(user.phone);
+  const [xAddress, setAddress] = useState(user.address);
+  const [xGender, setGender] = useState(user.gender);
 
   const logout = async () => {
     AsyncStorage.removeItem('token');
     props.navigation.navigate('login-student');
+  };
+  const handleClickEdit = async () => {
+    const formData = new FormData();
+    formData.append('name', xName);
+    formData.append('email', xEmail);
+    formData.append('phone', xPhone);
+    formData.append('address', xAddress);
+    formData.append('password', '123');
+    formData.append('gender', xGender);
+    // formData.append('image', {
+    //   uri: 'xxx',
+    //   type: 'xxx',
+    //   name: 'xxx',
+    // });
+    // const token = await AsyncStorage.getItem('token');
+    // const decoded = jwtDecode(token.id);
+    console.log(
+      'nomer nih = ' + jwt_decode(await AsyncStorage.getItem('token')).id,
+    );
+    const id = jwt_decode(await AsyncStorage.getItem('token')).id;
+    Axios.put('http://3.85.4.188:3333/api/users/' + id, formData)
+      .then(res => {
+        dispatch(getUser(res.data.data));
+        modal(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -129,7 +157,8 @@ const studentHome = props => {
                 marginHorizontal: 20,
                 borderColor: '#0FB63F',
                 borderWidth: 1,
-              }}></View>
+              }}
+            />
           </View>
           <View style={[styles.boxWrapp, styles.shadow]}>
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
@@ -232,28 +261,30 @@ const studentHome = props => {
               style={[styles.inputText]}
               placeholder="Masukan nama lengkap"
               defaultValue={user.name}
-              onChange={e => setName(e.nativeText.text)}
+              onChange={e => setName(e.nativeEvent.text)}
             />
             <Text style={{fontSize: 18}}>Email</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan email"
               defaultValue={user.email}
-              onchange={e => setEmail(e.nativeText.text)}
+              onChange={e => setEmail(e.nativeEvent.text)}
             />
             <Text style={{fontSize: 18}}>Alamat</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan alamat"
               defaultValue={user.address}
-              onchange={e => setAddress(e.nativeText.text)}
+              onChange={e => {
+                setAddress(e.nativeEvent.text);
+              }}
             />
             <Text style={{fontSize: 18}}>No. Telepon</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan no. telp"
               defaultValue={user.phone}
-              onchange={e => setPhone(e.nativeText.text)}
+              onChange={e => setPhone(e.nativeEvent.text)}
             />
             <Text style={{fontSize: 18, paddingBottom: 0}}>Jenis Kelamin</Text>
             <RadioButtonRN
@@ -262,7 +293,7 @@ const studentHome = props => {
                 {label: 'Wanita', value: 1},
               ]}
               box={false}
-              initial={user.gender + 1}
+              initial={parseFloat(user.gender) + 1}
               textStyle={{fontSize: 16, marginLeft: -10}}
               circleSize={12}
               activeColor="green"
@@ -297,7 +328,8 @@ const studentHome = props => {
                     textAlignVertical: 'center',
                     fontSize: 14,
                   },
-                ]}>
+                ]}
+                onPress={() => handleClickEdit()}>
                 Simpan
               </Text>
             </View>

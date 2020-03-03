@@ -18,12 +18,19 @@ import styles from './Style';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
+import jwt_decode from 'jwt-decode';
 
 const StudentHome = props => {
   const [modalDelete, modal] = useState(false);
   const [code, inputCode] = useState('');
   const dispatch = useDispatch();
   const complete = useSelector(state => state.assessment.complete);
+  // console.log(AsyncStorage.getItem('token'));
+
+  const check = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+  };
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>

@@ -39,7 +39,7 @@ class AppWithRedux extends React.Component {
 
   checkLogin = async () => {
     const login = await AsyncStorage.getItem('token');
-    const code = await AsyncStorage.getItem('code');
+    // const code = await AsyncStorage.getItem('code');
     // console.log(login);
     // console.log(code);
     if (login) {
@@ -47,7 +47,7 @@ class AppWithRedux extends React.Component {
         login: true,
       });
     }
-    if (code) {
+    if (this.state.code) {
       this.setState({
         code: true,
       });
