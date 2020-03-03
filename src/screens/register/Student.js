@@ -123,10 +123,12 @@ export default class RegisterStudent extends React.Component {
       password.length >= 6 &&
       regexPassword.test(password)
     ) {
+      console.log('password ngaco!');
       this.setState({
         warning: 'Password min is 6 character & not include special char!',
       });
     } else if (address) {
+      console.log('address ngaco!');
       this.setState({
         warning: 'Address cannot be empty!',
       });
@@ -136,10 +138,12 @@ export default class RegisterStudent extends React.Component {
       phone.length <= 13 &&
       regexPhone.test(phone)
     ) {
+      console.log('nomer ngaco!');
       this.setState({
         warning: 'Phone number is not valid!',
       });
     } else if (password !== rePassword) {
+      console.log('password gak sama!');
       this.setState({
         warning: 'Re-type password is not valid!',
       });
