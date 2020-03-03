@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
   Text,
@@ -9,7 +10,10 @@ import {
   Modal,
   StatusBar,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
+import Axios from 'axios';
+import { assessment } from '../../redux/actions/assessment';
 
 import font from '../Fonts';
 import styles from './Style';
@@ -21,13 +25,169 @@ import {
   CollapseBody,
 } from 'accordion-collapse-react-native';
 
+const URL_STRING = 'http://3.85.4.188:3333/api';
+
 const teacherHome = props => {
   const [code, inputCode] = useState('');
   const [modalDetail, modalD] = useState(false);
+  const [idAssessment, setIdAssessment] = useState(null);
+  const [idAdmin, setId] = useState(0);
   const [modalAdd, modalA] = useState(false);
   const [modalEdit, modalE] = useState(false);
   const [modalEditSoal, modalES] = useState(false);
+  const [loading, setLoading] = useState(true)
+// state addModal
+  const [boxSoal, createSoal] = useState(null);
+  const [assessmentName, setAssessmentName] = useState('');
+  const [total, setTotal] = useState(null);
+// end state addModal
+
+// state add assessment 
+  const [boxAssessment, createAssessment] = useState(null);
+  const [dataAssessment, setDataAssessment] = useState([]);
+  const dispatch = useDispatch()
+// end state add assessment 
+
+// state submit soal in ModalAdd
+    const [soal, setSoal] = useState('');
+    const [answerA, setAnswerA] = useState('');
+    const [answerB, setAnswerB] = useState('');
+    const [answerC, setAnswerC] = useState('');
+    const [answerD, setAnswerD] = useState('');
+    const [answerE, setAnswerE] = useState('');
+// end state submit soal in ModalAdd
+    const [detailAssessment, setDetailAssessment] = useState(null);
+
+// state detail 
+
+// logic Modaladd going here
+    const addAssesmentModal =()=>{
+        addClose();
+        fCreateSoal();
+    }
+    const addClose =()=>{
+        modalE(true);
+    }
+    const fCreateSoal = ()=>{
+        let items = [];
+        for(let i = 1; i <= total; i++){
+            
+        items.push   ( <TouchableOpacity onPress={() => modalES(true)}>
+              <View
+                style={[
+                  styles.boxWrapp,
+                  styles.shadow,
+                  {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+                ]}>
+                <Text numberOfLines={1}>{i}. Soal {i}</Text>
+              </View>
+            </TouchableOpacity>
+            )
+        }
+        return( createSoal(items) )
+    }
+    const handleAdd = () =>{
+        Axios.post(`${URL_STRING}/assessment/insert`,{
+            id_admin: idAdmin,
+            code: '321',
+            name: assessmentName
+        }).then(() =>{
+            addAssesmentModal();
+        })
+    }
+// end logic add
+// logic submit soal 
+    const closeSoalInput = ()=>{
+        addClose()
+        modalES(false)
+        createAssessment(null);
+        setLoading(true)
+    }
+    const handeleInputSoal = ()=>{
+        Axios.post(`${URL_STRING}/question/insert`,
+            {
+                id_assessment_name: idAssessment,
+                question: soal,
+                choice_1: answerA,
+                choice_2: answerB,
+                choice_3: answerC,
+                choice_4: answerD,
+                choice_5: answerE,
+            },)
+          
+    }
+    const handleSubmitSoal = async()=>{
+        await handeleInputSoal();
+        closeSoalInput();
+    }
+// end submit soal
+
+// assessment logic going here
+    const refreshHome = ()=>{
+        if(loading){
+
+            console.log('dilakukan getAssessment')
+        getAssessment();
+        }else{
+
+            console.log('dilakukan createAssessment')
+        fCreateAsessment();
+        }
+    }
+    const getAssessment = async()=>{
+        await   Axios.get(`${URL_STRING}/assessment/detailbyadmin/${idAdmin}`).then(result =>{
+                setDataAssessment(result.data.data)
+            setIdAssessment(result.data.data.length+1)
+            setLoading(false)
+        }).catch(err =>{
+            Alert.alert(err)
+        })
+
+    }
+    const fCreateAsessment= ()=>{
+        console.log(idAssessment)
+        const items = [];
+        for(let i=1; i<= dataAssessment.length; i++){
+        items.push   ( <TouchableOpacity onPress={() => fDetailAssessment()/*  modalD(true) */}>
+              <View
+                style={[
+                  styles.boxWrapp,
+                  styles.shadow,
+                  styles.listMinMargin,
+                ]}>
+                <Text numberOfLines={1}>{i}. {dataAssessment[i-1].name} </Text>
+              </View>
+            </TouchableOpacity>
+        )
+        }
+        return ( createAssessment(items) )
+    }
+// end assessment logic
+
+// detailAssessment logic
+    const fDetailAssessment = () => { getDetail(); openModal(); setLoading(true)}
+    const openModal = () => modalD(true);
+    const getDetail = async()=>{
+        await Axios.get(`${URL_STRING}/assessment/detail/${idAssessment}`).then(result =>{
+            setDetailAssessment(result.data.data)
+            setLoading(false)
+        }).catch(err => Alert.alert(err))
+    }
+
+
+    // useEffect flow 
+    useEffect(()=>{
+        refreshHome();
+    },[])
+    useEffect(()=>{
+        console.log(idAssessment)
+        refreshHome();
+    },[loading])
+    // end useEffect flow 
   return (
+      <>
+    { loading === false?(
+
     <KeyboardAvoidingView style={styles.containerView}>
       <View style={[styles.MainContainer]}>
         <ScrollView style={{width: '100%', marginBottom: 40, marginTop: 20}}>
@@ -73,42 +233,7 @@ const teacherHome = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          {/* loop segini */}
-          {/* loop segini */}
-          <TouchableOpacity onPress={() => modalD(true)}>
-            <View
-              style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-              <Text numberOfLines={1}>Matematika Dasar</Text>
-            </View>
-          </TouchableOpacity>
-          {/* loop segini */}
-
-          <TouchableOpacity>
-            <View
-              style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-              <Text>Bahasa india</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-              <Text>Agana</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-              <Text numberOfLines={1}>
-                Algoritma dan Pemograman lanjutan tingkat dasar
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-              <Text>Matematika Dasar</Text>
-            </View>
-          </TouchableOpacity>
+            { boxAssessment }
 
           <View style={{padding: 20}}>
             <TouchableOpacity onPress={() => modalA(true)}>
@@ -210,7 +335,7 @@ const teacherHome = props => {
                 {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
               ]}>
               <Text style={{width: '40%'}}>Nama Matkul </Text>
-              <Text style={{width: '10%'}}>:</Text>
+                <Text style={{width: '10%'}}>:</Text>
               <Text style={{width: '50%', fontWeight: '700'}}>
                 Bahasa indonesia dasar
               </Text>
@@ -444,16 +569,19 @@ const teacherHome = props => {
               <TextInput
                 placeholder="Masukan nama pelajaran"
                 style={styles.inputText}
+                onChangeText={(text) => setAssessmentName(text)}
               />
               <Text style={{width: '40%'}}>Jumlah Soal </Text>
               <TextInput
                 placeholder="Masukan jumlah soal"
                 style={styles.inputText}
+                onChangeText={(text) => setTotal(text)}
+                keyboardType={'numeric'}
               />
 
               <TouchableOpacity
                 onPress={() => {
-                  modalE(true);
+                  handleAdd();
                 }}
                 style={{width: '100%'}}>
                 <View
@@ -546,6 +674,7 @@ const teacherHome = props => {
               <TextInput
                 placeholder="Masukan nama pelajaran"
                 style={styles.inputText}
+                value={`${assessmentName}`}
               />
             </View>
 
@@ -572,45 +701,8 @@ const teacherHome = props => {
             </View>
 
             {/* satu soal */}
-            <TouchableOpacity onPress={() => modalES(true)}>
-              <View
-                style={[
-                  styles.boxWrapp,
-                  styles.shadow,
-                  {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
-                ]}>
-                <Text numberOfLines={1}>
-                  1. Apa yang dimaksud dengan apa itu siapa dengan?
-                </Text>
-              </View>
-            </TouchableOpacity>
+              { boxSoal }
             {/* satu soal */}
-
-            <TouchableOpacity>
-              <View
-                style={[
-                  styles.boxWrapp,
-                  styles.shadow,
-                  {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
-                ]}>
-                <Text numberOfLines={1}>
-                  2. Apa yang dimaksud dengan warna warni pada ketika manusia{' '}
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <View
-                style={[
-                  styles.boxWrapp,
-                  styles.shadow,
-                  {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
-                ]}>
-                <Text numberOfLines={1}>
-                  3. Apa yang dimaksud dengan warna warni pada ketika manusia{' '}
-                </Text>
-              </View>
-            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => {
@@ -697,9 +789,8 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={4}
-                  style={[styles.inputText, {paddingHorizontal: 10}]}>
-                  Apa yang dimaksud dengan apa itu siapa dengan?
-                </TextInput>
+                    onChangeText={(text)=> setSoal(text)}
+                  style={[styles.inputText, {paddingHorizontal: 10}]}></TextInput>
               </View>
             </View>
             <View>
@@ -728,11 +819,11 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={1}
+                  onChangeText={(text)=>setAnswerA(text)}
                   style={[
                     styles.inputText,
                     {paddingHorizontal: 10, width: '90%'},
                   ]}>
-                  Itu adalah ono
                 </TextInput>
                 {/* A */}
                 <View
@@ -754,6 +845,7 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={1}
+                  onChangeText={(text)=>setAnswerB(text)}
                   style={[
                     styles.inputText,
                     {paddingHorizontal: 10, width: '90%'},
@@ -780,6 +872,7 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={1}
+                  onChangeText={(text)=>setAnswerC(text)}
                   style={[
                     styles.inputText,
                     {paddingHorizontal: 10, width: '90%'},
@@ -806,6 +899,7 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={1}
+                  onChangeText={(text)=>setAnswerD(text)}
                   style={[
                     styles.inputText,
                     {paddingHorizontal: 10, width: '90%'},
@@ -832,6 +926,7 @@ const teacherHome = props => {
                 <TextInput
                   multiline={true}
                   numberOfLines={1}
+                  onChangeText={(text)=>setAnswerE(text)}
                   style={[
                     styles.inputText,
                     {paddingHorizontal: 10, width: '90%'},
@@ -842,7 +937,7 @@ const teacherHome = props => {
               </View>
               <TouchableOpacity
                 style={{width: '100%'}}
-                onPress={() => modalES(false)}>
+                onPress={() => handleSubmitSoal()}>
                 <View
                   style={[
                     styles.boxSm,
@@ -870,6 +965,10 @@ const teacherHome = props => {
       </Modal>
       {/* modal edit satu soal */}
     </KeyboardAvoidingView>
+    ):(
+<ActivityIndicator size="large" color="#0000ff"/>
+    ) }
+      </>
   );
 };
 
