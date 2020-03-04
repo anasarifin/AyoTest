@@ -68,7 +68,6 @@ const teacherHome = props => {
 
   // state detail
   const renderFile = () => {
-    console.log(total);
     let items = [];
     for (let i = 0; i < total; i++) {
       items.push(
@@ -320,7 +319,6 @@ const teacherHome = props => {
                       Axios.get(
                         'http://3.85.4.188:3333/api/question/' + x.code,
                       ).then(resolve => {
-                        console.log(resolve.data.data);
                         setDetail(resolve.data.data);
                         modalE(true);
                       });
@@ -709,8 +707,30 @@ const teacherHome = props => {
 
                   <TouchableOpacity
                     onPress={() => {
-                      renderFile();
-                      modalAS(true);
+                      Axios.post(
+                        'http://3.85.4.188:3333/api/assessment/insert',
+                        {
+                          id_admin: assessment[0].id_admin,
+                          name: assessmentName,
+                        },
+                      ).then(resolve => {
+                        console.log(resolve.data.data.insertId);
+                        for (let x = 0; x < total; x++) {
+                          Axios.post(
+                            'http://3.85.4.188:3333/api/question/insert',
+                            {
+                              choice_1: '',
+                              choice_2: '',
+                              choice_3: '',
+                              choice_4: '',
+                              choice_5: '',
+                              question: '',
+                              id_assessment_name: resolve.data.data.insertId,
+                            },
+                          );
+                        }
+                      });
+                      modalA(false);
                     }}
                     style={{width: '100%'}}>
                     <View
@@ -730,7 +750,7 @@ const teacherHome = props => {
                             fontSize: 14,
                           },
                         ]}>
-                        Simpan dan Edit Soal
+                        Simpan
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -843,7 +863,6 @@ const teacherHome = props => {
 
                 {/* satu soal */}
                 {detail.map(x => {
-                  console.log(x);
                   return (
                     <TouchableOpacity
                       onPress={() => {
@@ -1014,6 +1033,17 @@ const teacherHome = props => {
 
                 <TouchableOpacity
                   onPress={() => {
+                    // console.log(12345);
+                    // Axios.post('http://3.85.4.188:3333/api/assessment/insert', {
+                    //   id_admin: assessment[0].id_admin,
+                    //   name: assessmentName,
+                    // }).then(resolve => {
+                    //   console.log(resolve.data.data.insertId);
+                    //   for (let x = 0; x < total; x++) {
+                    //     // Axios.
+                    //   }
+                    // });
+
                     modalA(false);
                     modalE(false);
                   }}
