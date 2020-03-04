@@ -11,3 +11,10 @@ export const getStats = data => {
     payload: data,
   };
 };
+
+export const getAss = data => {
+  return {
+    type: 'GET_USER_ASS',
+    payload: data,
+  };
+};

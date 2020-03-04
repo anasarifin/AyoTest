@@ -36,8 +36,9 @@ const teacherHome = props => {
   const [modalAdd, modalA] = useState(false);
   const [modalEdit, modalE] = useState(false);
   const [modalEditSoal, modalES] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [post, setpost] = useState(true);
+  const [idAss, setIdAss] = useState(true);
   // state addModal
   const [boxSoal, createSoal] = useState(null);
   const [assessmentName, setAssessmentName] = useState('');
@@ -59,6 +60,8 @@ const teacherHome = props => {
   const [answerE, setAnswerE] = useState('');
   // end state submit soal in ModalAdd
   const [detailAssessment, setDetailAssessment] = useState(null);
+
+  const assessment = useSelector(state => state.user.adminAss);
 
   // state detail
 
@@ -114,6 +117,7 @@ const teacherHome = props => {
     })
       .then(resolve => {
         console.log(resolve.data.data.insertId);
+        setIdAss(resolve.data.data.insertId);
         setpost(!post ? true : true);
         addAssesmentModal();
       })
@@ -130,7 +134,7 @@ const teacherHome = props => {
   const handlePostSoal = () => {
     Axios.post(`${URL_STRING}/question/insert`, {
       question: soal,
-      id_assessment_name: idAssessmentA,
+      id_assessment_name: idAss,
       choice_1: answerA,
       choice_2: answerB,
       choice_3: answerC,
@@ -225,14 +229,15 @@ const teacherHome = props => {
   };
 
   // useEffect flow
-  useEffect(() => {
-    refreshHome();
-  }, []);
-  useEffect(() => {
-    console.log(soal);
-    refreshHome();
-  }, [loading]);
+  // useEffect(() => {
+  //   refreshHome();
+  // }, []);
+  // useEffect(() => {
+  //   console.log(soal);
+  //   refreshHome();
+  // }, [loading]);
   // end useEffect flow
+
   return (
     <>
       {loading === false ? (
@@ -282,7 +287,20 @@ const teacherHome = props => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              {boxAssessment}
+              {assessment.map(x => {
+                return (
+                  <TouchableOpacity>
+                    <View
+                      style={[
+                        styles.boxWrapp,
+                        styles.shadow,
+                        styles.listMinMargin,
+                      ]}>
+                      <Text numberOfLines={1}> Test </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
 
               <View style={{padding: 20}}>
                 <TouchableOpacity onPress={() => modalA(true)}>
@@ -348,7 +366,7 @@ const teacherHome = props => {
                   width: '40%',
                   height: '100%',
                 }}
-                onPress={() => props.navigation.navigate('teacher-detail')}>
+                onPress={() => props.navigation.navigate('teacher-profile')}>
                 <View>
                   <Text style={styles.textStyle}>
                     <Icon name="child" size={23} style={styles.textBlack} />

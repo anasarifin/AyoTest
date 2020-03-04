@@ -11,6 +11,7 @@ const initialValue = {
   backup: {
     answer: {'1': 3, '2': 0, '3': 4, '4': 2, '5': 1},
   },
+  adminAss: [1, 2, 3],
 };
 
 const getUser = (state = initialValue, action) => {
@@ -21,6 +22,28 @@ const getUser = (state = initialValue, action) => {
         user: action.payload,
       };
     case 'GET_USER_STATS':
+      return {
+        ...state,
+        userStats: action.payload,
+      };
+    case 'GET_USER_ASS':
+      return {
+        ...state,
+        adminAss: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const getUserTeacher = (state = initialValue, action) => {
+  switch (action.type) {
+    case 'GET_USER':
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case 'GET_USER_ASS':
       return {
         ...state,
         userStats: action.payload,
