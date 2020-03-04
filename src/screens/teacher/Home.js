@@ -30,12 +30,14 @@ const URL_STRING = 'http://3.85.4.188:3333/api';
 const teacherHome = props => {
   const [code, inputCode] = useState('');
   const [modalDetail, modalD] = useState(false);
-  const [idAssessment, setIdAssessment] = useState(null);
+  const [idAssessmentE, setIdAssessmentE] = useState(null);
+  const [idAssessmentA, setIdAssessmentA] = useState(null);
   const [idAdmin, setId] = useState(0);
   const [modalAdd, modalA] = useState(false);
   const [modalEdit, modalE] = useState(false);
   const [modalEditSoal, modalES] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [post, setpost] = useState(true);
   // state addModal
   const [boxSoal, createSoal] = useState(null);
   const [assessmentName, setAssessmentName] = useState('');
@@ -49,7 +51,7 @@ const teacherHome = props => {
   // end state add assessment
 
   // state submit soal in ModalAdd
-  const [soal, setSoal] = useState('');
+  const [soal, setSoal] = useState(null);
   const [answerA, setAnswerA] = useState('');
   const [answerB, setAnswerB] = useState('');
   const [answerC, setAnswerC] = useState('');
@@ -62,17 +64,33 @@ const teacherHome = props => {
 
   // logic Modaladd going here
   const addAssesmentModal = () => {
-    addClose();
     fCreateSoal();
   };
   const addClose = () => {
     modalE(true);
   };
+  const fDetailQuestion = id => {
+    modalES(true);
+    detailQuestion(id);
+    setIdAssessmentE(id);
+  };
+  const detailQuestion = async id => {
+    console.log(idAssessmentE);
+    await Axios.get(`${URL_STRING}/question/detail/${id}`).then(result => {
+      setSoal(result.data.data[0].question);
+      setAnswerA(result.data.data[0].answer[0].label);
+      setAnswerB(result.data.data[0].answer[1].label);
+      setAnswerC(result.data.data[0].answer[2].label);
+      setAnswerD(result.data.data[0].answer[3].label);
+      setAnswerE(result.data.data[0].answer[4].label);
+    });
+  };
   const fCreateSoal = () => {
+    addClose();
     let items = [];
     for (let i = 1; i <= total; i++) {
       items.push(
-        <TouchableOpacity onPress={() => modalES(true)}>
+        <TouchableOpacity onPress={() => fDetailQuestion(i)}>
           <View
             style={[
               styles.boxWrapp,
@@ -93,9 +111,13 @@ const teacherHome = props => {
       id_admin: idAdmin,
       code: '321',
       name: assessmentName,
-    }).then(() => {
-      addAssesmentModal();
-    });
+    })
+      .then(resolve => {
+        console.log(resolve.data.data.insertId);
+        setpost(!post ? true : true);
+        addAssesmentModal();
+      })
+      .catch(err => {});
   };
   // end logic add
   // logic submit soal
@@ -105,9 +127,21 @@ const teacherHome = props => {
     createAssessment(null);
     setLoading(true);
   };
-  const handeleInputSoal = () => {
+  const handlePostSoal = () => {
     Axios.post(`${URL_STRING}/question/insert`, {
-      id_assessment_name: idAssessment,
+      question: soal,
+      id_assessment_name: idAssessmentA,
+      choice_1: answerA,
+      choice_2: answerB,
+      choice_3: answerC,
+      choice_4: answerD,
+      choice_5: answerE,
+    });
+  };
+  const handleEditSoal = () => {
+    console.log(idAssessmentE);
+    Axios.put(`${URL_STRING}/question/update/${idAssessmentE}`, {
+      id_assessment_name: idAssessmentE,
       question: soal,
       choice_1: answerA,
       choice_2: answerB,
@@ -116,11 +150,16 @@ const teacherHome = props => {
       choice_5: answerE,
     });
   };
-  const handleSubmitSoal = async () => {
-    await handeleInputSoal();
-    closeSoalInput();
+  const handleSubmitSoal = async id => {
+    if (post) {
+      await handlePostSoal();
+      closeSoalInput();
+    } else {
+      await handleEditSoal(id);
+      closeSoalInput();
+    }
   };
-  // // end submit soal
+  // end submit soal
 
   // assessment logic going here
   const refreshHome = () => {
@@ -136,7 +175,7 @@ const teacherHome = props => {
     await Axios.get(`${URL_STRING}/assessment/detailbyadmin/${idAdmin}`)
       .then(result => {
         setDataAssessment(result.data.data);
-        setIdAssessment(result.data.data.length + 1);
+        setIdAssessmentA(result.data.data.length + 1);
         setLoading(false);
       })
       .catch(err => {
@@ -144,38 +183,42 @@ const teacherHome = props => {
       });
   };
   const fCreateAsessment = () => {
-    console.log('xxx');
-    console.log(dataAssessment);
     const items = [];
     for (let i = 1; i <= dataAssessment.length; i++) {
       items.push(
-        1,
-        // <TouchableOpacity
-        //   onPress={() => fDetailAssessment() /*  modalD(true) */}>
-        //   <View style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-        //     <Text numberOfLines={1}>
-        //       {i}. {dataAssessment[i - 1].name}{' '}
-        //     </Text>
-        //   </View>
-        // </TouchableOpacity>,
+        <TouchableOpacity
+          onPress={
+            () =>
+              fDetailAssessment(
+                dataAssessment[i - 1].id_assessment,
+              ) /*  modalD(true) */
+          }>
+          <View style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
+            <Text numberOfLines={1}>
+              {i}. {dataAssessment[i - 1].name}{' '}
+            </Text>
+          </View>
+        </TouchableOpacity>,
       );
     }
-    console.log('item nih = ' + items);
-    // return createAssessment(items);
+    return createAssessment(items);
   };
   // end assessment logic
 
   // detailAssessment logic
-  const fDetailAssessment = () => {
-    getDetail();
+  const fDetailAssessment = id => {
+    getDetail(id);
     openModal();
     setLoading(true);
   };
   const openModal = () => modalD(true);
-  const getDetail = async () => {
-    await Axios.get(`${URL_STRING}/assessment/detail/${idAssessment}`)
+  const getDetail = async id => {
+    setIdAssessmentE(id);
+    await Axios.get(`${URL_STRING}/assessment/detail/${id}`)
       .then(result => {
+        setpost(false);
         setDetailAssessment(result.data.data);
+        setTotal(result.data.data.jumlah_soal);
         setLoading(false);
       })
       .catch(err => Alert.alert(err));
@@ -183,11 +226,11 @@ const teacherHome = props => {
 
   // useEffect flow
   useEffect(() => {
-    // refreshHome();
+    refreshHome();
   }, []);
   useEffect(() => {
-    console.log(idAssessment);
-    // refreshHome();
+    console.log(soal);
+    refreshHome();
   }, [loading]);
   // end useEffect flow
   return (
@@ -253,7 +296,6 @@ const teacherHome = props => {
                     <Text style={{color: '#fff', textAlign: 'center'}}>
                       Tambah Pelajaran
                     </Text>
-                    <Text onPress={() => getAssessment()}>Check</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -352,13 +394,13 @@ const teacherHome = props => {
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <Text style={{width: '10%'}}>:</Text>
                   <Text style={{width: '50%', fontWeight: '700'}}>
-                    Bahasa indonesia dasar
+                    {detailAssessment === null ? '' : detailAssessment.name}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>Status </Text>
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
-                    Tidak aktif
+                    {detailAssessment === null ? '' : detailAssessment.hide}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Jumlah Soal{' '}
@@ -366,7 +408,9 @@ const teacherHome = props => {
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
-                    50 soal
+                    {detailAssessment === null
+                      ? ''
+                      : detailAssessment.jumlah_soal}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Banyak siswa
@@ -374,7 +418,9 @@ const teacherHome = props => {
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', fontWeight: '700', paddingTop: 10}}>
-                    20 siswa
+                    {detailAssessment === null
+                      ? ''
+                      : detailAssessment.jumlah_peserta}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Rata - rata nilai
@@ -386,7 +432,8 @@ const teacherHome = props => {
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      modalE(true);
+                      addAssesmentModal();
+                      // modalE(true);
                     }}
                     style={{width: '100%'}}>
                     <View
@@ -699,7 +746,13 @@ const teacherHome = props => {
                   <TextInput
                     placeholder="Masukan nama pelajaran"
                     style={styles.inputText}
-                    value={`${assessmentName}`}
+                    value={
+                      assessmentName
+                        ? `${assessmentName}`
+                        : detailAssessment
+                        ? `${detailAssessment.name}`
+                        : ''
+                    }
                   />
                 </View>
 
@@ -760,6 +813,8 @@ const teacherHome = props => {
                   onPress={() => {
                     modalA(false);
                     modalE(false);
+                    setTotal(null);
+                    setAssessmentName('');
                   }}>
                   <View
                     style={[
@@ -812,6 +867,7 @@ const teacherHome = props => {
                     ]}>
                     <Text>Soal</Text>
                     <TextInput
+                      value={soal === null ? '' : `${soal}`}
                       multiline={true}
                       numberOfLines={4}
                       onChangeText={text => setSoal(text)}
@@ -845,6 +901,7 @@ const teacherHome = props => {
                       A.
                     </Text>
                     <TextInput
+                      value={answerA === null ? '' : `${answerA}`}
                       multiline={true}
                       numberOfLines={1}
                       onChangeText={text => setAnswerA(text)}
@@ -870,15 +927,14 @@ const teacherHome = props => {
                       B.
                     </Text>
                     <TextInput
+                      value={answerB === null ? '' : `${answerB}`}
                       multiline={true}
                       numberOfLines={1}
                       onChangeText={text => setAnswerB(text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
-                      ]}>
-                      Itu adalah ono
-                    </TextInput>
+                      ]}></TextInput>
                     {/* B */}
                     <View
                       style={{
@@ -897,15 +953,14 @@ const teacherHome = props => {
                       C.
                     </Text>
                     <TextInput
+                      value={answerC === null ? '' : `${answerC}`}
                       multiline={true}
                       numberOfLines={1}
                       onChangeText={text => setAnswerC(text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
-                      ]}>
-                      Itu adalah ono
-                    </TextInput>
+                      ]}></TextInput>
                     {/* C */}
                     <View
                       style={{
@@ -924,15 +979,14 @@ const teacherHome = props => {
                       D.
                     </Text>
                     <TextInput
+                      value={answerD === null ? '' : `${answerD}`}
                       multiline={true}
                       numberOfLines={1}
                       onChangeText={text => setAnswerD(text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
-                      ]}>
-                      Itu adalah ono
-                    </TextInput>
+                      ]}></TextInput>
                     {/* D */}
                     <View
                       style={{
@@ -951,15 +1005,14 @@ const teacherHome = props => {
                       E.
                     </Text>
                     <TextInput
+                      value={answerE === null ? '' : `${answerE}`}
                       multiline={true}
                       numberOfLines={1}
                       onChangeText={text => setAnswerE(text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
-                      ]}>
-                      Itu adalah ono
-                    </TextInput>
+                      ]}></TextInput>
                     {/* E */}
                   </View>
                   <TouchableOpacity

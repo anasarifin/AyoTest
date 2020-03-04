@@ -4,3 +4,10 @@ export const getUser = data => {
     payload: data,
   };
 };
+
+export const getStats = data => {
+  return {
+    type: 'GET_USER_STATS',
+    payload: data,
+  };
+};

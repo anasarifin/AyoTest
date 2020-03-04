@@ -23,6 +23,7 @@ import LoginTeacher from './src/screens/login/Teacher.js';
 import NavigatorStudent from './src/navigators/Student';
 import NavigatorTeacher from './src/navigators/Teacher';
 import RegisterStudent from './src/screens/register/Student.js';
+import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,7 @@ class AppWithRedux extends React.Component {
   constructor() {
     super();
     this.state = {
-      login: true,
+      login: false,
       code: false,
       complete: false,
       inTest: false,
@@ -43,6 +44,12 @@ class AppWithRedux extends React.Component {
     // console.log(login);
     // console.log(code);
     if (login) {
+      // Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
+      //   dispatch(getUser(resolve2.data.data[0]));
+      // });
+      // Axios.get(urlx + jwt_decode(resolve.data.token).id).then(resolve3 =>
+      //   dispatch(getStats(resolve3.data.data)),
+      // );
       this.setState({
         login: true,
       });
@@ -110,6 +117,15 @@ class AppWithRedux extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    cart: state.cart,
+    products: state.products,
+  };
+};
+
+export default connect(mapStateToProps)(AppWithRedux);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -118,12 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <AppWithRedux />
-    </Provider>
-  );
-};
-
-export default App;
+// export default AppWithRedux;

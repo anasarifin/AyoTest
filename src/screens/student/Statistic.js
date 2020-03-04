@@ -307,9 +307,12 @@ import {
   CollapseHeader,
   CollapseBody,
 } from 'accordion-collapse-react-native';
+import {useSelector, useDispatch} from 'react-redux';
 
 const studentHome = props => {
-  const [code, inputCode] = useState('');
+  const stats = useSelector(state => state.user.userStats);
+  console.log(stats);
+
   return (
     <KeyboardAvoidingView style={styles.containerView}>
       <View style={[styles.MainContainer]}>
@@ -355,47 +358,55 @@ const studentHome = props => {
                 borderColor: 'gray',
                 padding: 10,
               }}>
-              <View>
-                <Collapse>
-                  <CollapseHeader
-                    style={{
-                      width: '100%',
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
-                    }}>
-                    <Text style={{width: '10%'}}>1</Text>
-                    <Text style={{width: '70%'}} numberOfLines={1}>
-                      Matematika Dasar asd sd a s s sdds
-                    </Text>
-                    <Text style={{width: '20%', textAlign: 'center'}}>78</Text>
-                  </CollapseHeader>
-                  <CollapseBody>
-                    <View
-                      style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        paddingVertical: 20,
-                        paddingHorizontal: 10,
-                      }}>
-                      <Text style={{width: '45%'}}>Nama Guru</Text>
-                      <Text style={{width: '5%'}}>:</Text>
-                      <Text style={{width: '50%', fontWeight: '700'}}>
-                        Aaron Bennet saaR erte
-                      </Text>
-                      <Text style={{width: '45%'}}>Tanggal Mengikuti Test</Text>
-                      <Text style={{width: '5%'}}>:</Text>
-                      <Text style={{width: '50%', fontWeight: '700'}}>
-                        02 April 2020
-                      </Text>
-                    </View>
-                  </CollapseBody>
-                </Collapse>
-              </View>
+              {stats.map(x => {
+                return (
+                  <View>
+                    <Collapse>
+                      <CollapseHeader
+                        style={{
+                          width: '100%',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                        }}>
+                        <Text style={{width: '10%'}}>1</Text>
+                        <Text style={{width: '70%'}} numberOfLines={1}>
+                          {x.assessment}
+                        </Text>
+                        <Text style={{width: '20%', textAlign: 'center'}}>
+                          {x.score}
+                        </Text>
+                      </CollapseHeader>
+                      <CollapseBody>
+                        <View
+                          style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            paddingVertical: 20,
+                            paddingHorizontal: 10,
+                          }}>
+                          <Text style={{width: '45%'}}>Nama Guru</Text>
+                          <Text style={{width: '5%'}}>:</Text>
+                          <Text style={{width: '50%', fontWeight: '700'}}>
+                            {x.teacher}
+                          </Text>
+                          <Text style={{width: '45%'}}>
+                            Tanggal Mengikuti Test
+                          </Text>
+                          <Text style={{width: '5%'}}>:</Text>
+                          <Text style={{width: '50%', fontWeight: '700'}}>
+                            {x.date.slice(0, 10)}
+                          </Text>
+                        </View>
+                      </CollapseBody>
+                    </Collapse>
+                  </View>
+                );
+              })}
             </View>
             {/* this */}
 
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -406,8 +417,8 @@ const studentHome = props => {
               <Text style={{width: '10%'}}>2</Text>
               <Text style={{width: '70%'}}>Agama</Text>
               <Text style={{width: '20%', textAlign: 'center'}}>80</Text>
-            </View>
-            <View
+            </View> */}
+            {/* <View
               style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -430,7 +441,7 @@ const studentHome = props => {
                 Rata - rata :{' '}
               </Text>
               <Text style={{width: '20%', textAlign: 'center'}}>80</Text>
-            </View>
+            </View> */}
           </View>
           {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('teacher-home')}>

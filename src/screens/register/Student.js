@@ -16,18 +16,20 @@ import Axios from 'axios';
 import {StackActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RadioButtonRN from 'radio-buttons-react-native';
+import ImagePicker from 'react-native-image-picker';
 
 import font from '../Fonts';
 import styless from './Style';
 
-const url = 'http://3.85.4.188:3333/api/admin/login';
+const url = 'http://3.85.4.188:3333/api/users/register';
 
 export default class RegisterStudent extends React.Component {
   constructor() {
     super();
     this.state = {
       // email: '',
-      // password: '',
+      password: '',
+      phone: '',
       // name: '',
 
       warning: false,
@@ -63,7 +65,11 @@ export default class RegisterStudent extends React.Component {
       email: value,
     });
   }
-
+  setImage(value) {
+    this.setState({
+      image: value,
+    });
+  }
   setPassword(value) {
     this.setState({
       password: value,
@@ -94,7 +100,7 @@ export default class RegisterStudent extends React.Component {
     });
   }
 
-  register() {
+  register = async () => {
     const {
       name,
       email,
@@ -104,76 +110,88 @@ export default class RegisterStudent extends React.Component {
       phone,
       gender,
     } = this.state;
-    const regexName = /[a-z']/gi;
+    const regexName = /[0-9]/gi;
     const regexPassword = /[a-z0-9]/gi;
-    const regexPhone = /0-9/gi;
+    const regexPhone = /[a-z]/gi;
+    console.log(password);
 
-    if (name && regexName.test(name)) {
+    if (!name && name.match(regexName)) {
       console.log('nama ngaco');
       this.setState({
         warning: 'Name is not valid!',
       });
-    } else if (email) {
+    } else if (!email) {
       console.log('email ngaco');
       this.setState({
         warning: 'Email is not valid!',
       });
-    } else if (
-      password &&
-      password.length >= 6 &&
-      regexPassword.test(password)
-    ) {
-      console.log('password ngaco!');
-      this.setState({
-        warning: 'Password min is 6 character & not include special char!',
-      });
-    } else if (address) {
+    } else if (!address) {
       console.log('address ngaco!');
       this.setState({
         warning: 'Address cannot be empty!',
       });
     } else if (
-      phone &&
-      phone.length >= 11 &&
-      phone.length <= 13 &&
-      regexPhone.test(phone)
+      !phone ||
+      phone.length <= 10 ||
+      phone.length >= 14 ||
+      phone.match(regexPhone)
     ) {
       console.log('nomer ngaco!');
       this.setState({
         warning: 'Phone number is not valid!',
+      });
+    } else if (!password || password.length <= 5) {
+      console.log('password ngaco!');
+      this.setState({
+        warning: 'Password min is 6 character & not include special char!',
       });
     } else if (password !== rePassword) {
       console.log('password gak sama!');
       this.setState({
         warning: 'Re-type password is not valid!',
       });
+    } else if (!this.state.ImageUpload) {
+      console.log('gambar tidak');
+    } else {
+      console.log(this.state.ImageUpload.type);
+
+      let formData = new FormData();
+      formData.append('name', this.state.name);
+      formData.append('email', this.state.email);
+      formData.append('address', this.state.address);
+      formData.append('phone', this.state.phone);
+      formData.append('password', this.state.password);
+      formData.append('gender', this.state.gender);
+      formData.append('image', {
+        uri: this.state.ImageUpload.uri,
+        type: this.state.ImageUpload.type,
+        name: this.state.ImageUpload.fileName,
+      });
+      // } else {
+      //     formData.append('name', this.state.username),
+      //     formData.append('email', this.state.email),
+      //     formData.append('address', this.state.address),
+      //     formData.append('phone', this.state.phone),
+      //     formData.append('password', this.state.password),
+      //     formData.append('gender',this.state.gender)
+      // }
+      // console.log(formData);
+      Axios.post(url, formData)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
     // else if (image) {
     //   this.setState({
     //     warning: 'Image is cannot empty!',
     //   });
     // }
-  }
+  };
   // Formdata
-  // const formData = new FormData();
-  // formData.append('name', this.state.name);
-  // formData.append('description', this.state.description);
-  // formData.append('price', this.state.price);
-  // formData.append('stock', this.state.stock);
-  // formData.append('image', {
-  //   uri: this.state.image.uri,
-  //   type: this.state.image.type,
-  //   name: this.state.image.fileName,
-  // });
-  // formData.append('category_id', this.state.category);
-  // if (
-  //   !this.state.name ||
-  //   !this.state.description ||
-  //   !this.state.price ||
-  //   !this.state.stock
-  // ) {
-  //   ToastAndroid.show('Adding failed!', ToastAndroid.SHORT);
-  // }
+
   // Axios.post(url, formData, {
   //   headers: {
   //     usertoken: AsyncStorage.getItem('token'),
@@ -201,27 +219,30 @@ export default class RegisterStudent extends React.Component {
   //   }
   // }
 
-  // picker = async () => {
-  //   const options = {
-  //     title: 'Select Image',
-  //     takePhotoButtonTitle: 'Take photo from camera',
-  //     chooseFromLibraryButtonTitle: 'Choose photo from gallery',
-  //   };
+  picker = async () => {
+    const options = {
+      title: 'Select Image',
+      takePhotoButtonTitle: 'Take photo from camera',
+      chooseFromLibraryButtonTitle: 'Choose photo from gallery',
+    };
 
-  //   ImagePicker.showImagePicker(options, response => {
-  //     // console.log('Response = ', response.uri);
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //     } else {
-  //       this.setState({
-  //         image: response,
-  //       });
-  //     }
-  //   });
+    ImagePicker.showImagePicker(options, response => {
+      // console.log('Response = ', response.uri);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = response.uri;
+        this.setState({
+          image: source,
+          ImageUpload: response,
+        });
+      }
+    });
+  };
 
   render() {
     return (
@@ -237,10 +258,12 @@ export default class RegisterStudent extends React.Component {
                 <Text style={[{color: '#060709'}]}>Daftar sebagai siswa</Text>
               </View>
 
-              <TouchableOpacity style={{margin: 20}} onPress={this.picker}>
+              <TouchableOpacity
+                style={{margin: 20}}
+                onPress={() => this.picker()}>
                 <Image
                   style={styless.profileImage}
-                  source={require('../../../assets/img/profile.jpg')}
+                  // source={{uri: this.state.images
                 />
               </TouchableOpacity>
               <Text style={{fontSize: 18}}>Nama Lengkap</Text>
@@ -303,7 +326,7 @@ export default class RegisterStudent extends React.Component {
             <TouchableOpacity onPress={this.register}>
               <View style={[styless.loginButton]}>
                 <Text style={{color: '#fff', textAlign: 'center', padding: 13}}>
-                  Daftar
+                  {this.state.warning || 'Daftar'}
                 </Text>
               </View>
             </TouchableOpacity>

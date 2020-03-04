@@ -149,7 +149,10 @@ const studentHome = props => {
                 {fontSize: 40, padding: 20, paddingBottom: 10},
               ]}>
               Profile{' '}
-              <Text style={styles.textGreen}>{user.name.split(' ')[0]}</Text>.
+              <Text style={styles.textGreen}>
+                {user.name ? user.name.split(' ')[0] : ''}
+              </Text>
+              .
             </Text>
             <View
               style={{
