@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, {useEffect,useState} from 'react';
+import ImagePicker from 'react-native-image-picker';
 import {
   View,
   Text,
@@ -16,19 +18,113 @@ import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import {StackActions} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import RadioButtonRN from 'radio-buttons-react-native';
+import Axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import {getUser} from '../../redux/actions/user';
 
 const studentHome = props => {
+  const dispatch = useDispatch();
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
   const [modalDelete, modal] = useState(false);
+  const user = useSelector(state => state.user.user);
+  const [xEmail, setEmail] = useState(user.email);
+  const [xName, setName] = useState(user.name);
+  const [xPhone, setPhone] = useState(user.phone);
+  const [xAddress, setAddress] = useState(user.address);
+  const [xGender, setGender] = useState(user.gender);
+  const [picture, setPicture] = useState(user.picture)
+  const [nameP, setNameP] = useState(null)
+  const [typeP, setTypeP] = useState(null)
+  const [uriP, setUriP] = useState(null)
+  const [dataP, setDataP] = useState(null)
 
+    // useEffect(()=>{
+    //     if(!modal){ dispatch(getUser()) }
+    // },[modal])
   const logout = async () => {
     AsyncStorage.removeItem('token');
     props.navigation.navigate('login-student');
   };
+  const handleClickEdit = async () => {
+      if( !nameP ){
+    const formData = new FormData();
+    formData.append('name', xName);
+    formData.append('email', xEmail);
+    formData.append('phone', xPhone);
+    formData.append('address', xAddress);
+    formData.append('password', '123');
+    formData.append('gender', xGender);
 
-  return (
-    <KeyboardAvoidingView style={styles.containerView}>
+    const id = jwt_decode(await AsyncStorage.getItem('token')).id;
+    Axios.put('http://3.85.4.188:3333/api/users/' + id, formData)
+      .then(res => {
+          console.log(res.data)
+        dispatch(getUser(res.data.data));
+        modal(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      }else{
+
+    const formData = new FormData();
+    formData.append('name', xName);
+    formData.append('email', xEmail);
+    formData.append('phone', xPhone);
+    formData.append('address', xAddress);
+    formData.append('password', '123');
+    formData.append('gender', xGender);
+    formData.append('image', {
+      uri: uriP,
+      type: typeP,
+      name: nameP,
+    });
+    const id = jwt_decode(await AsyncStorage.getItem('token')).id;
+    Axios.put('http://3.85.4.188:3333/api/users/' + id, formData)
+      .then(res => {
+          console.log(res.data)
+        dispatch(getUser(res.data.data));
+        modal(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      }
+  };
+  
+    const handlePhoto = () =>{
+      let options = {
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    
+ImagePicker.showImagePicker(options, (response) => {
+  console.log('Response = ', response);
+
+  if (response.didCancel) {
+    console.log('User cancelled image picker');
+  } else if (response.error) {
+    console.log('ImagePicker Error: ', response.error);
+  } else if (response.fileSize > 500000) {
+      Alert.alert('file too big')
+  } else {
+
+    setNameP(response.fileName)
+    setTypeP(response.type)
+    setUriP(response.uri)
+    setDataP(response.data)
+
+  }
+});
+    }
+return (
+<KeyboardAvoidingView style={styles.containerView}>
       {/* <ScrollView style={{height: '100%'}}>
         <View style={[styles.boxWrapp, styles.shadow]}>
           <View style={[styles.box, styles.bgGreen, styles.shadow]}>
@@ -49,7 +145,7 @@ const studentHome = props => {
               style={[styles.inputText, {marginTop: 10}]}></TextInput>
             <TouchableOpacity onPress={() => modal(true)}>
               <View
-                style={[
+               style={[
                   styles.submit,
                   styles.shadow,
                   styles.bgBlack,
@@ -108,7 +204,10 @@ const studentHome = props => {
                 {fontSize: 40, padding: 20, paddingBottom: 10},
               ]}>
               Profile{' '}
-              <Text style={styles.textGreen}>{dummy.name.split(' ')[0]}</Text>.
+              <Text style={styles.textGreen}>
+                {user.name ? user.name.split(' ')[0] : ''}
+              </Text>
+              .
             </Text>
             <View
               style={{
@@ -116,18 +215,19 @@ const studentHome = props => {
                 marginHorizontal: 20,
                 borderColor: '#0FB63F',
                 borderWidth: 1,
-              }}></View>
+              }}
+            />
           </View>
           <View style={[styles.boxWrapp, styles.shadow]}>
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <Image
               style={styles.profileImage}
-              source={require('../../../assets/img/profile.jpg')}
+                  source={{uri: 'http://3.85.4.188:3333/uploads/'+picture}}
             />
             <Text style={{textAlign: 'center', marginTop: 20}}>
-              {dummy.name}
+              {user.name}
             </Text>
-            <Text style={{textAlign: 'center'}}>{dummy.email}</Text>
+            <Text style={{textAlign: 'center'}}>{user.email}</Text>
             <TouchableOpacity
               onPress={() => {
                 modal(true);
@@ -157,26 +257,23 @@ const studentHome = props => {
         </ScrollView>
 
         <View style={styles.bottomView}>
-          {/* list murid */}
           <TouchableOpacity
             style={{
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-home')}>
+            onPress={() => props.navigation.navigate('student-statistic')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="street-view" size={23} style={styles.textBlack} />
+                <Icon name="award" size={25} style={styles.textGreen} />
               </Text>
             </View>
           </TouchableOpacity>
-          {/* list murid */}
-          {/* add assessment */}
           <TouchableOpacity
-            style={[styles.btnCircle, styles.bgBlack, styles.shadow]}>
+            style={[styles.btnCircle, styles.bgGreen, styles.shadow]}>
             <View style={styles.circleIcon}>
               <Text style={{color: '#fff'}}>
-                <Icon name="book-reader" size={30} style={styles.textWhite} />
+                <Icon name="plus" size={30} style={styles.textWhite} />
               </Text>
             </View>
           </TouchableOpacity>
@@ -185,24 +282,21 @@ const studentHome = props => {
               width: '20%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-home')}>
+            onPress={() => props.navigation.navigate('student-home')}>
             {/* hanya sepasi */}
           </TouchableOpacity>
-          {/* add assessment */}
-          {/* profile teacher */}
           <TouchableOpacity
             style={{
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-profile')}>
+            onPress={() => props.navigation.navigate('student-profile')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={23} style={styles.textBlack} />
+                <Icon name="child" size={25} style={styles.textGreen} />
               </Text>
             </View>
           </TouchableOpacity>
-          {/* profile teacher */}
         </View>
       </View>
       <Modal
@@ -214,25 +308,68 @@ const studentHome = props => {
         }}>
         <View style={[styles.wrapp, styles.containerView]}>
           <ScrollView style={{height: '85%'}}>
-            <TouchableOpacity style={{margin: 20}}>
+              <TouchableOpacity onPress={()=> handlePhoto()}style={{margin: 20}}>
+                { dataP === null?(
+
               <Image
                 style={styles.profileImage}
-                source={require('../../../assets/img/profile.jpg')}
+                  source={{uri: 'http://3.85.4.188:3333/uploads/'+picture}}
               />
+                ):(
+
+              <Image
+                style={styles.profileImage}
+                  source={{uri:'data:image/jpeg;base64,' + dataP }}
+              />
+                ) }
             </TouchableOpacity>
             <Text style={{fontSize: 18}}>Nama Lengkap</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan nama lengkap"
+              defaultValue={user.name}
+              onChange={e => setName(e.nativeEvent.text)}
+              required
             />
             <Text style={{fontSize: 18}}>Email</Text>
-            <TextInput style={[styles.inputText]} placeholder="Masukan email" />
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan email"
+              defaultValue={user.email}
+              onChange={e => setEmail(e.nativeEvent.text)}
+              required
+            />
             <Text style={{fontSize: 18}}>Alamat</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan alamat"
+              defaultValue={user.address}
+              onChange={e => {
+                setAddress(e.nativeEvent.text);
+              }}
+              required
             />
-            <Text style={{fontSize: 18, paddingBottom: 20}}>Jenis Kelamin</Text>
+            <Text style={{fontSize: 18}}>No. Telepon</Text>
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan no. telp"
+              defaultValue={user.phone}
+              onChange={e => setPhone(e.nativeEvent.text)}
+              required
+            />
+            <Text style={{fontSize: 18, paddingBottom: 0}}>Jenis Kelamin</Text>
+            <RadioButtonRN
+              data={[
+                {label: 'Pria', value: 0},
+                {label: 'Wanita', value: 1},
+              ]}
+              box={false}
+              initial={parseFloat(user.gender) + 1}
+              textStyle={{fontSize: 16, marginLeft: -10}}
+              circleSize={12}
+              activeColor="green"
+              deactiveColor="grey"
+            />
             {/* <RadioForm
               radio_props={radio_props}
               initial={0}
@@ -262,7 +399,8 @@ const studentHome = props => {
                     textAlignVertical: 'center',
                     fontSize: 14,
                   },
-                ]}>
+                ]}
+                onPress={() => handleClickEdit()}>
                 Simpan
               </Text>
             </View>
@@ -292,7 +430,7 @@ const studentHome = props => {
         </View>
       </Modal>
     </KeyboardAvoidingView>
-  );
+  ); 
 };
 
 export default studentHome;
