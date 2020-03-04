@@ -1335,23 +1335,13 @@ const teacherHome = props => {
                         'http://3.85.4.188:3333/api/question/update/' +
                           detail[0].id,
                         {
-                          question: soal,
+                          question: detailQ.question || soal,
                           id_assessment_name: 4,
-                          choice_1: detailQ.answer
-                            ? detailQ.answer[0].label
-                            : answerA,
-                          choice_2: detailQ.answer
-                            ? detailQ.answer[1].label
-                            : answerB,
-                          choice_3: detailQ.answer
-                            ? detailQ.answer[2].label
-                            : answerC,
-                          choice_4: detailQ.answer
-                            ? detailQ.answer[3].label
-                            : answerD,
-                          choice_5: detailQ.answer
-                            ? detailQ.answer[4].label
-                            : answerE,
+                          choice_1: detailQ.answer[0].label || answerA,
+                          choice_2: detailQ.answer[1].label || answerB,
+                          choice_3: detailQ.answer[2].label || answerC,
+                          choice_4: detailQ.answer[3].label || answerD,
+                          choice_5: detailQ.answer[4].label || answerE,
                         },
                       );
                       modalES(false);
@@ -1373,7 +1363,7 @@ const teacherHome = props => {
                             fontSize: 14,
                           },
                         ]}>
-                        Simpan
+                        Simpanx
                       </Text>
                     </View>
                   </TouchableOpacity>

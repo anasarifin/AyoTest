@@ -178,11 +178,18 @@ const StudentHome = props => {
                   // dispatch(assessment(resolve.data.data));
                   if (resolve.data.data.length > 0) {
                     const id = resolve.data.data[0].id_assessment;
-                    Axios.get('http://3.85.4.188:3333/api/answer/users', {
-                      id_assessment: 2,
+                    Axios.post('http://3.85.4.188:3333/api/answer/users', {
+                      id_assessment: 1,
                       id_users: 3,
                     }).then(resolve2 => {
-                      console.log(resolve2.data);
+                      console.log(resolve2.data.data);
+                      // console.log(resolve.data.data);
+                      // const final = {
+                      //   question: resolve.data.data,
+                      //   answer: JSON.parse(resolve2.data.data[0].answer),
+                      //   queue: JSON.parse(resolve2.data.data[0].question_queue),
+                      // };
+                      // console.log(final);
                     });
                     // props.navigation.dispatch(
                     //   StackActions.replace('student-test', {code: code}),
