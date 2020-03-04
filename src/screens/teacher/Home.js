@@ -69,9 +69,9 @@ const teacherHome = props => {
     const addClose =()=>{
         modalE(true);
     }
-    const fDetailQuestion=(id)=>{ modalES(true); detailQuestion(id); }
+    const fDetailQuestion=(id)=>{ modalES(true); detailQuestion(id); setIdAssessmentE(id)}
     const detailQuestion =async(id)=>{
-        console.log(id)
+        console.log(idAssessmentE);
         await Axios.get(`${URL_STRING}/question/detail/${id}`).then(result =>{
             setSoal(result.data.data[0].question)
             setAnswerA(result.data.data[0].answer[0].label)
@@ -106,6 +106,7 @@ const teacherHome = props => {
             code: '321',
             name: assessmentName
         }).then(() =>{
+            setpost(!post?true:true);
             addAssesmentModal();
         }).catch(err=>{
         })
@@ -121,8 +122,8 @@ const teacherHome = props => {
     const handlePostSoal = ()=>{
         Axios.post(`${URL_STRING}/question/insert`,
             {
+                question: soal,
                 id_assessment_name: idAssessmentA,
-                question: soal,
                 choice_1: answerA,
                 choice_2: answerB,
                 choice_3: answerC,
@@ -131,11 +132,11 @@ const teacherHome = props => {
             },)
           
     }
-    const handleEditSoal = (id)=>{
-        let idDetail = parseInt(id);
-        Axios.put(`${URL_STRING}/question/update/1`,
+    const handleEditSoal = ()=>{
+        console.log(idAssessmentE)
+        Axios.put(`${URL_STRING}/question/update/${idAssessmentE}`,
             {
-                id_assessment_name:  1,
+                id_assessment_name:  idAssessmentE,
                 question: soal,
                 choice_1: answerA,
                 choice_2: answerB,
@@ -145,12 +146,12 @@ const teacherHome = props => {
             },)
           
     }
-    const handleSubmitSoal = async()=>{
+    const handleSubmitSoal = async(id)=>{
         if(post){
         await handlePostSoal();
         closeSoalInput();
         }else{
-        await handleEditSoal();
+        await handleEditSoal(id);
         closeSoalInput();
         }
     }
@@ -216,7 +217,7 @@ const teacherHome = props => {
         refreshHome();
     },[])
     useEffect(()=>{
-        console.log(post)
+        console.log(soal)
         refreshHome();
     },[loading])
     // end useEffect flow 
