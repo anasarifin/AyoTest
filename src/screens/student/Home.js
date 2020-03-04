@@ -172,14 +172,20 @@ const StudentHome = props => {
               AsyncStorage.setItem('code', code);
               Axios.get('http://3.85.4.188:3333/api/question/' + code).then(
                 resolve => {
-                  console.log(resolve.data);
+                  console.log(resolve.data.data.length);
                   dispatch(assessment(resolve.data.data));
+                  if (resolve.data.data.length > 0) {
+                    const id = resolve.data.data[0].id_assessment;
+                    Axios.get();
+                    // props.navigation.dispatch(
+                    //   StackActions.replace('student-test', {code: code}),
+                    // );
+                  } else {
+                    Alert.alert('kode salah woy!');
+                  }
                 },
               );
               // dispatch(assessment())
-              props.navigation.dispatch(
-                StackActions.replace('student-test', {code: code}),
-              );
             }}>
             <View style={[styles.boxSm, styles.bgGreen, styles.shadow]}>
               <Text
