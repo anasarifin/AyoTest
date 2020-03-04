@@ -37,6 +37,27 @@ export default {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+
+  boxWrappSearch: {
+    margin: 20,
+    marginTop: 20,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+  },
+  listMinMargin: {
+    marginVertical: 5,
+  },
+  bottomViewSm2: {
+    width: '100%',
+    height: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   btnCircle: {
     position: 'absolute',
     backgroundColor: 'green',
@@ -114,7 +135,7 @@ export default {
     padding: 15,
     backgroundColor: '#fff',
     borderRadius: 5,
-    width:'100%',
+    width: '100%',
     alignItems: 'center',
   },
   box: {

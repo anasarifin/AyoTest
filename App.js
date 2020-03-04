@@ -24,8 +24,11 @@ import NavigatorStudent from './src/navigators/Student';
 import NavigatorTeacher from './src/navigators/Teacher';
 import RegisterStudent from './src/screens/register/Student.js';
 import {connect} from 'react-redux';
+import RegisterTeacher from './src/screens/register/Teacher';
 
 const Stack = createStackNavigator();
+
+import font from './src/screens/Fonts';
 
 class AppWithRedux extends React.Component {
   constructor() {
@@ -87,6 +90,7 @@ class AppWithRedux extends React.Component {
             <Stack.Screen name="login-student" component={LoginStudent} />
             <Stack.Screen name="login-teacher" component={LoginTeacher} />
             <Stack.Screen name="register-student" component={RegisterStudent} />
+            <Stack.Screen name="register-teacher" component={RegisterTeacher} />
             <Stack.Screen
               name="navigator-student"
               component={NavigatorStudent}
@@ -108,8 +112,18 @@ class AppWithRedux extends React.Component {
             /> */}
           </Stack.Navigator>
         ) : (
-          <View style={styles.container}>
-            <Text>ayoTest.</Text>
+          <View
+            style={{
+              backgroundColor: '#fff',
+              height: '100%',
+              width: '100%',
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={[font.Aquawax, {fontSize: 65, color: '#060709'}]}>
+              ayo<Text style={{color: '#0FB63F'}}>test</Text>.
+            </Text>
           </View>
         )}
       </NavigationContainer>

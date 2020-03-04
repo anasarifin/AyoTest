@@ -41,8 +41,9 @@ const StudentHome = props => {
               style={[
                 font.Aquawax,
                 {
-                  fontSize: 40,
+                  fontSize: 45,
                   padding: 20,
+                  paddingTop: 40,
                   paddingBottom: 10,
                   textAlign: 'center',
                 },
@@ -63,7 +64,13 @@ const StudentHome = props => {
             {/* <Text style={{fontWeight: '700'}}>Kode : </Text> */}
             <TextInput
               placeholder="kode"
-              style={[styles.inputText, {textAlign: 'center'}]}
+              placeholderTextColor="gray"
+              style={[
+                styles.inputText,
+                styles.bgGrey,
+                styles.textBlack,
+                {textAlign: 'center'},
+              ]}
               onChange={e => inputCode(e.nativeEvent.text)}
             />
             <TouchableOpacity onPress={() => modal(true)}>
@@ -71,7 +78,7 @@ const StudentHome = props => {
                 style={[
                   styles.submit,
                   styles.bgGreen,
-                  {marginTop: 20, width: 80, alignSelf: 'center'},
+                  {marginTop: 20, width: 'auto', alignSelf: 'center'},
                 ]}>
                 <Text style={{color: '#fff'}}>Submit</Text>
               </View>
@@ -86,7 +93,7 @@ const StudentHome = props => {
               height: '100%',
             }}
             onPress={() => props.navigation.navigate('student-statistic')}>
-            <View>
+            <View style={styles.icoMenu}>
               <Text style={styles.textStyle}>
                 <Icon name="award" size={25} style={styles.textGreen} />
               </Text>
@@ -114,9 +121,9 @@ const StudentHome = props => {
               height: '100%',
             }}
             onPress={() => props.navigation.navigate('student-profile')}>
-            <View>
+            <View style={styles.circleIcon}>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={25} style={styles.textGreen} />
+                <Icon name="user-alt" size={25} style={styles.textGreen} />
               </Text>
             </View>
           </TouchableOpacity>
@@ -130,7 +137,7 @@ const StudentHome = props => {
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
         }}>
-        <View style={styles.wrapp}>
+        <View style={[styles.wrapp, styles.containerView]}>
           <ScrollView style={{height: '85%'}}>
             <View>
               <View>
@@ -163,8 +170,11 @@ const StudentHome = props => {
               modal(false);
               // props.navigation.navigate('student-test-nya');
               AsyncStorage.setItem('code', code);
-              Axios.get('http://3.85.4.188:3333/api/question').then(resolve =>
-                dispatch(assessment(resolve.data.data)),
+              Axios.get('http://3.85.4.188:3333/api/question/' + code).then(
+                resolve => {
+                  console.log(resolve.data);
+                  dispatch(assessment(resolve.data.data));
+                },
               );
               // dispatch(assessment())
               props.navigation.dispatch(

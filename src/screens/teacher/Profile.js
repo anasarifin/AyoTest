@@ -105,16 +105,16 @@ const studentHome = props => {
             <Text
               style={[
                 font.Aquawax,
-                {fontSize: 40, padding: 20, paddingBottom: 10},
+                {fontSize: 40, padding: 20, paddingBottom: 10, marginTop: 20},
               ]}>
               Profile{' '}
-              <Text style={styles.textGreen}>{dummy.name.split(' ')[0]}</Text>.
+              <Text style={styles.textWhite}>{dummy.name.split(' ')[0]}</Text>.
             </Text>
             <View
               style={{
                 width: 50,
                 marginHorizontal: 20,
-                borderColor: '#0FB63F',
+                borderColor: '#333',
                 borderWidth: 1,
               }}></View>
           </View>
@@ -135,8 +135,8 @@ const studentHome = props => {
               <View
                 style={[
                   styles.submit,
-                  styles.bgGreen,
-                  {marginTop: 20, width: 'auto', alignSelf: 'center'},
+                  styles.bgBlack,
+                  {marginTop: 20, width: '100%', alignSelf: 'center'},
                 ]}>
                 <Text style={{color: '#fff', textAlign: 'center'}}>
                   Edit Profile
@@ -148,7 +148,7 @@ const studentHome = props => {
             <View
               style={[
                 styles.submit,
-                styles.bgPurle,
+                styles.bgBlack,
                 {marginTop: 20, width: 'auto', alignSelf: 'center'},
               ]}>
               <Text style={{color: '#fff', textAlign: 'center'}}>Logout</Text>
@@ -163,7 +163,7 @@ const studentHome = props => {
               width: '40%',
               height: '100%',
             }}
-            onPress={() => props.navigation.navigate('teacher-home')}>
+            onPress={() => props.navigation.navigate('teacher-live')}>
             <View>
               <Text style={styles.textStyle}>
                 <Icon name="street-view" size={23} style={styles.textBlack} />
@@ -198,7 +198,7 @@ const studentHome = props => {
             onPress={() => props.navigation.navigate('teacher-profile')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={23} style={styles.textBlack} />
+                <Icon name="user-alt" size={23} style={styles.textBlack} />
               </Text>
             </View>
           </TouchableOpacity>
@@ -249,7 +249,7 @@ const studentHome = props => {
             <View
               style={[
                 styles.boxSm,
-                styles.bgGreen,
+                styles.bgBlack,
                 styles.shadow,
                 {marginTop: 20},
               ]}>
@@ -271,7 +271,7 @@ const studentHome = props => {
             <View
               style={[
                 styles.boxSm,
-                styles.bgPurle,
+                styles.bgBlack,
                 styles.shadow,
                 {marginTop: 20},
               ]}>

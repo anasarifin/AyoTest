@@ -96,18 +96,16 @@ const LoginStudent = props => {
   return (
     <ScrollView style={{backgroundColor: '#CBDBEC'}}>
       <StatusBar backgroundColor="#060709" translucent={true} />
-      <KeyboardAvoidingView behavior="padding" style={styless.container}>
+      <KeyboardAvoidingView style={styless.container}>
         <View style={styless.loginScreenContainer}>
           <View style={styless.loginFormView}>
             <View style={styless.logoCon}>
               <Text style={[font.Aquawax, {fontSize: 65, color: '#060709'}]}>
                 ayo<Text style={{color: '#0FB63F'}}>test</Text>.
               </Text>
-              <Text style={[font.Questriasl, {color: '#060709'}]}>
-                Login for student.
-              </Text>
+              <Text style={[{color: '#060709'}]}>Masuk sebagai siswa</Text>
             </View>
-            <Text>{warning}</Text>
+            <Text style={{textAlign: 'center'}}>{warning}</Text>
             <TextInput
               style={styless.inputText}
               placeholder="Username"
@@ -137,26 +135,38 @@ const LoginStudent = props => {
                     Login
                   </Text>
                 ) : (
-                  <ActivityIndicator />
+                  <View style={{padding: 13}}>
+                    <ActivityIndicator />
+                  </View>
                 )}
               </View>
             </TouchableOpacity>
 
             <View style={styless.footer}>
-              <Text style={styless.footerText}>Are you a teacher?</Text>
+              <Text style={styless.footerText}>Belum memiliki akun?</Text>
+              <TouchableOpacity>
+                <Text
+                  style={styless.registerButton}
+                  onPress={() => props.navigation.navigate('register-student')}>
+                  Daftar disini
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styless.footer}>
+              <Text style={styless.footerText}>Login</Text>
               <TouchableOpacity>
                 <Text
                   style={styless.registerButton}
                   onPress={() => props.navigation.navigate('login-teacher')}>
-                  Login here
+                  teacher
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-        <Text onPress={() => props.navigation.navigate('register-student')}>
+        {/* <Text onPress={() => props.navigation.navigate('register-student')}>
           Register
-        </Text>
+        </Text> */}
       </KeyboardAvoidingView>
     </ScrollView>
 

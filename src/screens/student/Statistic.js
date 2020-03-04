@@ -333,6 +333,26 @@ const studentHome = props => {
                 borderWidth: 1,
               }}></View>
           </View>
+          <View
+            style={[
+              styles.boxWrappSearch,
+              styles.shadow,
+              styles.listMinMargin,
+              {
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+              },
+            ]}>
+            <TextInput
+              placeholder="Search ..."
+              style={{width: '90%'}}></TextInput>
+            <TouchableOpacity>
+              <Text style={{paddingVertical: 20}}>
+                <Icon name="search" size={23} style={styles.textBlack} />
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View style={[styles.boxWrapp, styles.shadow]}>
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <View
@@ -384,6 +404,10 @@ const studentHome = props => {
                             flexWrap: 'wrap',
                             paddingVertical: 20,
                             paddingHorizontal: 10,
+                            borderWidth: 1,
+                            borderColor: 'gray',
+                            borderRadius: 5,
+                            marginVertical: 20,
                           }}>
                           <Text style={{width: '45%'}}>Nama Guru</Text>
                           <Text style={{width: '5%'}}>:</Text>
@@ -494,7 +518,7 @@ const studentHome = props => {
             onPress={() => props.navigation.navigate('student-profile')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={25} style={styles.textGreen} />
+                <Icon name="user-alt" size={25} style={styles.textGreen} />
               </Text>
             </View>
           </TouchableOpacity>

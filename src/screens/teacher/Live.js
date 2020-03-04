@@ -159,7 +159,7 @@ const teacherLive = props => {
             onPress={() => props.navigation.navigate('teacher-profile')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={23} style={styles.textBlack} />
+                <Icon name="user-alt" size={23} style={styles.textBlack} />
               </Text>
             </View>
           </TouchableOpacity>

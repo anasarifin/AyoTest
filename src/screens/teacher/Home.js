@@ -33,7 +33,7 @@ const teacherHome = props => {
   const [idAssessmentE, setIdAssessmentE] = useState(null);
   const [idAssessmentA, setIdAssessmentA] = useState(null);
   const [idAdmin, setId] = useState(0);
-  const [modalAdd, modalA] = useState(true);
+  const [modalAdd, modalA] = useState(false);
   const [modalEdit, modalE] = useState(false);
   const [modalAddSoal, modalAS] = useState(false);
   const [modalEditSoal, modalES] = useState(false);
@@ -405,7 +405,7 @@ const teacherHome = props => {
                 onPress={() => props.navigation.navigate('teacher-profile')}>
                 <View>
                   <Text style={styles.textStyle}>
-                    <Icon name="child" size={23} style={styles.textBlack} />
+                    <Icon name="user-alt" size={23} style={styles.textBlack} />
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -1127,7 +1127,7 @@ const teacherHome = props => {
                         paddingVertical: 10,
                       },
                     ]}>
-                    <Text>Soal</Text>
+                    <Text style={{fontWeight: '700'}}>Soal</Text>
                     <TextInput
                       defaultValue={detailQ.question || ''}
                       multiline={true}
@@ -1152,140 +1152,181 @@ const teacherHome = props => {
                         paddingVertical: 10,
                       },
                     ]}>
-                    <Text style={{width: '100%'}}>Jawaban</Text>
-                    {/* A */}
                     <Text
                       style={{
-                        width: '10%',
-                        textAlignVertical: 'center',
-                        textAlign: 'center',
+                        fontWeight: '700',
+                        marginBottom: 20,
                       }}>
-                      A
+                      Jawaban
                     </Text>
-                    <TextInput
-                      defaultValue={
-                        detailQ.answer ? detailQ.answer[0].label : ''
-                      }
-                      multiline={true}
-                      numberOfLines={1}
-                      onChange={e => setAnswerA(e.nativeEvent.text)}
-                      style={[
-                        styles.inputText,
-                        {paddingHorizontal: 10, width: '90%'},
-                      ]}></TextInput>
-                    {/* A */}
+                    {/* jawaban yang benar */}
                     <View
-                      style={{
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#999999',
-                        width: '100%',
-                      }}
-                    />
-                    {/* B */}
-                    <Text
-                      style={{
-                        width: '10%',
-                        textAlignVertical: 'center',
-                        textAlign: 'center',
-                      }}>
-                      B.
-                    </Text>
-                    <TextInput
-                      defaultValue={
-                        detailQ.answer ? detailQ.answer[1].label : ''
-                      }
-                      multiline={true}
-                      numberOfLines={1}
-                      onChange={e => setAnswerB(e.nativeEvent.text)}
                       style={[
-                        styles.inputText,
-                        {paddingHorizontal: 10, width: '90%'},
-                      ]}></TextInput>
-                    {/* B */}
+                        styles.boxWrappSearch,
+                        styles.shadow,
+                        styles.listMinMargin,
+                        {
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        },
+                      ]}>
+                      <Text style={{paddingVertical: 20}}>
+                        <Icon
+                          name="check-square"
+                          size={23}
+                          style={styles.textBlack}
+                        />
+                      </Text>
+                      <TextInput
+                        placeholder="Jawaban yang benar"
+                        defaultValue={
+                          detailQ.answer ? detailQ.answer[0].label : ''
+                        }
+                        multiline={true}
+                        numberOfLines={1}
+                        onChange={e => setAnswerA(e.nativeEvent.text)}
+                        style={[
+                          styles.inputText,
+                          {paddingHorizontal: 10, width: '90%'},
+                        ]}></TextInput>
+                    </View>
+                    {/* jawaban yang benar */}
+
+                    {/* jawaban yang salah */}
                     <View
-                      style={{
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#999999',
-                        width: '100%',
-                      }}
-                    />
-                    {/* C */}
-                    <Text
-                      style={{
-                        width: '10%',
-                        textAlignVertical: 'center',
-                        textAlign: 'center',
-                      }}>
-                      C.
-                    </Text>
-                    <TextInput
-                      defaultValue={
-                        detailQ.answer ? detailQ.answer[2].label : ''
-                      }
-                      multiline={true}
-                      numberOfLines={1}
-                      onChange={e => setAnswerC(e.nativeEvent.text)}
                       style={[
-                        styles.inputText,
-                        {paddingHorizontal: 10, width: '90%'},
-                      ]}></TextInput>
-                    {/* C */}
+                        styles.boxWrappSearch,
+                        styles.shadow,
+                        styles.listMinMargin,
+                        {
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          justifyContent: 'space-between',
+                        },
+                      ]}>
+                      <Text style={{paddingVertical: 20}}>
+                        <Icon
+                          name="window-close"
+                          size={21}
+                          style={styles.textBlack}
+                        />
+                      </Text>
+                      <TextInput
+                        placeholder="Jawaban yang salah"
+                        defaultValue={
+                          detailQ.answer ? detailQ.answer[1].label : ''
+                        }
+                        multiline={true}
+                        numberOfLines={1}
+                        onChange={e => setAnswerB(e.nativeEvent.text)}
+                        style={[
+                          styles.inputText,
+                          {paddingHorizontal: 10, width: '90%'},
+                        ]}></TextInput>
+                    </View>
+                    {/* jawaban yang salah */}
+
+                    {/* jawaban yang salah */}
                     <View
-                      style={{
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#999999',
-                        width: '100%',
-                      }}
-                    />
-                    {/* D */}
-                    <Text
-                      style={{
-                        width: '10%',
-                        textAlignVertical: 'center',
-                        textAlign: 'center',
-                      }}>
-                      D.
-                    </Text>
-                    <TextInput
-                      defaultValue={
-                        detailQ.answer ? detailQ.answer[3].label : ''
-                      }
-                      multiline={true}
-                      numberOfLines={1}
-                      onChange={e => setAnswerD(e.nativeEvent.text)}
                       style={[
-                        styles.inputText,
-                        {paddingHorizontal: 10, width: '90%'},
-                      ]}></TextInput>
-                    {/* D */}
+                        styles.boxWrappSearch,
+                        styles.shadow,
+                        styles.listMinMargin,
+                        {
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          justifyContent: 'space-between',
+                        },
+                      ]}>
+                      <Text style={{paddingVertical: 20}}>
+                        <Icon
+                          name="window-close"
+                          size={21}
+                          style={styles.textBlack}
+                        />
+                      </Text>
+                      <TextInput
+                        placeholder="Jawaban yang salah"
+                        defaultValue={
+                          detailQ.answer ? detailQ.answer[2].label : ''
+                        }
+                        multiline={true}
+                        numberOfLines={1}
+                        onChange={e => setAnswerC(e.nativeEvent.text)}
+                        style={[
+                          styles.inputText,
+                          {paddingHorizontal: 10, width: '90%'},
+                        ]}></TextInput>
+                    </View>
+                    {/* jawaban yang salah */}
+
+                    {/* jawaban yang salah */}
                     <View
-                      style={{
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#999999',
-                        width: '100%',
-                      }}
-                    />
-                    {/* E */}
-                    <Text
-                      style={{
-                        width: '10%',
-                        textAlignVertical: 'center',
-                        textAlign: 'center',
-                      }}>
-                      E.
-                    </Text>
-                    <TextInput
-                      defaultValue={
-                        detailQ.answer ? detailQ.answer[4].label : ''
-                      }
-                      multiline={true}
-                      numberOfLines={1}
-                      onChange={e => setAnswerE(e.nativeEvent.text)}
                       style={[
-                        styles.inputText,
-                        {paddingHorizontal: 10, width: '90%'},
-                      ]}></TextInput>
-                    {/* E */}
+                        styles.boxWrappSearch,
+                        styles.shadow,
+                        styles.listMinMargin,
+                        {
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          justifyContent: 'space-between',
+                        },
+                      ]}>
+                      <Text style={{paddingVertical: 20}}>
+                        <Icon
+                          name="window-close"
+                          size={21}
+                          style={styles.textBlack}
+                        />
+                      </Text>
+                      <TextInput
+                        placeholder="Jawaban yang salah"
+                        defaultValue={
+                          detailQ.answer ? detailQ.answer[3].label : ''
+                        }
+                        multiline={true}
+                        numberOfLines={1}
+                        onChange={e => setAnswerD(e.nativeEvent.text)}
+                        style={[
+                          styles.inputText,
+                          {paddingHorizontal: 10, width: '90%'},
+                        ]}></TextInput>
+                    </View>
+                    {/* jawaban yang salah */}
+
+                    {/* jawaban yang salah */}
+                    <View
+                      style={[
+                        styles.boxWrappSearch,
+                        styles.shadow,
+                        styles.listMinMargin,
+                        {
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          justifyContent: 'space-between',
+                        },
+                      ]}>
+                      <Text style={{paddingVertical: 20}}>
+                        <Icon
+                          name="window-close"
+                          size={21}
+                          style={styles.textBlack}
+                        />
+                      </Text>
+                      <TextInput
+                        placeholder="Jawaban yang salah"
+                        defaultValue={
+                          detailQ.answer ? detailQ.answer[4].label : ''
+                        }
+                        multiline={true}
+                        numberOfLines={1}
+                        onChange={e => setAnswerE(e.nativeEvent.text)}
+                        style={[
+                          styles.inputText,
+                          {paddingHorizontal: 10, width: '90%'},
+                        ]}></TextInput>
+                    </View>
+                    {/* jawaban yang salah */}
                   </View>
                   <TouchableOpacity
                     style={{width: '100%'}}

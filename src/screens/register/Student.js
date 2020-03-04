@@ -179,6 +179,7 @@ export default class RegisterStudent extends React.Component {
       Axios.post(url, formData)
         .then(res => {
           console.log(res);
+          this.props.navigation.dispatch(StackActions.replace('login-student'));
         })
         .catch(err => {
           console.log(err);
@@ -190,6 +191,9 @@ export default class RegisterStudent extends React.Component {
     //   });
     // }
   };
+  back() {
+    this.props.navigation.dispatch(StackActions.replace('login-student'));
+  }
   // Formdata
 
   // Axios.post(url, formData, {
@@ -263,7 +267,7 @@ export default class RegisterStudent extends React.Component {
                 onPress={() => this.picker()}>
                 <Image
                   style={styless.profileImage}
-                  // source={{uri: this.state.images
+                  source={{uri: this.state.image}}
                 />
               </TouchableOpacity>
               <Text style={{fontSize: 18}}>Nama Lengkap</Text>
@@ -313,20 +317,29 @@ export default class RegisterStudent extends React.Component {
               <Text style={{fontSize: 18, paddingTop: 10}}>Password</Text>
               <TextInput
                 style={[styless.inputText]}
+                secureTextEntry={true}
                 placeholder="Masukan password"
                 onChange={e => this.setPassword(e.nativeEvent.text)}
               />
               <Text style={{fontSize: 18}}>Masukan Ulang Password</Text>
               <TextInput
                 style={[styless.inputText]}
+                secureTextEntry={true}
                 placeholder="Masukan ulang password"
                 onChange={e => this.setRePassword(e.nativeEvent.text)}
               />
             </View>
             <TouchableOpacity onPress={this.register}>
-              <View style={[styless.loginButton]}>
+              <View style={[styless.loginButton, {marginBottom: 0}]}>
                 <Text style={{color: '#fff', textAlign: 'center', padding: 13}}>
                   {this.state.warning || 'Daftar'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.back()}>
+              <View style={[styless.loginButton]}>
+                <Text style={{color: '#fff', textAlign: 'center', padding: 13}}>
+                  {this.state.warning || 'Kembali'}
                 </Text>
               </View>
             </TouchableOpacity>

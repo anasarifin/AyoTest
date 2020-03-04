@@ -226,62 +226,13 @@ const TestList = props => {
 
           {/*  */}
         </ScrollView>
-        <View style={styles.bottomViewSm}>
+        <View style={styles.bottomViewSm2}>
           <View
             style={{
               flexWrap: 'wrap',
               flexDirection: 'row',
               padding: 25,
             }}>
-            <View
-              style={{
-                width: '100%',
-                padding: 0,
-                margin: 0,
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                }}>
-                <View
-                  style={[
-                    styles.bgWhite,
-                    styles.shadow,
-                    {padding: 10, borderRadius: 4},
-                  ]}></View>
-                <Text> Belum diisi </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                }}>
-                <View
-                  style={[
-                    styles.bgGreen,
-                    styles.shadow,
-                    {padding: 10, borderRadius: 4},
-                  ]}></View>
-                <Text> Sudah diisi </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                }}>
-                <View
-                  style={[
-                    styles.bgPurle,
-                    styles.shadow,
-                    {padding: 10, borderRadius: 4},
-                  ]}></View>
-                <Text> Masih ragu </Text>
-              </View>
-            </View>
             <View style={{width: '100%', padding: 0}}>
               <TouchableOpacity
                 style={{marginTop: 0}}

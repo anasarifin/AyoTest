@@ -146,7 +146,7 @@ const studentHome = props => {
             <Text
               style={[
                 font.Aquawax,
-                {fontSize: 40, padding: 20, paddingBottom: 10},
+                {fontSize: 40, padding: 20, paddingBottom: 10, paddingTop: 40},
               ]}>
               Profile{' '}
               <Text style={styles.textGreen}>
@@ -167,7 +167,7 @@ const studentHome = props => {
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <Image
               style={styles.profileImage}
-              source={require('../../../assets/img/profile.jpg')}
+              source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
             />
             <Text style={{textAlign: 'center', marginTop: 20}}>
               {user.name}
@@ -181,7 +181,7 @@ const studentHome = props => {
                 style={[
                   styles.submit,
                   styles.bgGreen,
-                  {marginTop: 20, width: 'auto', alignSelf: 'center'},
+                  {marginTop: 20, width: '100%', alignSelf: 'center'},
                 ]}>
                 <Text style={{color: '#fff', textAlign: 'center'}}>
                   Edit Profile
@@ -238,7 +238,7 @@ const studentHome = props => {
             onPress={() => props.navigation.navigate('student-profile')}>
             <View>
               <Text style={styles.textStyle}>
-                <Icon name="child" size={25} style={styles.textGreen} />
+                <Icon name="user-alt" size={25} style={styles.textGreen} />
               </Text>
             </View>
           </TouchableOpacity>
