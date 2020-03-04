@@ -33,8 +33,9 @@ const teacherHome = props => {
   const [idAssessmentE, setIdAssessmentE] = useState(null);
   const [idAssessmentA, setIdAssessmentA] = useState(null);
   const [idAdmin, setId] = useState(0);
-  const [modalAdd, modalA] = useState(false);
+  const [modalAdd, modalA] = useState(true);
   const [modalEdit, modalE] = useState(false);
+  const [modalAddSoal, modalAS] = useState(false);
   const [modalEditSoal, modalES] = useState(false);
   const [loading, setLoading] = useState(false);
   const [post, setpost] = useState(true);
@@ -62,10 +63,33 @@ const teacherHome = props => {
   // end state submit soal in ModalAdd
   const [detail, setDetail] = useState([]);
   const [detailQ, setDetailQ] = useState({});
-
+  const [render, setRender] = useState(null);
   const assessment = useSelector(state => state.user.adminAss);
 
   // state detail
+  const renderFile = () => {
+    console.log(total);
+    let items = [];
+    for (let i = 0; i < total; i++) {
+      items.push(
+        <TouchableOpacity
+          onPress={() => {
+            setDetailQ(x);
+            modalES(true);
+          }}>
+          <View
+            style={[
+              styles.boxWrapp,
+              styles.shadow,
+              {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+            ]}>
+            <Text numberOfLines={1}>muncul</Text>
+          </View>
+        </TouchableOpacity>,
+      );
+    }
+    return setRender(items);
+  };
 
   // logic Modaladd going here
   // const addAssesmentModal = () => {
@@ -314,7 +338,10 @@ const teacherHome = props => {
               })}
 
               <View style={{padding: 20}}>
-                <TouchableOpacity onPress={() => modalA(true)}>
+                <TouchableOpacity
+                  onPress={() => {
+                    modalA(true);
+                  }}>
                   <View
                     style={[
                       styles.submit,
@@ -392,8 +419,8 @@ const teacherHome = props => {
           <Modal
             animationType="slide"
             transparent={false}
-            // visible={modalDetail}
-            visible={false}
+            visible={modalDetail}
+            // visible={true}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
@@ -633,6 +660,7 @@ const teacherHome = props => {
             animationType="slide"
             transparent={false}
             visible={modalAdd}
+            // visible={false}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
@@ -667,21 +695,22 @@ const teacherHome = props => {
                   ]}>
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <TextInput
-                    placeholder="Masukan nama pelajaran"
+                    placeholder="Masukan nama pelajaranx"
                     style={styles.inputText}
-                    onChangeText={text => setAssessmentName(text)}
+                    onChange={e => setAssessmentName(e.nativeEvent.text)}
                   />
                   <Text style={{width: '40%'}}>Jumlah Soal </Text>
                   <TextInput
                     placeholder="Masukan jumlah soal"
                     style={styles.inputText}
-                    onChangeText={text => setTotal(text)}
+                    onChange={e => setTotal(e.nativeEvent.text)}
                     keyboardType={'numeric'}
                   />
 
                   <TouchableOpacity
                     onPress={() => {
-                      handleAdd();
+                      renderFile();
+                      modalAS(true);
                     }}
                     style={{width: '100%'}}>
                     <View
@@ -707,7 +736,10 @@ const teacherHome = props => {
                   </TouchableOpacity>
                 </View>
               </ScrollView>
-              <TouchableOpacity onPress={() => modalA(false)}>
+              <TouchableOpacity
+                onPress={() => {
+                  modalA(false);
+                }}>
                 <View
                   style={[
                     styles.boxSm,
@@ -773,10 +805,10 @@ const teacherHome = props => {
                   ]}>
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <TextInput
-                    placeholder="Masukan nama pelajaran"
+                    placeholder="Masukan nama pelajaran xxxx"
                     style={styles.inputText}
-                    value={
-                      'xxx'
+                    defaultValue={
+                      assessmentName || ''
 
                       // assessmentName
                       //   ? `${assessmentName}`
@@ -891,14 +923,165 @@ const teacherHome = props => {
           </Modal>
           {/* modal Edit soal */}
 
+          {/* modal add soal */}
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={modalAddSoal}
+            // visible={true}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <View style={[styles.wrapp, styles.containerView]}>
+              <ScrollView style={{height: '85%'}}>
+                <View style={{marginBottom: 20}}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        fontSize: 35,
+                        paddingHorizontal: 0,
+                        paddingBottom: 10,
+                        color: '#333333',
+                      },
+                    ]}>
+                    Tambah <Text style={styles.textWhite}>Pelajaran</Text>.
+                  </Text>
+                  <View
+                    style={{
+                      width: 50,
+                      marginHorizontal: 0,
+                      borderColor: '#333333',
+                      borderWidth: 1,
+                    }}></View>
+                </View>
+                <View
+                  style={[
+                    styles.boxWrapp,
+                    styles.shadow,
+                    {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+                  ]}>
+                  <Text style={{width: '40%'}}>Nama Matkul </Text>
+                  <TextInput
+                    placeholder="Masukan nama pelajaran 123"
+                    style={styles.inputText}
+                    defaultValue={assessmentName || ''}
+                  />
+                </View>
+
+                <View style={{marginBottom: 20}}>
+                  <Text
+                    style={[
+                      font.Aquawax,
+                      {
+                        fontSize: 35,
+                        paddingHorizontal: 0,
+                        paddingBottom: 10,
+                        color: '#333333',
+                      },
+                    ]}>
+                    Tambah <Text style={styles.textWhite}>Soal</Text>.
+                  </Text>
+                  <View
+                    style={{
+                      width: 50,
+                      marginHorizontal: 0,
+                      borderColor: '#333333',
+                      borderWidth: 1,
+                    }}></View>
+                </View>
+                {render}
+                {/* satu soal */}
+                {/* {[1, 2, 3].map(x => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setDetailQ(x);
+                        modalES(true);
+                      }}>
+                      <View
+                        style={[
+                          styles.boxWrapp,
+                          styles.shadow,
+                          {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+                        ]}>
+                        <Text numberOfLines={1}>{x.question}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })} */}
+                {/* satu soal */}
+
+                <TouchableOpacity
+                  onPress={() => {
+                    modalA(false);
+                    modalE(false);
+                  }}
+                  style={{width: '100%'}}>
+                  <View
+                    style={[
+                      styles.boxSm,
+                      styles.bgBlack,
+                      styles.shadow,
+                      {marginTop: 20, width: '100%'},
+                    ]}>
+                    <Text
+                      style={[
+                        font.Aquawax,
+                        {
+                          color: '#fff',
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                          fontSize: 14,
+                        },
+                      ]}>
+                      Simpan
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    modalA(false);
+                    modalAS(false);
+                    modalE(false);
+                    setTotal(null);
+                    setAssessmentName('');
+                  }}>
+                  <View
+                    style={[
+                      styles.boxSm,
+                      styles.bgBlack,
+                      styles.shadow,
+                      {marginVertical: 20},
+                    ]}>
+                    <Text
+                      style={[
+                        font.Aquawax,
+                        {
+                          color: '#fff',
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                          fontSize: 14,
+                        },
+                      ]}>
+                      Kembali
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+          </Modal>
+          {/* modal add soal */}
+
           {/* modal edit satu soal */}
           <Modal
             animationType="slide"
             transparent={false}
             visible={modalEditSoal}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
+            // onRequestClose={() => {
+            //   Alert.alert('Modal has been closed.');
+            // }}
+          >
             <View style={[styles.wrapp, styles.containerView]}>
               <ScrollView style={{height: '85%'}}>
                 <View>
@@ -1077,7 +1260,6 @@ const teacherHome = props => {
                   <TouchableOpacity
                     style={{width: '100%'}}
                     onPress={() => {
-                      console.log(detail);
                       Axios.put(
                         'http://3.85.4.188:3333/api/question/update/' +
                           detail[0].id,
@@ -1091,6 +1273,7 @@ const teacherHome = props => {
                           choice_5: answerE,
                         },
                       );
+                      modalES(false);
                     }}>
                     <View
                       style={[
