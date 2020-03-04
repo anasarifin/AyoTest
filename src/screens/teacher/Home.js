@@ -1337,11 +1337,21 @@ const teacherHome = props => {
                         {
                           question: soal,
                           id_assessment_name: 4,
-                          choice_1: answerA,
-                          choice_2: answerB,
-                          choice_3: answerC,
-                          choice_4: answerD,
-                          choice_5: answerE,
+                          choice_1: detailQ.answer
+                            ? detailQ.answer[0].label
+                            : answerA,
+                          choice_2: detailQ.answer
+                            ? detailQ.answer[1].label
+                            : answerB,
+                          choice_3: detailQ.answer
+                            ? detailQ.answer[2].label
+                            : answerC,
+                          choice_4: detailQ.answer
+                            ? detailQ.answer[3].label
+                            : answerD,
+                          choice_5: detailQ.answer
+                            ? detailQ.answer[4].label
+                            : answerE,
                         },
                       );
                       modalES(false);

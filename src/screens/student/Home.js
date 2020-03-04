@@ -23,6 +23,7 @@ import jwt_decode from 'jwt-decode';
 const StudentHome = props => {
   const [modalDelete, modal] = useState(false);
   const [code, inputCode] = useState('');
+  const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
   const complete = useSelector(state => state.assessment.complete);
   // console.log(AsyncStorage.getItem('token'));
@@ -173,10 +174,16 @@ const StudentHome = props => {
               Axios.get('http://3.85.4.188:3333/api/question/' + code).then(
                 resolve => {
                   console.log(resolve.data.data.length);
-                  dispatch(assessment(resolve.data.data));
+                  console.log(user.id_users);
+                  // dispatch(assessment(resolve.data.data));
                   if (resolve.data.data.length > 0) {
                     const id = resolve.data.data[0].id_assessment;
-                    Axios.get();
+                    Axios.get('http://3.85.4.188:3333/api/answer/users', {
+                      id_assessment: 2,
+                      id_users: 3,
+                    }).then(resolve2 => {
+                      console.log(resolve2.data);
+                    });
                     // props.navigation.dispatch(
                     //   StackActions.replace('student-test', {code: code}),
                     // );
