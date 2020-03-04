@@ -11,7 +11,7 @@ const initialValue = {
   backup: {
     answer: {'1': 3, '2': 0, '3': 4, '4': 2, '5': 1},
   },
-  adminAss: [1, 2, 3],
+  adminAss: [],
 };
 
 const getUser = (state = initialValue, action) => {

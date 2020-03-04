@@ -17,11 +17,11 @@ import font from '../Fonts';
 import styless from './Style';
 import jwt_decode from 'jwt-decode';
 import {connect, useSelector, useDispatch} from 'react-redux';
-import {getUser, getStats} from '../../redux/actions/user';
+import {getUser, getStats, getAss} from '../../redux/actions/user';
 
 const url = 'http://3.85.4.188:3333/api/admin/login';
 const urls = 'http://3.85.4.188:3333/api/admin/';
-const urlx = 'http://3.85.4.188:3333/api/score?id_user=';
+const urlx = 'http://3.85.4.188:3333/api/assessment/detailbyadmin/';
 
 const LoginStudent = props => {
   const [email, setEmail] = useState('');
@@ -61,9 +61,12 @@ const LoginStudent = props => {
           Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
             dispatch(getUser(resolve2.data.data[0]));
           });
-          Axios.get(urlx + jwt_decode(resolve.data.token).id).then(
-            resolve3 => dispatch(getStats(resolve3.data.data)),
-            // console.log(),
+          Axios.get(urlx + 18).then(
+            resolve3 => {
+              console.log(resolve3.data.data);
+              dispatch(getAss(resolve3.data.data));
+            },
+            // jwt_decode(resolve.data.token).id
           );
         }
       })

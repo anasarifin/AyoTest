@@ -39,6 +39,7 @@ const teacherHome = props => {
   const [loading, setLoading] = useState(false);
   const [post, setpost] = useState(true);
   const [idAss, setIdAss] = useState(true);
+  const user = useSelector(state => state.user.user);
   // state addModal
   const [boxSoal, createSoal] = useState(null);
   const [assessmentName, setAssessmentName] = useState('');
@@ -52,181 +53,182 @@ const teacherHome = props => {
   // end state add assessment
 
   // state submit soal in ModalAdd
-  const [soal, setSoal] = useState(null);
+  const [soal, setSoal] = useState('');
   const [answerA, setAnswerA] = useState('');
   const [answerB, setAnswerB] = useState('');
   const [answerC, setAnswerC] = useState('');
   const [answerD, setAnswerD] = useState('');
   const [answerE, setAnswerE] = useState('');
   // end state submit soal in ModalAdd
-  const [detailAssessment, setDetailAssessment] = useState(null);
+  const [detail, setDetail] = useState([]);
+  const [detailQ, setDetailQ] = useState({});
 
   const assessment = useSelector(state => state.user.adminAss);
 
   // state detail
 
   // logic Modaladd going here
-  const addAssesmentModal = () => {
-    fCreateSoal();
-  };
-  const addClose = () => {
-    modalE(true);
-  };
-  const fDetailQuestion = id => {
-    modalES(true);
-    detailQuestion(id);
-    setIdAssessmentE(id);
-  };
-  const detailQuestion = async id => {
-    console.log(idAssessmentE);
-    await Axios.get(`${URL_STRING}/question/detail/${id}`).then(result => {
-      setSoal(result.data.data[0].question);
-      setAnswerA(result.data.data[0].answer[0].label);
-      setAnswerB(result.data.data[0].answer[1].label);
-      setAnswerC(result.data.data[0].answer[2].label);
-      setAnswerD(result.data.data[0].answer[3].label);
-      setAnswerE(result.data.data[0].answer[4].label);
-    });
-  };
-  const fCreateSoal = () => {
-    addClose();
-    let items = [];
-    for (let i = 1; i <= total; i++) {
-      items.push(
-        <TouchableOpacity onPress={() => fDetailQuestion(i)}>
-          <View
-            style={[
-              styles.boxWrapp,
-              styles.shadow,
-              {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
-            ]}>
-            <Text numberOfLines={1}>
-              {i}. Soal {i}
-            </Text>
-          </View>
-        </TouchableOpacity>,
-      );
-    }
-    return createSoal(items);
-  };
-  const handleAdd = () => {
-    Axios.post(`${URL_STRING}/assessment/insert`, {
-      id_admin: idAdmin,
-      code: '321',
-      name: assessmentName,
-    })
-      .then(resolve => {
-        console.log(resolve.data.data.insertId);
-        setIdAss(resolve.data.data.insertId);
-        setpost(!post ? true : true);
-        addAssesmentModal();
-      })
-      .catch(err => {});
-  };
-  // end logic add
-  // logic submit soal
-  const closeSoalInput = () => {
-    addClose();
-    modalES(false);
-    createAssessment(null);
-    setLoading(true);
-  };
-  const handlePostSoal = () => {
-    Axios.post(`${URL_STRING}/question/insert`, {
-      question: soal,
-      id_assessment_name: idAss,
-      choice_1: answerA,
-      choice_2: answerB,
-      choice_3: answerC,
-      choice_4: answerD,
-      choice_5: answerE,
-    });
-  };
-  const handleEditSoal = () => {
-    console.log(idAssessmentE);
-    Axios.put(`${URL_STRING}/question/update/${idAssessmentE}`, {
-      id_assessment_name: idAssessmentE,
-      question: soal,
-      choice_1: answerA,
-      choice_2: answerB,
-      choice_3: answerC,
-      choice_4: answerD,
-      choice_5: answerE,
-    });
-  };
-  const handleSubmitSoal = async id => {
-    if (post) {
-      await handlePostSoal();
-      closeSoalInput();
-    } else {
-      await handleEditSoal(id);
-      closeSoalInput();
-    }
-  };
-  // end submit soal
+  // const addAssesmentModal = () => {
+  //   fCreateSoal();
+  // };
+  // const addClose = () => {
+  //   modalE(true);
+  // };
+  // const fDetailQuestion = id => {
+  //   modalES(true);
+  //   detailQuestion(id);
+  //   setIdAssessmentE(id);
+  // };
+  // const detailQuestion = async id => {
+  //   console.log(idAssessmentE);
+  //   await Axios.get(`${URL_STRING}/question/detail/${id}`).then(result => {
+  //     setSoal(result.data.data[0].question);
+  //     setAnswerA(result.data.data[0].answer[0].label);
+  //     setAnswerB(result.data.data[0].answer[1].label);
+  //     setAnswerC(result.data.data[0].answer[2].label);
+  //     setAnswerD(result.data.data[0].answer[3].label);
+  //     setAnswerE(result.data.data[0].answer[4].label);
+  //   });
+  // };
+  // const fCreateSoal = () => {
+  //   addClose();
+  //   let items = [];
+  //   for (let i = 1; i <= total; i++) {
+  //     items.push(
+  // <TouchableOpacity onPress={() => fDetailQuestion(i)}>
+  //   <View
+  //     style={[
+  //       styles.boxWrapp,
+  //       styles.shadow,
+  //       {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+  //     ]}>
+  //     <Text numberOfLines={1}>
+  //       {i}. Soal {i}
+  //     </Text>
+  //   </View>
+  // </TouchableOpacity>,
+  //     );
+  //   }
+  //   return createSoal(items);
+  // };
+  // const handleAdd = () => {
+  //   Axios.post(`${URL_STRING}/assessment/insert`, {
+  //     id_admin: user.id_admin,
+  //     code: '321',
+  //     name: assessmentName,
+  //   })
+  //     .then(resolve => {
+  //       console.log(resolve.data.data.insertId);
+  //       setIdAss(resolve.data.data.insertId);
+  //       setpost(!post ? true : true);
+  //       addAssesmentModal();
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+  // // end logic add
+  // // logic submit soal
+  // const closeSoalInput = () => {
+  //   addClose();
+  //   modalES(false);
+  //   createAssessment(null);
+  //   setLoading(true);
+  // };
+  // const handlePostSoal = () => {
+  //   Axios.post(`${URL_STRING}/question/insert`, {
+  //     question: soal,
+  //     id_assessment_name: idAss,
+  //     choice_1: answerA,
+  //     choice_2: answerB,
+  //     choice_3: answerC,
+  //     choice_4: answerD,
+  //     choice_5: answerE,
+  //   });
+  // };
+  // const handleEditSoal = () => {
+  //   console.log(idAssessmentE);
+  //   Axios.put(`${URL_STRING}/question/update/${idAssessmentE}`, {
+  //     id_assessment_name: idAssessmentE,
+  //     question: soal,
+  //     choice_1: answerA,
+  //     choice_2: answerB,
+  //     choice_3: answerC,
+  //     choice_4: answerD,
+  //     choice_5: answerE,
+  //   });
+  // };
+  // const handleSubmitSoal = async id => {
+  //   if (post) {
+  //     await handlePostSoal();
+  //     closeSoalInput();
+  //   } else {
+  //     await handleEditSoal(id);
+  //     closeSoalInput();
+  //   }
+  // };
+  // // end submit soal
 
-  // assessment logic going here
-  const refreshHome = () => {
-    if (loading) {
-      console.log('dilakukan getAssessment');
-      getAssessment();
-    } else {
-      console.log('dilakukan createAssessment');
-      fCreateAsessment();
-    }
-  };
-  const getAssessment = async () => {
-    await Axios.get(`${URL_STRING}/assessment/detailbyadmin/${idAdmin}`)
-      .then(result => {
-        setDataAssessment(result.data.data);
-        setIdAssessmentA(result.data.data.length + 1);
-        setLoading(false);
-      })
-      .catch(err => {
-        Alert.alert(err);
-      });
-  };
-  const fCreateAsessment = () => {
-    const items = [];
-    for (let i = 1; i <= dataAssessment.length; i++) {
-      items.push(
-        <TouchableOpacity
-          onPress={
-            () =>
-              fDetailAssessment(
-                dataAssessment[i - 1].id_assessment,
-              ) /*  modalD(true) */
-          }>
-          <View style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-            <Text numberOfLines={1}>
-              {i}. {dataAssessment[i - 1].name}{' '}
-            </Text>
-          </View>
-        </TouchableOpacity>,
-      );
-    }
-    return createAssessment(items);
-  };
-  // end assessment logic
+  // // assessment logic going here
+  // const refreshHome = () => {
+  //   if (loading) {
+  //     console.log('dilakukan getAssessment');
+  //     getAssessment();
+  //   } else {
+  //     console.log('dilakukan createAssessment');
+  //     fCreateAsessment();
+  //   }
+  // };
+  // const getAssessment = async () => {
+  //   await Axios.get(`${URL_STRING}/assessment/detailbyadmin/${idAdmin}`)
+  //     .then(result => {
+  //       setDataAssessment(result.data.data);
+  //       setIdAssessmentA(result.data.data.length + 1);
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       Alert.alert(err);
+  //     });
+  // };
+  // const fCreateAsessment = () => {
+  //   const items = [];
+  //   for (let i = 1; i <= dataAssessment.length; i++) {
+  //     items.push(
+  //       <TouchableOpacity
+  //         onPress={
+  //           () =>
+  //             fDetailAssessment(
+  //               dataAssessment[i - 1].id_assessment,
+  //             ) /*  modalD(true) */
+  //         }>
+  //         <View style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
+  //           <Text numberOfLines={1}>
+  //             {i}. {dataAssessment[i - 1].name}{' '}
+  //           </Text>
+  //         </View>
+  //       </TouchableOpacity>,
+  //     );
+  //   }
+  //   return createAssessment(items);
+  // };
+  // // end assessment logic
 
-  // detailAssessment logic
-  const fDetailAssessment = id => {
-    getDetail(id);
-    openModal();
-    setLoading(true);
-  };
-  const openModal = () => modalD(true);
-  const getDetail = async id => {
-    setIdAssessmentE(id);
-    await Axios.get(`${URL_STRING}/assessment/detail/${id}`)
-      .then(result => {
-        setpost(false);
-        setDetailAssessment(result.data.data);
-        setTotal(result.data.data.jumlah_soal);
-        setLoading(false);
-      })
-      .catch(err => Alert.alert(err));
-  };
+  // // detailAssessment logic
+  // const fDetailAssessment = id => {
+  //   getDetail(id);
+  //   openModal();
+  //   setLoading(true);
+  // };
+  // const openModal = () => modalD(true);
+  // const getDetail = async id => {
+  //   setIdAssessmentE(id);
+  //   await Axios.get(`${URL_STRING}/assessment/detail/${id}`)
+  //     .then(result => {
+  //       setpost(false);
+  //       setDetailAssessment(result.data.data);
+  //       setTotal(result.data.data.jumlah_soal);
+  //       setLoading(false);
+  //     })
+  //     .catch(err => Alert.alert(err));
+  // };
 
   // useEffect flow
   // useEffect(() => {
@@ -289,14 +291,23 @@ const teacherHome = props => {
               </View>
               {assessment.map(x => {
                 return (
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Axios.get(
+                        'http://3.85.4.188:3333/api/question/' + x.code,
+                      ).then(resolve => {
+                        console.log(resolve.data.data);
+                        setDetail(resolve.data.data);
+                        modalE(true);
+                      });
+                    }}>
                     <View
                       style={[
                         styles.boxWrapp,
                         styles.shadow,
                         styles.listMinMargin,
                       ]}>
-                      <Text numberOfLines={1}> Test </Text>
+                      <Text numberOfLines={1}>{x.name}</Text>
                     </View>
                   </TouchableOpacity>
                 );
@@ -381,7 +392,8 @@ const teacherHome = props => {
           <Modal
             animationType="slide"
             transparent={false}
-            visible={modalDetail}
+            // visible={modalDetail}
+            visible={false}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
@@ -412,13 +424,13 @@ const teacherHome = props => {
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <Text style={{width: '10%'}}>:</Text>
                   <Text style={{width: '50%', fontWeight: '700'}}>
-                    {detailAssessment === null ? '' : detailAssessment.name}
+                    {detail === null ? '' : detail.name}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>Status </Text>
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
-                    {detailAssessment === null ? '' : detailAssessment.hide}
+                    {detail === null ? '' : detail.hide}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Jumlah Soal{' '}
@@ -426,9 +438,7 @@ const teacherHome = props => {
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', paddingTop: 10, fontWeight: '700'}}>
-                    {detailAssessment === null
-                      ? ''
-                      : detailAssessment.jumlah_soal}
+                    {detail === null ? '' : detail.jumlah_soal}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Banyak siswa
@@ -436,9 +446,9 @@ const teacherHome = props => {
                   <Text style={{width: '10%', paddingTop: 10}}>:</Text>
                   <Text
                     style={{width: '50%', fontWeight: '700', paddingTop: 10}}>
-                    {detailAssessment === null
+                    {/* {detailAssessment === null
                       ? ''
-                      : detailAssessment.jumlah_peserta}
+                      : detailAssessment.jumlah_peserta} */}
                   </Text>
                   <Text style={{width: '40%', paddingTop: 10}}>
                     Rata - rata nilai
@@ -449,10 +459,10 @@ const teacherHome = props => {
                     79
                   </Text>
                   <TouchableOpacity
-                    onPress={() => {
-                      addAssesmentModal();
-                      // modalE(true);
-                    }}
+                    // onPress={() => {
+                    //   addAssesmentModal();
+                    //   // modalE(true);
+                    // }}
                     style={{width: '100%'}}>
                     <View
                       style={[
@@ -728,6 +738,7 @@ const teacherHome = props => {
             animationType="slide"
             transparent={false}
             visible={modalEdit}
+            // visible={true}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
@@ -765,11 +776,13 @@ const teacherHome = props => {
                     placeholder="Masukan nama pelajaran"
                     style={styles.inputText}
                     value={
-                      assessmentName
-                        ? `${assessmentName}`
-                        : detailAssessment
-                        ? `${detailAssessment.name}`
-                        : ''
+                      'xxx'
+
+                      // assessmentName
+                      //   ? `${assessmentName}`
+                      //   : detailAssessment
+                      //   ? `${detailAssessment.name}`
+                      //   : ''
                     }
                   />
                 </View>
@@ -797,7 +810,25 @@ const teacherHome = props => {
                 </View>
 
                 {/* satu soal */}
-                {boxSoal}
+                {detail.map(x => {
+                  console.log(x);
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setDetailQ(x);
+                        modalES(true);
+                      }}>
+                      <View
+                        style={[
+                          styles.boxWrapp,
+                          styles.shadow,
+                          {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
+                        ]}>
+                        <Text numberOfLines={1}>{x.question}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
                 {/* satu soal */}
 
                 <TouchableOpacity
@@ -885,10 +916,10 @@ const teacherHome = props => {
                     ]}>
                     <Text>Soal</Text>
                     <TextInput
-                      value={soal === null ? '' : `${soal}`}
+                      defaultValue={detailQ.question || ''}
                       multiline={true}
                       numberOfLines={4}
-                      onChangeText={text => setSoal(text)}
+                      onChange={e => setSoal(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10},
@@ -916,13 +947,15 @@ const teacherHome = props => {
                         textAlignVertical: 'center',
                         textAlign: 'center',
                       }}>
-                      A.
+                      A
                     </Text>
                     <TextInput
-                      value={answerA === null ? '' : `${answerA}`}
+                      defaultValue={
+                        detailQ.answer ? detailQ.answer[0].label : ''
+                      }
                       multiline={true}
                       numberOfLines={1}
-                      onChangeText={text => setAnswerA(text)}
+                      onChange={e => setAnswerA(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
@@ -945,10 +978,12 @@ const teacherHome = props => {
                       B.
                     </Text>
                     <TextInput
-                      value={answerB === null ? '' : `${answerB}`}
+                      defaultValue={
+                        detailQ.answer ? detailQ.answer[1].label : ''
+                      }
                       multiline={true}
                       numberOfLines={1}
-                      onChangeText={text => setAnswerB(text)}
+                      onChange={e => setAnswerB(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
@@ -971,10 +1006,12 @@ const teacherHome = props => {
                       C.
                     </Text>
                     <TextInput
-                      value={answerC === null ? '' : `${answerC}`}
+                      defaultValue={
+                        detailQ.answer ? detailQ.answer[2].label : ''
+                      }
                       multiline={true}
                       numberOfLines={1}
-                      onChangeText={text => setAnswerC(text)}
+                      onChange={e => setAnswerC(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
@@ -997,10 +1034,12 @@ const teacherHome = props => {
                       D.
                     </Text>
                     <TextInput
-                      value={answerD === null ? '' : `${answerD}`}
+                      defaultValue={
+                        detailQ.answer ? detailQ.answer[3].label : ''
+                      }
                       multiline={true}
                       numberOfLines={1}
-                      onChangeText={text => setAnswerD(text)}
+                      onChange={e => setAnswerD(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
@@ -1023,10 +1062,12 @@ const teacherHome = props => {
                       E.
                     </Text>
                     <TextInput
-                      value={answerE === null ? '' : `${answerE}`}
+                      defaultValue={
+                        detailQ.answer ? detailQ.answer[4].label : ''
+                      }
                       multiline={true}
                       numberOfLines={1}
-                      onChangeText={text => setAnswerE(text)}
+                      onChange={e => setAnswerE(e.nativeEvent.text)}
                       style={[
                         styles.inputText,
                         {paddingHorizontal: 10, width: '90%'},
@@ -1035,7 +1076,22 @@ const teacherHome = props => {
                   </View>
                   <TouchableOpacity
                     style={{width: '100%'}}
-                    onPress={() => handleSubmitSoal()}>
+                    onPress={() => {
+                      console.log(detail);
+                      Axios.put(
+                        'http://3.85.4.188:3333/api/question/update/' +
+                          detail[0].id,
+                        {
+                          question: soal,
+                          id_assessment_name: 4,
+                          choice_1: answerA,
+                          choice_2: answerB,
+                          choice_3: answerC,
+                          choice_4: answerD,
+                          choice_5: answerE,
+                        },
+                      );
+                    }}>
                     <View
                       style={[
                         styles.boxSm,
