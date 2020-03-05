@@ -70,10 +70,10 @@ const LoginStudent = props => {
       .catch(() => {
         if (!email) {
           setLoading(false);
-          setWarning('Email blom dimasukin woy!');
+          setWarning('Silahkan masukkan email anda!');
         } else if (!password) {
           setLoading(false);
-          setWarning('Password blom dimasukin woy!');
+          setWarning('Silahkan masukkan password anda!');
         } else {
           setLoading(false);
           setWarning("Email and password don't match!");

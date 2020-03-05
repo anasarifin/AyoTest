@@ -53,9 +53,8 @@ const LoginStudent = props => {
     })
       .then(resolve => {
         if (resolve.data.token) {
-          AsyncStorage.setItem('token', resolve.data.token);
+          AsyncStorage.setItem('tokenX', resolve.data.token);
           AsyncStorage.setItem('student', 'contoh');
-          console.log(jwt_decode(resolve.data.token));
           props.navigation.dispatch(StackActions.replace('navigator-teacher'));
           setLoading(false);
           Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
@@ -73,10 +72,10 @@ const LoginStudent = props => {
       .catch(() => {
         if (!email) {
           setLoading(false);
-          setWarning('Email blom dimasukin woy!');
+          setWarning('Silahkan masukkan email anda!');
         } else if (!password) {
           setLoading(false);
-          setWarning('Password blom dimasukin woy!');
+          setWarning('Silahkan masukkan password anda!');
         } else {
           setLoading(false);
           setWarning("Email and password don't match!");

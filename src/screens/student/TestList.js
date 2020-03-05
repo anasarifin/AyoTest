@@ -76,6 +76,7 @@ const TestList = props => {
   const [index, setIndex] = useState(null);
   // const answerInit = useSelector(state => state.assessment.answer);
   const [answerLocal, setAnswer] = useState(0);
+  const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
   console.log(xAssessment);
   // const [answer, setAnswer] = useState(null);
@@ -242,7 +243,8 @@ const TestList = props => {
                       StackActions.replace('question-result'),
                     );
                   } else {
-                    Alert.alert('Blom diisi semua woy !!!');
+                    console.log(xAssessment);
+                    Alert.alert('Ada soal yg belum diisi');
                   }
                 }}>
                 <View
@@ -298,19 +300,18 @@ const TestList = props => {
         animationType="slide"
         transparent={false}
         visible={modalQuestion}
-        // onRequestClose={async () => {
-        //   modal(false);
-        //   const xAnswer = {...answer, [index + 1]: answerLocal};
-        //   Axios.post('http://3.85.4.188:3333/api/answer/insert', {
-        //     id_assessment: 1,
-        //     id_user: 5,
-        //     answer: JSON.stringify(xAnswer),
-        //     question_queue: 'contohberubah',
-        //   });
+        onRequestClose={async () => {
+          modal(false);
+          const xAnswer = {...answer, [index + 1]: answerLocal};
+          Axios.post('http://3.85.4.188:3333/api/answer/insert', {
+            id_assessment: 1,
+            id_user: 5,
+            answer: JSON.stringify(xAnswer),
+            question_queue: '',
+          });
 
-        //   dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
-        // }}
-      >
+          dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
+        }}>
         <View style={[styles.MainContainer]}>
           <ScrollView style={{width: '100%', marginBottom: 100}}>
             <Text
@@ -377,7 +378,7 @@ const TestList = props => {
                       id_assessment: 1,
                       id_user: 5,
                       answer: JSON.stringify(xAnswer),
-                      question_queue: 'wewewew',
+                      question_queue: '',
                     });
                     await dispatch(
                       saveAnswer({no: index + 1, answer: answerLocal}),
@@ -416,9 +417,9 @@ const TestList = props => {
                   const xAnswer = {...answer, [index + 1]: answerLocal};
                   Axios.put(url, {
                     id_assessment: 1,
-                    id_user: 5,
+                    id_user: user.id_user,
                     answer: JSON.stringify(xAnswer),
-                    question_queue: 'wewewew',
+                    question_queue: '',
                   });
                   dispatch(saveAnswer({no: index + 1, answer: answerLocal}));
                 }}>
@@ -449,13 +450,14 @@ const TestList = props => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={async () => {
+                  console.log();
                   const xAnswer = {...answer, [index + 1]: answerLocal};
                   if (index < xAssessment.length - 1) {
                     Axios.put(url, {
                       id_assessment: 1,
                       id_user: 5,
                       answer: JSON.stringify(xAnswer),
-                      question_queue: 'wewewew',
+                      question_queue: '',
                     });
                     await dispatch(
                       saveAnswer({no: index + 1, answer: answerLocal}),

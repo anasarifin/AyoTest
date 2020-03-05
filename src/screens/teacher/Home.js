@@ -1331,17 +1331,20 @@ const teacherHome = props => {
                   <TouchableOpacity
                     style={{width: '100%'}}
                     onPress={() => {
+                      // console.log(detailQ.answer[0]);
+                      // console.log(answerA);
+                      console.log(detailQ.id);
                       Axios.put(
                         'http://3.85.4.188:3333/api/question/update/' +
-                          detail[0].id,
+                          detailQ.id,
                         {
-                          question: detailQ.question || soal,
-                          id_assessment_name: 4,
-                          choice_1: detailQ.answer[0].label || answerA,
-                          choice_2: detailQ.answer[1].label || answerB,
-                          choice_3: detailQ.answer[2].label || answerC,
-                          choice_4: detailQ.answer[3].label || answerD,
-                          choice_5: detailQ.answer[4].label || answerE,
+                          question: soal || detailQ.question,
+                          id_assessment_name: detail[0].id_assessment,
+                          choice_1: answerA || detailQ.answer[0].label,
+                          choice_2: answerB || detailQ.answer[1].label,
+                          choice_3: answerC || detailQ.answer[2].label,
+                          choice_4: answerD || detailQ.answer[3].label,
+                          choice_5: answerE || detailQ.answer[4].label,
                         },
                       );
                       modalES(false);

@@ -7,6 +7,7 @@ const initialValue = {
   answer: {},
   complete: false,
   questionSave: [],
+  data: [],
 };
 
 function randomize(array) {
@@ -69,6 +70,7 @@ const getAssessment = (state = initialValue, action) => {
         questionSave: createQuestionList(action.payload),
         answer: createAnswerStore(action.payload.length),
         complete: true,
+        data: action.payload,
       };
     case 'RESTORE_ASSESSMENT':
       const random2 = randomize(action.payload);

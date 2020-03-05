@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {assessment} from '../../redux/actions/assessment';
@@ -23,7 +24,7 @@ import jwt_decode from 'jwt-decode';
 const StudentHome = props => {
   const [modalDelete, modal] = useState(false);
   const [code, inputCode] = useState('');
-  const user = useSelector(state => state.user.user);
+  const [many, setMany] = useState(0);
   const dispatch = useDispatch();
   const complete = useSelector(state => state.assessment.complete);
   // console.log(AsyncStorage.getItem('token'));
@@ -61,7 +62,7 @@ const StudentHome = props => {
               }}></View>
           </View>
           <View style={[styles.boxWrapp, styles.shadow]}>
-            <Text>Tanyakan kepada dosen anda apa kode nya:v</Text>
+            <Text>Silahkan masukkan kode soal disini...</Text>
             {/* <Text style={{fontWeight: '700'}}>Kode : </Text> */}
             <TextInput
               placeholder="kode"
@@ -74,7 +75,21 @@ const StudentHome = props => {
               ]}
               onChange={e => inputCode(e.nativeEvent.text)}
             />
-            <TouchableOpacity onPress={() => modal(true)}>
+            <TouchableOpacity
+              onPress={() => {
+                AsyncStorage.setItem('code', code);
+                Axios.get('http://3.85.4.188:3333/api/question/' + code).then(
+                  resolve => {
+                    setMany(resolve.data.data.length);
+                    if (resolve.data.data.length > 0) {
+                      dispatch(assessment(resolve.data.data));
+                      modal(true);
+                    } else {
+                      Alert.alert('Kode yg anda masukkan salah!');
+                    }
+                  },
+                );
+              }}>
               <View
                 style={[
                   styles.submit,
@@ -135,9 +150,10 @@ const StudentHome = props => {
         animationType="slide"
         transparent={false}
         visible={modalDelete}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        // }}
+      >
         <View style={[styles.wrapp, styles.containerView]}>
           <ScrollView style={{height: '85%'}}>
             <View>
@@ -149,17 +165,17 @@ const StudentHome = props => {
                   </Text>
                   <Text style={{}}>{'\n'}Jumlah soal : </Text>
                   <Text style={[styles.textGreen, {fontWeight: 'bold'}]}>
-                    40
+                    {many}
                   </Text>
-                  <Text style={{}}>{'\n'}Waktu : </Text>
-                  <Text style={[styles.textGreen, {fontWeight: 'bold'}]}>
+                  {/* <Text style={{}}>{'\n'}Waktu : </Text> */}
+                  {/* <Text style={[styles.textGreen, {fontWeight: 'bold'}]}>
                     10 menit
-                  </Text>
+                  </Text> */}
                 </Text>
                 <Text
                   style={[
                     font.Aquawax,
-                    {textAlign: 'center', paddingVertical: 200, fontSize: 30},
+                    {textAlign: 'center', paddingVertical: 250, fontSize: 30},
                   ]}>
                   Apakah anda siap untuk mengikuti ujian ini?
                 </Text>
@@ -170,35 +186,10 @@ const StudentHome = props => {
             onPress={async () => {
               modal(false);
               // props.navigation.navigate('student-test-nya');
-              AsyncStorage.setItem('code', code);
-              Axios.get('http://3.85.4.188:3333/api/question/' + code).then(
-                resolve => {
-                  console.log(resolve.data.data.length);
-                  console.log(user.id_users);
-                  // dispatch(assessment(resolve.data.data));
-                  if (resolve.data.data.length > 0) {
-                    const id = resolve.data.data[0].id_assessment;
-                    Axios.post('http://3.85.4.188:3333/api/answer/users', {
-                      id_assessment: 1,
-                      id_users: 3,
-                    }).then(resolve2 => {
-                      console.log(resolve2.data.data);
-                      // console.log(resolve.data.data);
-                      // const final = {
-                      //   question: resolve.data.data,
-                      //   answer: JSON.parse(resolve2.data.data[0].answer),
-                      //   queue: JSON.parse(resolve2.data.data[0].question_queue),
-                      // };
-                      // console.log(final);
-                    });
-                    // props.navigation.dispatch(
-                    //   StackActions.replace('student-test', {code: code}),
-                    // );
-                  } else {
-                    Alert.alert('kode salah woy!');
-                  }
-                },
+              props.navigation.dispatch(
+                StackActions.replace('student-test', {code: code}),
               );
+
               // dispatch(assessment())
             }}>
             <View style={[styles.boxSm, styles.bgGreen, styles.shadow]}>

@@ -21,7 +21,8 @@ const TestResult = props => {
   const answerToArray = Object.values(answer);
   const correct = answerToArray.filter(x => x === 1).length;
   const score = (100 / answerToArray.length) * correct;
-  console.log(answer);
+  const data = useSelector(state => state.assessment.data);
+  // console.log(answer);
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>
@@ -77,7 +78,7 @@ const TestResult = props => {
               },
             ]}>
             <Text style={[{marginBottom: 10, fontSize: 80}, styles.textWhite]}>
-              {score}
+              {Math.round(score)}
             </Text>
           </View>
           <View style={[styles.boxWrapp, styles.shadow, {marginBottom: 100}]}>
@@ -91,7 +92,7 @@ const TestResult = props => {
               Detail Nilai
             </Text>
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -104,7 +105,7 @@ const TestResult = props => {
               <Text style={{width: '50%', fontWeight: '700'}}>
                 Bahasa indonesia dasar
               </Text>
-            </View>
+            </View> */}
 
             {/* this */}
             <View
@@ -196,7 +197,10 @@ const TestResult = props => {
             <View style={{width: '100%', padding: 0}}>
               <TouchableOpacity
                 style={{marginTop: 0}}
-                onPress={() => props.navigation.navigate('student-home')}>
+                onPress={() => {
+                  props.navigation.navigate('student-home');
+                  // console.log(data);
+                }}>
                 <View
                   style={[
                     styles.boxSm,

@@ -16,15 +16,18 @@ import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import {StackActions} from '@react-navigation/native';
+import RadioButtonRN from 'radio-buttons-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useSelector} from 'react-redux';
 
 const studentHome = props => {
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
   const [modalDelete, modal] = useState(false);
+  const user = useSelector(state => state.user.user);
 
   const logout = async () => {
-    AsyncStorage.removeItem('token');
-    props.navigation.navigate('login-student');
+    AsyncStorage.removeItem('tokenX');
+    props.navigation.navigate('login-teacher');
   };
 
   return (
@@ -108,7 +111,7 @@ const studentHome = props => {
                 {fontSize: 40, padding: 20, paddingBottom: 10, marginTop: 20},
               ]}>
               Profile{' '}
-              <Text style={styles.textWhite}>{dummy.name.split(' ')[0]}</Text>.
+              <Text style={styles.textWhite}>{user.name.split(' ')[0]}</Text>.
             </Text>
             <View
               style={{
@@ -122,12 +125,12 @@ const studentHome = props => {
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <Image
               style={styles.profileImage}
-              source={require('../../../assets/img/profile.jpg')}
+              source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
             />
             <Text style={{textAlign: 'center', marginTop: 20}}>
-              {dummy.name}
+              {user.name}
             </Text>
-            <Text style={{textAlign: 'center'}}>{dummy.email}</Text>
+            <Text style={{textAlign: 'center'}}>{user.email}</Text>
             <TouchableOpacity
               onPress={() => {
                 modal(true);
@@ -217,22 +220,52 @@ const studentHome = props => {
             <TouchableOpacity style={{margin: 20}}>
               <Image
                 style={styles.profileImage}
-                source={require('../../../assets/img/profile.jpg')}
+                source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
               />
             </TouchableOpacity>
             <Text style={{fontSize: 18}}>Nama Lengkap</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan nama lengkap"
+              defaultValue={user.name}
+              onChange={e => setName(e.nativeEvent.text)}
             />
             <Text style={{fontSize: 18}}>Email</Text>
-            <TextInput style={[styles.inputText]} placeholder="Masukan email" />
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan email"
+              defaultValue={user.email}
+              onChange={e => setEmail(e.nativeEvent.text)}
+            />
             <Text style={{fontSize: 18}}>Alamat</Text>
             <TextInput
               style={[styles.inputText]}
               placeholder="Masukan alamat"
+              defaultValue={user.address}
+              onChange={e => {
+                setAddress(e.nativeEvent.text);
+              }}
             />
-            <Text style={{fontSize: 18, paddingBottom: 20}}>Jenis Kelamin</Text>
+            <Text style={{fontSize: 18}}>No. Telepon</Text>
+            <TextInput
+              style={[styles.inputText]}
+              placeholder="Masukan no. telp"
+              defaultValue={user.phone}
+              onChange={e => setPhone(e.nativeEvent.text)}
+            />
+            <Text style={{fontSize: 18, paddingBottom: 0}}>Jenis Kelamin</Text>
+            <RadioButtonRN
+              data={[
+                {label: 'Pria', value: 0},
+                {label: 'Wanita', value: 1},
+              ]}
+              box={false}
+              initial={parseFloat(user.gender) + 1}
+              textStyle={{fontSize: 16, marginLeft: -10}}
+              circleSize={12}
+              activeColor="green"
+              deactiveColor="grey"
+            />
             {/* <RadioForm
               radio_props={radio_props}
               initial={0}
@@ -249,7 +282,7 @@ const studentHome = props => {
             <View
               style={[
                 styles.boxSm,
-                styles.bgBlack,
+                styles.bgGreen,
                 styles.shadow,
                 {marginTop: 20},
               ]}>
@@ -262,7 +295,8 @@ const studentHome = props => {
                     textAlignVertical: 'center',
                     fontSize: 14,
                   },
-                ]}>
+                ]}
+                onPress={() => handleClickEdit()}>
                 Simpan
               </Text>
             </View>
@@ -271,7 +305,7 @@ const studentHome = props => {
             <View
               style={[
                 styles.boxSm,
-                styles.bgBlack,
+                styles.bgPurle,
                 styles.shadow,
                 {marginTop: 20},
               ]}>
