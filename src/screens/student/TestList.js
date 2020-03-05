@@ -67,6 +67,7 @@ const TestList = props => {
   const url = 'http://3.85.4.188:3333/api/answer/update';
   const urls = 'http://3.85.4.188:3333/api/answer/insert';
   const xAssessment = useSelector(state => state.assessment.assessmentRandom);
+  const data = useSelector(state => state.assessment.data);
   const answer = useSelector(state => state.assessment.answer);
   const questionSave = useSelector(state => state.assessment.questionSave);
   const answerToArray = Object.values(answer).some(x => x === 0);
@@ -78,7 +79,6 @@ const TestList = props => {
   const [answerLocal, setAnswer] = useState(0);
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
-  console.log(xAssessment);
   // const [answer, setAnswer] = useState(null);
   // console.log(answer);
   // const renderItem = ({item, index}) => {
@@ -240,11 +240,10 @@ const TestList = props => {
                 onPress={() => {
                   if (!answerToArray) {
                     props.navigation.dispatch(
-                      StackActions.replace('question-result'),
+                      StackActions.replace('test-result'),
                     );
                   } else {
-                    console.log(xAssessment);
-                    Alert.alert('Ada soal yg belum diisi');
+                    Alert.alert('Ada soal yg belum terisi!');
                   }
                 }}>
                 <View
@@ -304,8 +303,8 @@ const TestList = props => {
           modal(false);
           const xAnswer = {...answer, [index + 1]: answerLocal};
           Axios.post('http://3.85.4.188:3333/api/answer/insert', {
-            id_assessment: 1,
-            id_user: 5,
+            id_assessment: data[0].id_assessment,
+            id_user: user.id_users,
             answer: JSON.stringify(xAnswer),
             question_queue: '',
           });
@@ -375,8 +374,8 @@ const TestList = props => {
                   const xAnswer = {...answer, [index + 1]: answerLocal};
                   if (index > 0) {
                     Axios.put(url, {
-                      id_assessment: 1,
-                      id_user: 5,
+                      id_assessment: data[0].id_assessment,
+                      id_user: user.id_users,
                       answer: JSON.stringify(xAnswer),
                       question_queue: '',
                     });
@@ -414,9 +413,12 @@ const TestList = props => {
               <TouchableOpacity
                 onPress={async () => {
                   modal(false);
+                  // console.log(data[0].id_assessment);
+                  // console.log(user.id_users);
+                  // console.log('ok');
                   const xAnswer = {...answer, [index + 1]: answerLocal};
                   Axios.put(url, {
-                    id_assessment: 1,
+                    id_assessment: data[0].id_assessment,
                     id_user: user.id_user,
                     answer: JSON.stringify(xAnswer),
                     question_queue: '',
@@ -450,12 +452,11 @@ const TestList = props => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={async () => {
-                  console.log();
                   const xAnswer = {...answer, [index + 1]: answerLocal};
                   if (index < xAssessment.length - 1) {
                     Axios.put(url, {
-                      id_assessment: 1,
-                      id_user: 5,
+                      id_assessment: data[0].id_assessment,
+                      id_user: user.id_users,
                       answer: JSON.stringify(xAnswer),
                       question_queue: '',
                     });

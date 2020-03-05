@@ -60,9 +60,9 @@ const LoginStudent = props => {
           Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
             dispatch(getUser(resolve2.data.data[0]));
           });
-          Axios.get(urlx + 18).then(
+          Axios.get(urlx + jwt_decode(resolve.data.token).id).then(
             resolve3 => {
-              console.log(resolve3.data.data);
+              // console.log(resolve3.data.data);
               dispatch(getAss(resolve3.data.data));
             },
             // jwt_decode(resolve.data.token).id

@@ -256,7 +256,7 @@ const studentHome = props => {
             <TouchableOpacity style={{margin: 20}}>
               <Image
                 style={styles.profileImage}
-                source={require('../../../assets/img/profile.jpg')}
+                source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
               />
             </TouchableOpacity>
             <Text style={{fontSize: 18}}>Nama Lengkap</Text>

@@ -25,7 +25,12 @@ import {
   CollapseBody,
 } from 'accordion-collapse-react-native';
 
+import jwt_decode from 'jwt-decode';
+import {getUser, getStats, getAss} from '../../redux/actions/user';
+
 const URL_STRING = 'http://3.85.4.188:3333/api';
+
+const urlx = 'http://3.85.4.188:3333/api/assessment/detailbyadmin/';
 
 const teacherHome = props => {
   const [code, inputCode] = useState('');
@@ -825,7 +830,7 @@ const teacherHome = props => {
                   ]}>
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <TextInput
-                    placeholder="Masukan nama pelajaran xxxx"
+                    placeholder="Masukan nama pelajaran"
                     style={styles.inputText}
                     defaultValue={
                       assessmentName || ''
@@ -862,7 +867,7 @@ const teacherHome = props => {
                 </View>
 
                 {/* satu soal */}
-                {detail.map(x => {
+                {detail.map((x, i) => {
                   return (
                     <TouchableOpacity
                       onPress={() => {
@@ -875,7 +880,9 @@ const teacherHome = props => {
                           styles.shadow,
                           {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
                         ]}>
-                        <Text numberOfLines={1}>{x.question}</Text>
+                        <Text numberOfLines={1}>
+                          {i + 1}. {x.question}
+                        </Text>
                       </View>
                     </TouchableOpacity>
                   );
@@ -1333,7 +1340,7 @@ const teacherHome = props => {
                     onPress={() => {
                       // console.log(detailQ.answer[0]);
                       // console.log(answerA);
-                      console.log(detailQ.id);
+                      // thissss !!!!!!!!!!
                       Axios.put(
                         'http://3.85.4.188:3333/api/question/update/' +
                           detailQ.id,
@@ -1347,6 +1354,13 @@ const teacherHome = props => {
                           choice_5: answerE || detailQ.answer[4].label,
                         },
                       );
+                      // Axios.get(urlx + user.id_admin).then(
+                      //   resolve3 => {
+                      //      console.log(resolve3.data.data);
+                      //     dispatch(getAss(resolve3.data.data));
+                      //   },
+                      //    jwt_decode(resolve.data.token).id
+                      // ),
                       modalES(false);
                     }}>
                     <View
@@ -1366,7 +1380,7 @@ const teacherHome = props => {
                             fontSize: 14,
                           },
                         ]}>
-                        Simpanx
+                        Simpan
                       </Text>
                     </View>
                   </TouchableOpacity>

@@ -43,6 +43,7 @@ class AppWithRedux extends React.Component {
       code: false,
       complete: false,
       inTest: false,
+      whoIsLogin: 'login-student',
     };
   }
 
@@ -63,6 +64,7 @@ class AppWithRedux extends React.Component {
       );
       this.setState({
         login: true,
+        whoIsLogin: 'navigator-student',
       });
     } else if (loginX) {
       Axios.get(urls + jwt_decode(loginX).id).then(resolve4 => {
@@ -77,6 +79,7 @@ class AppWithRedux extends React.Component {
       );
       this.setState({
         loginX: true,
+        whoIsLogin: 'navigator-teacher',
       });
     }
     // if (this.state.inTest) {
@@ -100,11 +103,7 @@ class AppWithRedux extends React.Component {
           <Stack.Navigator
             // initialRouteName="login-student"
             initialRouteName={
-              !this.state.login && !this.state.loginX
-                ? 'login-student'
-                : this.state.loginX
-                ? 'navigator-teacher'
-                : 'navigator-student'
+              this.state.whoIsLogin
               // : this.state.teacher
               // ? 'teacher'
               // : 'student'
