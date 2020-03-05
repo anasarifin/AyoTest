@@ -103,7 +103,8 @@ class AppWithRedux extends React.Component {
           <Stack.Navigator
             // initialRouteName="login-student"
             initialRouteName={
-              this.state.whoIsLogin
+              'login-student'
+              // this.state.whoIsLogin
               // : this.state.teacher
               // ? 'teacher'
               // : 'student'

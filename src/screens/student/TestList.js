@@ -240,7 +240,7 @@ const TestList = props => {
                 onPress={() => {
                   if (!answerToArray) {
                     props.navigation.dispatch(
-                      StackActions.replace('test-result'),
+                      StackActions.replace('question-result'),
                     );
                   } else {
                     Alert.alert('Ada soal yg belum terisi!');

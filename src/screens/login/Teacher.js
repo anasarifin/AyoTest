@@ -54,15 +54,17 @@ const LoginStudent = props => {
       .then(resolve => {
         if (resolve.data.token) {
           AsyncStorage.setItem('tokenX', resolve.data.token);
-          AsyncStorage.setItem('student', 'contoh');
+          // AsyncStorage.setItem('student', 'contoh');
           props.navigation.dispatch(StackActions.replace('navigator-teacher'));
           setLoading(false);
           Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
+            // console.log(resolve2[0].id_admin);
             dispatch(getUser(resolve2.data.data[0]));
+            // dispatch(getUser(resolve2[0].id_admin));
           });
           Axios.get(urlx + jwt_decode(resolve.data.token).id).then(
             resolve3 => {
-              // console.log(resolve3.data.data);
+              console.log(resolve3.data.data);
               dispatch(getAss(resolve3.data.data));
             },
             // jwt_decode(resolve.data.token).id

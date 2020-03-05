@@ -19,6 +19,7 @@ import font from '../Fonts';
 import styles from './Style';
 import {TextInput} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   Collapse,
   CollapseHeader,
@@ -334,7 +335,9 @@ const teacherHome = props => {
                         styles.shadow,
                         styles.listMinMargin,
                       ]}>
-                      <Text numberOfLines={1}>{x.name}</Text>
+                      <Text numberOfLines={1}>
+                        {x.name} | {x.code}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 );
@@ -407,7 +410,11 @@ const teacherHome = props => {
                   width: '40%',
                   height: '100%',
                 }}
-                onPress={() => props.navigation.navigate('teacher-profile')}>
+                onPress={() => {
+                  // props.navigation.navigate('teacher-profile')
+                  AsyncStorage.removeItem('tokenX');
+                  props.navigation.navigate('login-teacher');
+                }}>
                 <View>
                   <Text style={styles.textStyle}>
                     <Icon name="user-alt" size={23} style={styles.textBlack} />
@@ -830,7 +837,7 @@ const teacherHome = props => {
                   ]}>
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <TextInput
-                    placeholder="Masukan nama pelajaran"
+                    placeholder="Masukan nama pelajaran xxxx"
                     style={styles.inputText}
                     defaultValue={
                       assessmentName || ''
@@ -868,6 +875,7 @@ const teacherHome = props => {
 
                 {/* satu soal */}
                 {detail.map((x, i) => {
+                  console.log(detail);
                   return (
                     <TouchableOpacity
                       onPress={() => {
@@ -1380,7 +1388,7 @@ const teacherHome = props => {
                             fontSize: 14,
                           },
                         ]}>
-                        Simpan
+                        Simpanx
                       </Text>
                     </View>
                   </TouchableOpacity>

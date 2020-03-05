@@ -9,6 +9,7 @@ import {
   Modal,
   Image,
   Alert,
+  Linking,
 } from 'react-native';
 
 import font from '../Fonts';
@@ -143,6 +144,20 @@ const studentHome = props => {
                 ]}>
                 <Text style={{color: '#fff', textAlign: 'center'}}>
                   Edit Profile
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Linking.openURL('http://3.85.4.188:3333/premium')}>
+              <View
+                style={[
+                  styles.submit,
+                  styles.bgBlack,
+                  styles.shadow,
+                  {marginTop: 20, width: '100%', alignSelf: 'center'},
+                ]}>
+                <Text style={{color: '#fff', textAlign: 'center'}}>
+                  Upgrade
                 </Text>
               </View>
             </TouchableOpacity>
