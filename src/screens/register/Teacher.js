@@ -21,7 +21,7 @@ import ImagePicker from 'react-native-image-picker';
 import font from '../Fonts';
 import styless from './Style';
 
-const url = 'http://3.85.4.188:3333/api/admin/register';
+const url = 'http://192.168.1.135:3333/api/admin/register';
 
 export default class RegisterTeacher extends React.Component {
   constructor() {
@@ -30,6 +30,7 @@ export default class RegisterTeacher extends React.Component {
       // email: '',
       password: '',
       phone: '',
+      gender: 1,
       // name: '',
 
       warning: false,
@@ -101,6 +102,7 @@ export default class RegisterTeacher extends React.Component {
   }
 
   register = async () => {
+    console.log(123);
     const {
       name,
       email,

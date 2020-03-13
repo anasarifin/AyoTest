@@ -64,8 +64,8 @@ const TestList = props => {
   // questionNavigation(no) {
   //   this.props.navigation.navigate('question-' + no);
   // }
-  const url = 'http://3.85.4.188:3333/api/answer/update';
-  const urls = 'http://3.85.4.188:3333/api/answer/insert';
+  const url = 'http://192.168.1.135:3333/api/answer/update';
+  const urls = 'http://192.168.1.135:3333/api/answer/insert';
   const xAssessment = useSelector(state => state.assessment.assessmentRandom);
   const data = useSelector(state => state.assessment.data);
   const answer = useSelector(state => state.assessment.answer);
@@ -302,7 +302,7 @@ const TestList = props => {
         onRequestClose={async () => {
           modal(false);
           const xAnswer = {...answer, [index + 1]: answerLocal};
-          Axios.post('http://3.85.4.188:3333/api/answer/insert', {
+          Axios.post('http://192.168.1.135:3333/api/answer/insert', {
             id_assessment: data[0].id_assessment,
             id_user: user.id_users,
             answer: JSON.stringify(xAnswer),

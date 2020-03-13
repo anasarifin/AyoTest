@@ -21,7 +21,7 @@ import ImagePicker from 'react-native-image-picker';
 import font from '../Fonts';
 import styless from './Style';
 
-const url = 'http://3.85.4.188:3333/api/users/register';
+const url = 'http://192.168.1.135:3333/api/users/register';
 
 export default class RegisterStudent extends React.Component {
   constructor() {

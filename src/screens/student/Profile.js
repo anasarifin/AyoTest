@@ -58,7 +58,7 @@ const studentHome = props => {
       'nomer nih = ' + jwt_decode(await AsyncStorage.getItem('token')).id,
     );
     const id = jwt_decode(await AsyncStorage.getItem('token')).id;
-    Axios.put('http://3.85.4.188:3333/api/users/' + id, formData)
+    Axios.put('http://192.168.1.135:3333/api/users/' + id, formData)
       .then(res => {
         dispatch(getUser(res.data.data));
         modal(false);
@@ -70,76 +70,6 @@ const studentHome = props => {
 
   return (
     <KeyboardAvoidingView style={styles.containerView}>
-      {/* <ScrollView style={{height: '100%'}}>
-        <View style={[styles.boxWrapp, styles.shadow]}>
-          <View style={[styles.box, styles.bgGreen, styles.shadow]}>
-            <Text
-              style={[
-                font.Aquawax,
-                {
-                  color: '#060709',
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                  fontSize: 20,
-                },
-              ]}>
-              Input Code
-            </Text>
-            <TextInput
-              placeholder="ex: 42315"
-              style={[styles.inputText, {marginTop: 10}]}></TextInput>
-            <TouchableOpacity onPress={() => modal(true)}>
-              <View
-                style={[
-                  styles.submit,
-                  styles.shadow,
-                  styles.bgBlack,
-                  {marginTop: 20},
-                ]}>
-                <Text style={[font.Aquawax, {color: '#00f28e'}]}>Submit</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('student-statistic')}>
-            <View style={[styles.box, styles.shadow, styles.bgPurle]}>
-              <Text
-                style={[
-                  font.Aquawax,
-                  {
-                    color: '#fff',
-                    textAlign: 'center',
-                    textAlignVertical: 'center',
-                    fontSize: 20,
-                  },
-                ]}>
-                Score Terakhir
-              </Text>
-              <Text style={{fontSize: 60, marginTop: 25, color: '#fff'}}>
-                87
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('login-student')}
-            style={{marginTop: 130}}>
-            <View style={[styles.boxSm, styles.bgBlack, styles.shadow]}>
-              <Text
-                style={[
-                  font.Aquawax,
-                  {
-                    color: '#fff',
-                    textAlign: 'center',
-                    textAlignVertical: 'center',
-                    fontSize: 14,
-                  },
-                ]}>
-                Logout
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView> */}
       <View style={[styles.MainContainer]}>
         <ScrollView style={{width: '100%'}}>
           <View>
@@ -167,7 +97,9 @@ const studentHome = props => {
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <Image
               style={styles.profileImage}
-              source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
+              source={{
+                uri: `http://192.168.1.135:3333/uploads/${user.picture}`,
+              }}
             />
             <Text style={{textAlign: 'center', marginTop: 20}}>
               {user.name}
@@ -256,7 +188,9 @@ const studentHome = props => {
             <TouchableOpacity style={{margin: 20}}>
               <Image
                 style={styles.profileImage}
-                source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
+                source={{
+                  uri: `http://192.168.1.135:3333/uploads/${user.picture}`,
+                }}
               />
             </TouchableOpacity>
             <Text style={{fontSize: 18}}>Nama Lengkap</Text>

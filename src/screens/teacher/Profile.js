@@ -25,6 +25,11 @@ const studentHome = props => {
   const dummy = {name: 'Rian Tosm', email: 'riantosm@gmail.com'};
   const [modalDelete, modal] = useState(false);
   const user = useSelector(state => state.user.user);
+  const [xEmail, setEmail] = useState(user.email);
+  const [xName, setName] = useState(user.name);
+  const [xPhone, setPhone] = useState(user.phone);
+  const [xAddress, setAddress] = useState(user.address);
+  const [xGender, setGender] = useState(user.gender);
 
   const logout = async () => {
     AsyncStorage.removeItem('tokenX');
@@ -126,7 +131,9 @@ const studentHome = props => {
             {/* <Text style={{fontWeight:'700'}}>Data</Text> */}
             <Image
               style={styles.profileImage}
-              source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
+              source={{
+                uri: `http://192.168.1.135:3333/uploads/${user.picture}`,
+              }}
             />
             <Text style={{textAlign: 'center', marginTop: 20}}>
               {user.name}
@@ -148,7 +155,9 @@ const studentHome = props => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => Linking.openURL('http://3.85.4.188:3333/premium')}>
+              onPress={() =>
+                Linking.openURL('http://192.168.1.135:3333/premium')
+              }>
               <View
                 style={[
                   styles.submit,
@@ -235,7 +244,9 @@ const studentHome = props => {
             <TouchableOpacity style={{margin: 20}}>
               <Image
                 style={styles.profileImage}
-                source={{uri: `http://3.85.4.188:3333/uploads/${user.picture}`}}
+                source={{
+                  uri: `http://192.168.1.135:3333/uploads/${user.picture}`,
+                }}
               />
             </TouchableOpacity>
             <Text style={{fontSize: 18}}>Nama Lengkap</Text>

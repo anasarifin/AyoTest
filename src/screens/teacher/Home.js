@@ -29,9 +29,9 @@ import {
 import jwt_decode from 'jwt-decode';
 import {getUser, getStats, getAss} from '../../redux/actions/user';
 
-const URL_STRING = 'http://3.85.4.188:3333/api';
+const URL_STRING = 'http://192.168.1.135:3333/api';
 
-const urlx = 'http://3.85.4.188:3333/api/assessment/detailbyadmin/';
+const urlx = 'http://192.168.1.135:3333/api/assessment/detailbyadmin/';
 
 const teacherHome = props => {
   const [code, inputCode] = useState('');
@@ -54,8 +54,6 @@ const teacherHome = props => {
   // end state addModal
 
   // state add assessment
-  const [boxAssessment, createAssessment] = useState(null);
-  const [dataAssessment, setDataAssessment] = useState([]);
   const dispatch = useDispatch();
   // end state add assessment
 
@@ -95,179 +93,6 @@ const teacherHome = props => {
     }
     return setRender(items);
   };
-
-  // logic Modaladd going here
-  // const addAssesmentModal = () => {
-  //   fCreateSoal();
-  // };
-  // const addClose = () => {
-  //   modalE(true);
-  // };
-  // const fDetailQuestion = id => {
-  //   modalES(true);
-  //   detailQuestion(id);
-  //   setIdAssessmentE(id);
-  // };
-  // const detailQuestion = async id => {
-  //   console.log(idAssessmentE);
-  //   await Axios.get(`${URL_STRING}/question/detail/${id}`).then(result => {
-  //     setSoal(result.data.data[0].question);
-  //     setAnswerA(result.data.data[0].answer[0].label);
-  //     setAnswerB(result.data.data[0].answer[1].label);
-  //     setAnswerC(result.data.data[0].answer[2].label);
-  //     setAnswerD(result.data.data[0].answer[3].label);
-  //     setAnswerE(result.data.data[0].answer[4].label);
-  //   });
-  // };
-  // const fCreateSoal = () => {
-  //   addClose();
-  //   let items = [];
-  //   for (let i = 1; i <= total; i++) {
-  //     items.push(
-  // <TouchableOpacity onPress={() => fDetailQuestion(i)}>
-  //   <View
-  //     style={[
-  //       styles.boxWrapp,
-  //       styles.shadow,
-  //       {margin: 0, flexDirection: 'row', flexWrap: 'wrap'},
-  //     ]}>
-  //     <Text numberOfLines={1}>
-  //       {i}. Soal {i}
-  //     </Text>
-  //   </View>
-  // </TouchableOpacity>,
-  //     );
-  //   }
-  //   return createSoal(items);
-  // };
-  // const handleAdd = () => {
-  //   Axios.post(`${URL_STRING}/assessment/insert`, {
-  //     id_admin: user.id_admin,
-  //     code: '321',
-  //     name: assessmentName,
-  //   })
-  //     .then(resolve => {
-  //       console.log(resolve.data.data.insertId);
-  //       setIdAss(resolve.data.data.insertId);
-  //       setpost(!post ? true : true);
-  //       addAssesmentModal();
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-  // // end logic add
-  // // logic submit soal
-  // const closeSoalInput = () => {
-  //   addClose();
-  //   modalES(false);
-  //   createAssessment(null);
-  //   setLoading(true);
-  // };
-  // const handlePostSoal = () => {
-  //   Axios.post(`${URL_STRING}/question/insert`, {
-  //     question: soal,
-  //     id_assessment_name: idAss,
-  //     choice_1: answerA,
-  //     choice_2: answerB,
-  //     choice_3: answerC,
-  //     choice_4: answerD,
-  //     choice_5: answerE,
-  //   });
-  // };
-  // const handleEditSoal = () => {
-  //   console.log(idAssessmentE);
-  //   Axios.put(`${URL_STRING}/question/update/${idAssessmentE}`, {
-  //     id_assessment_name: idAssessmentE,
-  //     question: soal,
-  //     choice_1: answerA,
-  //     choice_2: answerB,
-  //     choice_3: answerC,
-  //     choice_4: answerD,
-  //     choice_5: answerE,
-  //   });
-  // };
-  // const handleSubmitSoal = async id => {
-  //   if (post) {
-  //     await handlePostSoal();
-  //     closeSoalInput();
-  //   } else {
-  //     await handleEditSoal(id);
-  //     closeSoalInput();
-  //   }
-  // };
-  // // end submit soal
-
-  // // assessment logic going here
-  // const refreshHome = () => {
-  //   if (loading) {
-  //     console.log('dilakukan getAssessment');
-  //     getAssessment();
-  //   } else {
-  //     console.log('dilakukan createAssessment');
-  //     fCreateAsessment();
-  //   }
-  // };
-  // const getAssessment = async () => {
-  //   await Axios.get(`${URL_STRING}/assessment/detailbyadmin/${idAdmin}`)
-  //     .then(result => {
-  //       setDataAssessment(result.data.data);
-  //       setIdAssessmentA(result.data.data.length + 1);
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       Alert.alert(err);
-  //     });
-  // };
-  // const fCreateAsessment = () => {
-  //   const items = [];
-  //   for (let i = 1; i <= dataAssessment.length; i++) {
-  //     items.push(
-  //       <TouchableOpacity
-  //         onPress={
-  //           () =>
-  //             fDetailAssessment(
-  //               dataAssessment[i - 1].id_assessment,
-  //             ) /*  modalD(true) */
-  //         }>
-  //         <View style={[styles.boxWrapp, styles.shadow, styles.listMinMargin]}>
-  //           <Text numberOfLines={1}>
-  //             {i}. {dataAssessment[i - 1].name}{' '}
-  //           </Text>
-  //         </View>
-  //       </TouchableOpacity>,
-  //     );
-  //   }
-  //   return createAssessment(items);
-  // };
-  // // end assessment logic
-
-  // // detailAssessment logic
-  // const fDetailAssessment = id => {
-  //   getDetail(id);
-  //   openModal();
-  //   setLoading(true);
-  // };
-  // const openModal = () => modalD(true);
-  // const getDetail = async id => {
-  //   setIdAssessmentE(id);
-  //   await Axios.get(`${URL_STRING}/assessment/detail/${id}`)
-  //     .then(result => {
-  //       setpost(false);
-  //       setDetailAssessment(result.data.data);
-  //       setTotal(result.data.data.jumlah_soal);
-  //       setLoading(false);
-  //     })
-  //     .catch(err => Alert.alert(err));
-  // };
-
-  // useEffect flow
-  // useEffect(() => {
-  //   refreshHome();
-  // }, []);
-  // useEffect(() => {
-  //   console.log(soal);
-  //   refreshHome();
-  // }, [loading]);
-  // end useEffect flow
 
   return (
     <>
@@ -323,7 +148,7 @@ const teacherHome = props => {
                   <TouchableOpacity
                     onPress={() => {
                       Axios.get(
-                        'http://3.85.4.188:3333/api/question/' + x.code,
+                        'http://192.168.1.135:3333/api/question/' + x.code,
                       ).then(resolve => {
                         setDetail(resolve.data.data);
                         modalE(true);
@@ -411,9 +236,7 @@ const teacherHome = props => {
                   height: '100%',
                 }}
                 onPress={() => {
-                  // props.navigation.navigate('teacher-profile')
-                  AsyncStorage.removeItem('tokenX');
-                  props.navigation.navigate('login-teacher');
+                  props.navigation.navigate('teacher-profile');
                 }}>
                 <View>
                   <Text style={styles.textStyle}>
@@ -719,17 +542,18 @@ const teacherHome = props => {
 
                   <TouchableOpacity
                     onPress={() => {
+                      console.log(user);
                       Axios.post(
-                        'http://3.85.4.188:3333/api/assessment/insert',
+                        'http://192.168.1.135:3333/api/assessment/insert',
                         {
-                          id_admin: assessment[0].id_admin,
+                          id_admin: user.id_admin,
                           name: assessmentName,
                         },
                       ).then(resolve => {
                         console.log(resolve.data.data.insertId);
                         for (let x = 0; x < total; x++) {
                           Axios.post(
-                            'http://3.85.4.188:3333/api/question/insert',
+                            'http://192.168.1.135:3333/api/question/insert',
                             {
                               choice_1: '',
                               choice_2: '',
@@ -739,10 +563,11 @@ const teacherHome = props => {
                               question: '',
                               id_assessment_name: resolve.data.data.insertId,
                             },
-                          );
+                          ).then(() => {
+                            modalA(false);
+                          });
                         }
                       });
-                      modalA(false);
                     }}
                     style={{width: '100%'}}>
                     <View
@@ -837,7 +662,7 @@ const teacherHome = props => {
                   ]}>
                   <Text style={{width: '40%'}}>Nama Matkul </Text>
                   <TextInput
-                    placeholder="Masukan nama pelajaran xxxx"
+                    placeholder="Masukan nama pelajaran"
                     style={styles.inputText}
                     defaultValue={
                       assessmentName || ''
@@ -1049,7 +874,7 @@ const teacherHome = props => {
                 <TouchableOpacity
                   onPress={() => {
                     // console.log(12345);
-                    // Axios.post('http://3.85.4.188:3333/api/assessment/insert', {
+                    // Axios.post('http://192.168.1.135:3333/api/assessment/insert', {
                     //   id_admin: assessment[0].id_admin,
                     //   name: assessmentName,
                     // }).then(resolve => {
@@ -1350,7 +1175,7 @@ const teacherHome = props => {
                       // console.log(answerA);
                       // thissss !!!!!!!!!!
                       Axios.put(
-                        'http://3.85.4.188:3333/api/question/update/' +
+                        'http://192.168.1.135:3333/api/question/update/' +
                           detailQ.id,
                         {
                           question: soal || detailQ.question,

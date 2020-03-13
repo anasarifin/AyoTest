@@ -32,8 +32,10 @@ import {getUser, getStats, getAss} from './src/redux/actions/user';
 const Stack = createStackNavigator();
 
 import font from './src/screens/Fonts';
-const urls = 'http://3.85.4.188:3333/api/users/';
-const urlx = 'http://3.85.4.188:3333/api/score?id_user=';
+const url = 'http://192.168.1.135:3333/api/users/';
+const urlScore = 'http://192.168.1.135:3333/api/score?id_user=';
+const urlX = 'http://192.168.1.135:3333/api/admin/';
+const urlAss = 'http://192.168.1.135:3333/api/assessment/detailbyadmin/';
 
 class AppWithRedux extends React.Component {
   constructor() {
@@ -56,10 +58,10 @@ class AppWithRedux extends React.Component {
     // console.log(login);
     // console.log(code);
     if (login) {
-      Axios.get(urls + jwt_decode(login).id).then(resolve2 => {
+      Axios.get(url + jwt_decode(login).id).then(resolve2 => {
         this.props.dispatch(getUser(resolve2.data.data[0]));
       });
-      Axios.get(urlx + jwt_decode(login).id).then(resolve3 =>
+      Axios.get(urlScore + jwt_decode(login).id).then(resolve3 =>
         this.props.dispatch(getStats(resolve3.data.data)),
       );
       this.setState({
@@ -67,10 +69,10 @@ class AppWithRedux extends React.Component {
         whoIsLogin: 'navigator-student',
       });
     } else if (loginX) {
-      Axios.get(urls + jwt_decode(loginX).id).then(resolve4 => {
+      Axios.get(urlX + jwt_decode(loginX).id).then(resolve4 => {
         this.props.dispatch(getUser(resolve4.data.data[0]));
       });
-      Axios.get(urlx + jwt_decode(loginX).id).then(
+      Axios.get(urlAss + jwt_decode(loginX).id).then(
         resolve5 => {
           // console.log(resolve3.data.data);
           this.props.dispatch(getAss(resolve5.data.data));

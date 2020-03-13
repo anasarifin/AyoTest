@@ -27,7 +27,7 @@ function createAnswerStore(length) {
 }
 
 async function createQuestionList(data) {
-  const url = 'http://3.85.4.188:3333/api/answer/insert';
+  const url = 'http://192.168.1.135:3333/api/answer/insert';
   const final = await data.map(x => x.no);
   Axios.post(url, {
     id_assessment: 1,

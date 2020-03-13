@@ -19,9 +19,9 @@ import jwt_decode from 'jwt-decode';
 import {connect, useSelector, useDispatch} from 'react-redux';
 import {getUser, getStats, getAss} from '../../redux/actions/user';
 
-const url = 'http://3.85.4.188:3333/api/admin/login';
-const urls = 'http://3.85.4.188:3333/api/admin/';
-const urlx = 'http://3.85.4.188:3333/api/assessment/detailbyadmin/';
+const url = 'http://192.168.1.135:3333/api/admin/login';
+const urls = 'http://192.168.1.135:3333/api/admin/';
+const urlx = 'http://192.168.1.135:3333/api/assessment/detailbyadmin/';
 
 const LoginStudent = props => {
   const [email, setEmail] = useState('');
@@ -51,27 +51,32 @@ const LoginStudent = props => {
       email: email,
       password: password,
     })
-      .then(resolve => {
+      .then(async resolve => {
         if (resolve.data.token) {
           AsyncStorage.setItem('tokenX', resolve.data.token);
           // AsyncStorage.setItem('student', 'contoh');
-          props.navigation.dispatch(StackActions.replace('navigator-teacher'));
-          setLoading(false);
-          Axios.get(urls + jwt_decode(resolve.data.token).id).then(resolve2 => {
-            // console.log(resolve2[0].id_admin);
-            dispatch(getUser(resolve2.data.data[0]));
-            // dispatch(getUser(resolve2[0].id_admin));
-          });
-          Axios.get(urlx + jwt_decode(resolve.data.token).id).then(
+
+          Axios.get(urls + (await jwt_decode(resolve.data.token).id)).then(
+            resolve2 => {
+              console.log(jwt_decode(resolve.data.token).id);
+              console.log(resolve2.data.data[0]);
+              dispatch(getUser(resolve2.data.data[0]));
+            },
+          );
+          Axios.get(urlx + (await jwt_decode(resolve.data.token).id)).then(
             resolve3 => {
               console.log(resolve3.data.data);
               dispatch(getAss(resolve3.data.data));
+              props.navigation.dispatch(
+                StackActions.replace('navigator-teacher'),
+              );
+              setLoading(false);
             },
             // jwt_decode(resolve.data.token).id
           );
         }
       })
-      .catch(() => {
+      .catch(err => {
         if (!email) {
           setLoading(false);
           setWarning('Silahkan masukkan email anda!');
@@ -80,6 +85,7 @@ const LoginStudent = props => {
           setWarning('Silahkan masukkan password anda!');
         } else {
           setLoading(false);
+          console.log(err);
           setWarning("Email and password don't match!");
         }
       });

@@ -19,9 +19,9 @@ import jwt_decode from 'jwt-decode';
 import {connect, useSelector, useDispatch} from 'react-redux';
 import {getUser, getStats} from '../../redux/actions/user';
 
-const url = 'http://3.85.4.188:3333/api/users/login';
-const urls = 'http://3.85.4.188:3333/api/users/';
-const urlx = 'http://3.85.4.188:3333/api/score?id_user=';
+const url = 'http://192.168.1.135:3333/api/users/login';
+const urls = 'http://192.168.1.135:3333/api/users/';
+const urlx = 'http://192.168.1.135:3333/api/score?id_user=';
 
 const LoginStudent = props => {
   const [email, setEmail] = useState('');
